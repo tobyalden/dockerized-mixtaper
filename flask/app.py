@@ -1,14 +1,20 @@
 from flask import Flask, request, jsonify
 from redis import Redis
+from rq import Queue
 
 app = Flask(__name__)
 redis = Redis(host='redis', port=6379)
+q = Queue(connection=redis)
+
+def test_job():
+    print("testing jobs")
 
 @app.route('/')
 def hello():
     redis.incr('hits')
     counter = str(redis.get('hits'),'utf-8')
-    return "This webpage has been viewed "+counter+" time(s)"
+    q.enqueue(test_job)
+    return "This cool website has been viewed "+counter+" time(s)"
 
 @app.route('/cache-me')
 def cache():
