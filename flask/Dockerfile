@@ -29,4 +29,5 @@ RUN pip install -r requirements.txt
 # define the port number the container should expose
 EXPOSE 5000
 
+# This won't work run as a standalone app!
 CMD ["python", "app.py"]
