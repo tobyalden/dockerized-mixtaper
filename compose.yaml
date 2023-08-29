@@ -5,11 +5,11 @@ services:
     volumes:
       - ./nginx/default.conf:/tmp/default.conf
     environment: 
-      - FLASK_SERVER_ADDR=flask-app:8000
+      - FLASK_SERVER_ADDR=web-app:8000
     ports:
       - "80:80"
     depends_on:
-      - flask-app
+      - web-app
     healthcheck:
       test: ["CMD-SHELL", "curl --silent --fail localhost:80/health-check || exit 1"]
       interval: 10s
@@ -20,8 +20,8 @@ services:
     image: redislabs/redismod
     ports:
       - '6379:6379'
-  flask-app:
-    build: flask
+  web-app:
+    build: web
     restart: always
     ports: 
       - '8000:8000'
@@ -29,7 +29,7 @@ services:
       - redis
     command: gunicorn -w 3 -t 60 -b 0.0.0.0:8000 "app:create_app()"
   rq-worker:
-    build: flask
+    build: web
     depends_on:
       - redis
     command: rq worker --url redis://redis:6379
