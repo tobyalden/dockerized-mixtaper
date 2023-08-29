@@ -21,7 +21,6 @@ services:
     ports:
       - '6379:6379'
   flask-app:
-    image: app-image
     build: flask
     restart: always
     ports: 
@@ -35,7 +34,7 @@ services:
       retries: 3
     command: gunicorn -w 3 -t 60 -b 0.0.0.0:8000 app:app
   rq-worker:
-    image: app-image:latest
+    build: flask
     depends_on:
       - redis
     command: rq worker --url redis://redis:6379
