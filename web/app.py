@@ -1,7 +1,5 @@
 import os
 from flask import Flask, request, jsonify
-# from redis import Redis
-# from rq import Queue
 
 ALLOWED_IMAGE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'bmp'}
 
@@ -27,9 +25,6 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
-
-    # redis = Redis(host='redis', port=6379)
-    # q = Queue(connection=redis)
 
     import db
     db.init_app(app)

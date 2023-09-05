@@ -15,13 +15,15 @@ import shortuuid
 from urllib.parse import urlparse, parse_qs
 
 from rq import Queue
-import redis
+from redis import Redis
 
 bp = Blueprint('mixtape', __name__)
 
-pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
-redis_conn = redis.Redis()
-job_queue = Queue(connection=redis_conn)
+# pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
+# redis_conn = redis.Redis()
+# job_queue = Queue(connection=redis_conn)
+redis = Redis(host='redis', port=6379)
+job_queue = Queue(connection=redis)
 
 @bp.route('/')
 def index():

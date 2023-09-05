@@ -3,3 +3,5 @@ gunicorn==21.2.0
 redis==5.0.0
 rq==1.15.1
 shortuuid==1.0.11
+yt_dlp==2023.7.6
+pydub==0.25.1

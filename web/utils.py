@@ -32,8 +32,12 @@ def convert_mixtape(youtube_ids, mixtape_id, mixtape_url):
         'outtmpl': {'default': '%(autonumber)s %(title)s.%(ext)s',}
     }
 
+    print('going to download');
+
     with YoutubeDL(ydl_opts) as ydl:
         ydl.download(youtube_ids)
+
+    print('downloaded all');
 
     all_tracks = []
     for filename in sorted(os.listdir(rip_directory)):
@@ -61,10 +65,16 @@ def convert_mixtape(youtube_ids, mixtape_id, mixtape_url):
                 )
             mixed_tracks = mixed_tracks.append(track, crossfade=crossfade_time)
 
+    print('mixed tracks');
+
     app = create_app()
+
+    print('created app');
 
     mixtape_path = os.path.join(app.config['MIXES_FOLDER'], mixtape_url + ".mp3")
     mixed_tracks.export(mixtape_path, format="mp3", bitrate="320k")
+
+    print('exported tape');
 
     if os.path.isdir(rip_directory):
         shutil.rmtree(rip_directory)
@@ -78,3 +88,4 @@ def convert_mixtape(youtube_ids, mixtape_id, mixtape_url):
         )
         db.commit()
 
+    print('marked as converted');
