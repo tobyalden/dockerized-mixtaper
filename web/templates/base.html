@@ -1,0 +1,25 @@
+{% from 'macros.html' import user_card %}
+
+<!doctype html>
+<title>{% block title %}{% endblock %} - Flaskr</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<nav>
+  <h1>makeamixtape.com</h1>
+    {% if g.user %}
+    <span>{{ user_card(g.user['username'], g.user['avatar']) }}</span>
+      <a href="{{ url_for('auth.logout') }}">Log Out</a>
+    {% else %}
+      <a href="{{ url_for('auth.register') }}">Register</a>
+      <a href="{{ url_for('auth.login') }}">Log In</a>
+    {% endif %}
+</nav>
+<hr>
+<section class="content">
+  <header>
+    {% block header %}{% endblock %}
+  </header>
+  {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+  {% block content %}{% endblock %}
+</section>

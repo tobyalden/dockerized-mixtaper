@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import user_card %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+    {% if g.user['id'] == user['id'] %}
+        <form method="post" enctype="multipart/form-data">
+            <label for="file">Avatar:</label><br><br>
+            <input type ="file" name="avatar" id="avatar" accept="image/*">{{ request.form['avatar'] }}</textarea>
+            <input type="submit" value="Upload">
+      </form>
+    {% endif %}
+
+    {{ user_card(user['username'], user['avatar']) }}
+    <br>
+    Mixtapes created: TBD
+    <br>
+    Mixtapes contributed to: TBD
+{% endblock %}
+

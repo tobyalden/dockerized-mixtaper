@@ -1,15 +1,26 @@
 import os
 from flask import Flask, request, jsonify
-from redis import Redis
-from rq import Queue
-from utils import test_job
+# from redis import Redis
+# from rq import Queue
+
+ALLOWED_IMAGE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'bmp'}
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'mixtapegarden.sqlite'),
+        MIXES_FOLDER=os.path.join(app.root_path, 'static', 'mixtapes'),
+        MIXTAPE_ART_FOLDER=os.path.join(app.root_path, 'static', 'mixtape_art'),
+        USER_AVATAR_FOLDER=os.path.join(app.root_path, 'static', 'user_avatars')
     )
+
+    if test_config is None:
+        # load the instance config, if it exists, when not testing
+        app.config.from_pyfile('config.py', silent=True)
+    else:
+        # load the test config if passed in
+        app.config.from_mapping(test_config)
 
     # ensure the instance folder exists
     try:
@@ -17,15 +28,22 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    print('database is ' + app.config['DATABASE'], flush=True)
-    redis = Redis(host='redis', port=6379)
-    q = Queue(connection=redis)
+    # redis = Redis(host='redis', port=6379)
+    # q = Queue(connection=redis)
 
     import db
     db.init_app(app)
 
+    import auth
+    app.register_blueprint(auth.bp)
+
     import mixtape
     app.register_blueprint(mixtape.bp)
     app.add_url_rule('/', endpoint='index')
+
+    import user
+    app.register_blueprint(user.bp)
+
+    import utils
 
     return app

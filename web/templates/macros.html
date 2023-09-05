@@ -1,0 +1,8 @@
+{% macro user_card(username, avatar) -%}
+<h4><a href="{{ url_for('user.view', username=username) }}">{{ username }}</a></h4>
+    {% if avatar %}
+        <img class="avatar" src="{{ url_for('static', filename='/user_avatars/' + avatar) }}"/>
+    {% else %}
+        <img class="avatar" src="{{ url_for('static', filename='/default_avatar.png') }}"/>
+    {% endif %}
+{%- endmacro %}

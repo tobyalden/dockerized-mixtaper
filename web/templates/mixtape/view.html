@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import user_card %}
+
+{% block header %}
+        <h1>{% block title %}{{ mixtape['title'] }}{% endblock %}</h1>
+        {% if mixtape['art'] %}
+            <img class="mixtapeArt" src="{{ url_for('static', filename='/mixtape_art/' + mixtape['art']) }}"/>
+        {% endif %}
+        <br>{{ tracks|length }} tracks
+{% endblock %}
+
+{% block content %}
+        <article class="mixtape">
+            <header>
+                <div>
+                    <div class="about">by {{ user_card(mixtape['username'], mixtape['avatar']) }} on {{ mixtape['created'].strftime('%Y-%m-%d') }}</div>
+                </div>
+                {% if g.user and g.user['id'] == mixtape['author_id'] %}
+                    <br>
+                    <a class="action" href="{{ url_for('mixtape.update', url=mixtape['url']) }}">Edit</a><br>
+                    {% if mixtape['converted'] %}
+                        <a class="action" href="{{ url_for('mixtape.download', url=mixtape['url']) }}">Download</a><br>
+                    {% elif not mixtape['locked'] and tracks %}
+                        <a class="action" onclick="return confirm('Are you sure?');" href="{{ url_for('mixtape.convert', id=mixtape['id']) }}">Convert</a>
+                    {% elif mixtape['locked'] and not mixtape['converted'] %}
+                        Mixtape currently converting...
+                    {% endif %}
+                {% endif %}
+            </header>
+
+            <br>
+
+            {% for track in tracks %}
+                <article class="track">
+                    <header>
+                        <div>
+                            <iframe src="https://www.youtube.com/embed/{{ track['youtube_id'] }}"></iframe> 
+                            <div class="about">by {{ track['username'] }} on {{ track['created'].strftime('%Y-%m-%d') }}</div>
+                            {% if g.user and not mixtape['locked'] and (mixtape['author_id'] == g.user['id'] or track['author_id'] == g.user['id']) %}
+                                <form method="post">
+                                    <input name="deleteTrack" type="submit" value="Delete track">
+                                    <input name="trackId" value="{{ track['id'] }}" hidden>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </header>
+                </article>
+                {% if not loop.last %}
+                    <hr>
+                {% endif %}
+            {% endfor %}
+
+            {% if g.user and not mixtape['locked'] %}
+                <p class="body">{{ mixtape['body'] }}</p>
+                <form method="post">
+                    <label for="title">Add to mixtape:</label>
+                    <input name="youtubeUrl" id="youtubeUrl" placeholder="youtube.com/watch?v=3__0ulE2UDo" required>
+                    <input type="submit" value="Click to add">
+                </form>
+            {% endif %}
+
+            {% if g.user['id'] == mixtape['author_id'] %}
+                <form method="post">
+                    <input name="deleteMixtape" type="submit" value="Delete mixtape" onclick="return confirm('Are you sure?');">
+                </form>
+            {% endif %}
+
+        </article>
+{% endblock %}
+
