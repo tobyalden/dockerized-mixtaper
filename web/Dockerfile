@@ -30,4 +30,8 @@ RUN pip install -r requirements.txt
 EXPOSE 5000
 
 RUN flask --app app init-db
-CMD ["flask", "--app", "run"]
+
+# Overridden in compose.yaml; test standalone image with:
+# docker build web -t standalone-web
+# docker run -it -p5000:5000 standalone-web
+CMD ["flask", "--app", "app", "run", "-h", "0.0.0.0", "-p", "5000"]
