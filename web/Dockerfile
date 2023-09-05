@@ -29,4 +29,5 @@ RUN pip install -r requirements.txt
 # define the port number the container should expose
 EXPOSE 5000
 
-CMD ["flask", "--app", "app", "run"]
+RUN flask --app app init-db
+CMD ["flask", "--app", "run"]
