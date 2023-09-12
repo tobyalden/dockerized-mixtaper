@@ -22,6 +22,8 @@ services:
       - '6379:6379'
   web-app:
     build: web
+    volumes:
+      - storage:/home/app/static
     restart: always
     ports: 
       - '8000:8000'
@@ -30,6 +32,10 @@ services:
     command: gunicorn -w 3 -t 60 -b 0.0.0.0:8000 "app:create_app()"
   rq-worker:
     build: web
+    volumes:
+      - storage:/home/app/static
     depends_on:
       - redis
     command: rq worker --url redis://redis:6379
+volumes:
+  storage:
