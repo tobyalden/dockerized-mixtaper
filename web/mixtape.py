@@ -305,16 +305,6 @@ def download(url):
     )
     # return redirect(url_for('mixtape.index'))
 
-@bp.route('/<int:id>/delete', methods=('POST',))
-@login_required
-def delete(id):
-    # TODO: Check you are the owner of the mixtape - this could be a decorator
-    get_mixtape(id)
-    db = get_db()
-    db.execute('DELETE FROM mixtape WHERE id = ?', (id,))
-    db.commit()
-    return redirect(url_for('mixtape.index'))
-
 def get_youtube_id(url):
     if url.startswith(('youtu', 'www')):
         url = 'http://' + url
