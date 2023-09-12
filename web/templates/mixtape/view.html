@@ -6,7 +6,7 @@
         {% if mixtape['art'] %}
             <img class="mixtapeArt" src="{{ url_for('static', filename='/mixtape_art/' + mixtape['art']) }}"/>
         {% endif %}
-        <br>{{ tracks|length }} tracks
+        <br>{{ mixtape["track_count"] }} tracks
 {% endblock %}
 
 {% block content %}
@@ -21,7 +21,7 @@
                     {% if mixtape['converted'] %}
                         <a class="action" href="{{ url_for('mixtape.download', url=mixtape['url']) }}">Download</a><br>
                     {% elif not mixtape['locked'] and tracks %}
-                        <a class="action" onclick="return confirm('Are you sure?');" href="{{ url_for('mixtape.convert', id=mixtape['id']) }}">Convert</a>
+                        <a class="action" onclick="return confirm('Are you sure?');" href="{{ url_for('mixtape.convert', url=mixtape['url']) }}">Convert</a>
                     {% elif mixtape['locked'] and not mixtape['converted'] %}
                         Mixtape currently converting...
                     {% endif %}

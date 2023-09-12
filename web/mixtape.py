@@ -7,6 +7,7 @@ from flask import (
 from werkzeug.exceptions import abort
 from werkzeug.utils import secure_filename
 
+from app import TRACKS_PER_MIXTAPE
 from auth import login_required
 from db import get_db
 from utils import (convert_mixtape, get_image_extension, allowed_image_file)
@@ -29,10 +30,10 @@ job_queue = Queue(connection=redis)
 def index():
     db = get_db()
     mixtapes = db.execute(
-        'SELECT m.id, m.url, m.art, m.title, m.body, m.created, m.author_id, u.username, u.avatar, count(t.mixtape_id) as track_count'
+        'SELECT m.id, m.url, m.art, m.title, m.body, m.created, m.author_id, u.username, u.avatar, COUNT(t.mixtape_id) as track_count'
         # 'SELECT m.id, m.url, m.title, m.body, m.created, m.author_id, u.username'
         ' FROM mixtape m'
-        ' LEFT JOIN user u ON m.author_id = u.id'
+        ' INNER JOIN user u ON m.author_id = u.id'
         ' LEFT JOIN track t ON m.id = t.mixtape_id'
         ' GROUP BY m.id'
         ' ORDER BY m.created DESC'
@@ -77,27 +78,14 @@ def get_uuid():
     # TODO: Ensure UUIDs are unique and don't conflict with other URLs
     return shortuuid.ShortUUID().random(length=8)
 
-def get_mixtape(id, check_author=True):
-    mixtape = get_db().execute(
-        'SELECT m.id, m.locked, m.url, m.title, m.body, m.created, m.author_id, u.username'
-        ' FROM mixtape m JOIN user u ON m.author_id = u.id'
-        ' WHERE m.id = ?',
-        (id,)
-    ).fetchone()
-
-    if mixtape is None:
-        abort(404, f"Mixtape id {id} doesn't exist.")
-
-    if check_author and mixtape['author_id'] != g.user['id']:
-        abort(403)
-
-    return mixtape
-
 def get_mixtape_by_url(url, check_author=True):
     mixtape = get_db().execute(
-        'SELECT m.id, m.url, m.art, m.locked, m.converted, m.title, m.body, m.created, m.author_id, u.username, u.avatar'
-        ' FROM mixtape m JOIN user u ON m.author_id = u.id'
-        ' WHERE m.url = ?',
+        'SELECT m.id, m.url, m.art, m.locked, m.converted, m.title, m.body, m.created, m.author_id, u.username, u.avatar, COUNT(t.mixtape_id) AS track_count'
+        ' FROM mixtape m'
+        ' INNER JOIN user u ON m.author_id = u.id'
+        ' LEFT JOIN track t ON m.id = t.mixtape_id'
+        ' WHERE m.url = ?'
+        ' GROUP BY m.id',
         (url,)
     ).fetchone()
 
@@ -113,7 +101,7 @@ def get_tracks(mixtape_id, check_author=True):
     db = get_db()
     tracks = db.execute(
         'SELECT t.id, t.youtube_id, t.created, t.author_id, u.username'
-        ' FROM track t JOIN user u ON t.author_id = u.id'
+        ' FROM track t INNER JOIN user u ON t.author_id = u.id'
         ' WHERE t.mixtape_id = ?'
         ' ORDER BY t.created ASC',
         (mixtape_id,)
@@ -201,6 +189,9 @@ def view(url):
             if mixtape['locked']:
                 error = 'Mixtape is locked and cannot be added to.'
 
+            if mixtape['track_count'] >= TRACKS_PER_MIXTAPE:
+                error = 'Mixtape is full and cannot be added to.'
+
             if error is not None:
                 flash(error)
             else:
@@ -212,7 +203,12 @@ def view(url):
                     (g.user['id'], mixtape['id'], youtube_id)
                 )
                 db.commit()
-                return redirect(url_for('mixtape.view', url=mixtape['url']))
+
+                if mixtape['track_count'] == TRACKS_PER_MIXTAPE - 1:
+                    # Convert mixtape
+                    return redirect(url_for('mixtape.convert', url=mixtape['url']))
+                else:
+                    return redirect(url_for('mixtape.view', url=mixtape['url']))
 
     return render_template('mixtape/view.html', mixtape=mixtape, tracks=tracks)
 
@@ -261,12 +257,12 @@ def update(url):
 
     return render_template('mixtape/update.html', mixtape=mixtape)
 
-@bp.route('/<int:id>/convert', methods=('GET', 'POST'))
+@bp.route('/<url>/convert', methods=('GET', 'POST'))
 @login_required
-def convert(id):
+def convert(url):
     # TODO: Check you are the owner of the mixtape - this could be a decorator
-    # TODO: Don't allow converting empty mixtapes
-    mixtape = get_mixtape(id)
+    # TODO: Don't allow converting mixtapes that are locked or w/o 7 tracks
+    mixtape = get_mixtape_by_url(url)
     tracks = get_tracks(mixtape['id'])
 
     error = None
