@@ -5,3 +5,4 @@ rq==1.15.1
 shortuuid==1.0.11
 yt_dlp==2023.7.6
 pydub==0.25.1
+mutagen==1.47.0
