@@ -7,11 +7,24 @@ def get_image_extension(filename):
 def allowed_image_file(filename):
     return '.' in filename and get_image_extension(filename) in ALLOWED_IMAGE_EXTENSIONS
 
-def convert_mixtape(youtube_ids, mixtape_id, mixtape_url):
+def convert_mixtape(youtube_ids, mixtape_url):
     import os
     import shutil
     from yt_dlp import YoutubeDL
     from pydub import AudioSegment
+
+    app = create_app()
+
+    print('created app');
+
+    mixtape = None
+    with app.app_context():
+        mixtape = get_db().execute(
+            'SELECT m.art, m.title, m.body, m.created, m.author_id'
+            ' FROM mixtape m'
+            ' WHERE m.url = ?',
+            (mixtape_url,)
+        ).fetchone()
 
     # TODO: Rewrite using os.path.join()
     rip_directory = './youtube_rips/' + mixtape_url + '/'
@@ -19,6 +32,7 @@ def convert_mixtape(youtube_ids, mixtape_id, mixtape_url):
     if os.path.isdir(rip_directory):
         shutil.rmtree(rip_directory)
 
+    tracklist_path = os.path.join(app.config['MIXES_FOLDER'], mixtape_url + "-tracklist.txt")
     ydl_opts = {
         'paths': {
             'home': rip_directory,
@@ -29,7 +43,8 @@ def convert_mixtape(youtube_ids, mixtape_id, mixtape_url):
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'wav',
         }],
-        'outtmpl': {'default': '%(autonumber)s %(title)s.%(ext)s',}
+        'outtmpl': {'default': '%(autonumber)s %(title)s.%(ext)s',},
+        'print_to_file': {'post_process': [('%(autonumber)s - %(title)s', tracklist_path)]}
     }
 
     print('going to download');
@@ -67,12 +82,13 @@ def convert_mixtape(youtube_ids, mixtape_id, mixtape_url):
 
     print('mixed tracks');
 
-    app = create_app()
-
-    print('created app');
-
     mixtape_path = os.path.join(app.config['MIXES_FOLDER'], mixtape_url + ".mp3")
+    tracklist = open(tracklist_path, 'r')
+    tracklist_text = mixtape['title'] + '\n\n' + tracklist.read() + '\n\n' + 'created at mixtapegarden.com'
+    tracklist.close()
+
     mixed_tracks.export(mixtape_path, format="mp3", bitrate="320k")
+    # TODO: Use mutagen for tagging
 
     print('exported tape');
 
@@ -83,8 +99,8 @@ def convert_mixtape(youtube_ids, mixtape_id, mixtape_url):
         db = get_db()
         db.execute(
             'UPDATE mixtape SET converted = ?'
-            ' WHERE id = ?',
-            (True, mixtape_id)
+            ' WHERE url = ?',
+            (True, mixtape_url)
         )
         db.commit()
 
