@@ -18,6 +18,13 @@
                         <img class="mixtapeArt" src="{{ url_for('static', filename='/mixtape_art/' + mixtape['art']) }}"/>
                     {% endif %}
                     {{ mixtape['track_count'] }} tracks
+
+                    {% if mixtape['converted'] %}
+                        <a class="action" href="{{ url_for('mixtape.download', url=mixtape['url']) }}">Download</a><br>
+                    {% elif mixtape['locked'] and not mixtape['converted'] %}
+                        Mixtape currently converting...
+                    {% endif %}
+
                     <div class="about">by {{ user_card(mixtape['username'], mixtape['avatar']) }} on {{ mixtape['created'].strftime('%Y-%m-%d') }}</div>
                 </div>
             </header>
