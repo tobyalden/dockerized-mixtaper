@@ -1,6 +1,7 @@
 from app import (create_app, ALLOWED_IMAGE_EXTENSIONS)
 from db import get_db
 from mutagen.id3 import ID3, APIC
+from PIL import Image
 
 
 def get_image_extension(filename):
@@ -94,11 +95,19 @@ def convert_mixtape(youtube_ids, mixtape_url):
     # TODO: Use mutagen to add tracklist to description as well as artist and album
     tags = ID3(mixtape_path)
     art_path = os.path.join(app.config['MIXTAPE_ART_FOLDER'], mixtape['art'])
+
+    # Convert art to png if not already
+    if get_image_extension(mixtape['art']) != 'png':
+        converted_art = Image.open(art_path).convert('RGB')
+        converted_art_name = mixtape_url + '.png'
+        art_path = os.path.join(app.config['MIXTAPE_ART_FOLDER'], converted_art_name)
+        converted_art.save(art_path)
+
     with open(art_path, 'rb') as art:
         tags.add(
             APIC(
                 encoding=3,
-                mime='image/png', # TODO: Convert image into PNG if not already. Also ensure there _is_ art
+                mime='image/png', # TODO: Ensure there _is_ art
                 type=3, # 3 is for the cover image
                 desc=u'Cover',
                 data=art.read()

@@ -5,8 +5,9 @@ stuff that effects css:
 
 - rename mixtapes to correct name on download, and add art + tracklist to description
 - add tracklist to finished mixtapes
-- add description to tracks
 - make art mandatory
+
+- add description to tracks
 - limit description and title (basically all text fields) to reasonable lengths
 - add comments section to mixtapes?
 - number tracks
