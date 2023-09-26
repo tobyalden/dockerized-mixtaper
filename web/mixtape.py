@@ -56,6 +56,9 @@ def create():
                 art = url + '.' + get_image_extension(file.filename)
                 file.save(os.path.join(current_app.config['MIXTAPE_ART_FOLDER'], art))
 
+        if not art:
+            error = 'Art is required.'
+
         if error is not None:
             flash(error)
         else:

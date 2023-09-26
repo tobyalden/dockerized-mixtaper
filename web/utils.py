@@ -1,6 +1,6 @@
 from app import (create_app, ALLOWED_IMAGE_EXTENSIONS)
 from db import get_db
-from mutagen.id3 import ID3, APIC
+from mutagen.id3 import ID3, APIC, TIT2, TPE1, COMM, USLT
 from PIL import Image
 
 
@@ -87,7 +87,7 @@ def convert_mixtape(youtube_ids, mixtape_url):
 
     mixtape_path = os.path.join(app.config['MIXES_FOLDER'], mixtape_url + ".mp3")
     tracklist = open(tracklist_path, 'r')
-    tracklist_text = mixtape['title'] + '\n\n' + tracklist.read() + '\n\n' + 'created at mixtapegarden.com'
+    tracklist_text = mixtape['title'] + '\n\n' + tracklist.read() + '\n' + 'created at mixtapegarden.com'
     tracklist.close()
 
     mixed_tracks.export(mixtape_path, format="mp3", bitrate="320k")
@@ -113,6 +113,12 @@ def convert_mixtape(youtube_ids, mixtape_url):
                 data=art.read()
             )
         )
+    # title
+    tags.add(TIT2(encoding=3, text=mixtape['title']))
+    # artist
+    tags.add(TPE1(encoding=3, text="mixtapegarden.com"))
+    # lyrics
+    tags.add(USLT(encoding=3, lang=u'eng', desc=u'desc', text=tracklist_text))
     tags.save(v2_version=3)
 
     print('exported tape');

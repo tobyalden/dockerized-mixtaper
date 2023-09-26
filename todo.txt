@@ -3,9 +3,12 @@ stuff that effects css:
 + automatically convert on track maximum
 + add download links / currently converting to index
 
-- rename mixtapes to correct name on download, and add art + tracklist to description
-- add tracklist to finished mixtapes
-- make art mandatory
++ rename mixtapes to correct name on download, and add art + tracklist to description
++ add tracklist to finished mixtapes
++ make art mandatory
+
+- allow mixtapes to be streamed
+- prompt user to create k
 
 - add description to tracks
 - limit description and title (basically all text fields) to reasonable lengths
