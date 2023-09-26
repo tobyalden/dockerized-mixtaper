@@ -19,7 +19,8 @@
                     <br>
                     <a class="action" href="{{ url_for('mixtape.update', url=mixtape['url']) }}">Edit</a><br>
                     {% if mixtape['converted'] %}
-                        <a class="action" href="{{ url_for('mixtape.download', url=mixtape['url']) }}">Download</a><br>
+                    <a class="action" href="{{ url_for('mixtape.download', url=mixtape['url']) }}">Download</a><br><br>
+                        <audio controls src="{{ url_for('mixtape.download', url=mixtape['url']) }}"></audio>
                     {% elif mixtape['locked'] and not mixtape['converted'] %}
                         Mixtape currently converting...
                     {% endif %}
