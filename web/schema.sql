@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS track (
     author_id INTEGER NOT NULL,
     mixtape_id INTEGER NOT NULL,
     youtube_id CHAR(11) NOT NULL,
+    body TEXT,
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (author_id) REFERENCES user (id),
     FOREIGN KEY (mixtape_id) REFERENCES mixtape (id)

@@ -100,7 +100,7 @@ def get_mixtape_by_url(url, check_author=True):
 def get_tracks(mixtape_id, check_author=True):
     db = get_db()
     tracks = db.execute(
-        'SELECT t.id, t.youtube_id, t.created, t.author_id, u.username'
+        'SELECT t.id, t.youtube_id, t.created, t.author_id, t.body, u.username'
         ' FROM track t INNER JOIN user u ON t.author_id = u.id'
         ' WHERE t.mixtape_id = ?'
         ' ORDER BY t.created ASC',
@@ -192,15 +192,17 @@ def view(url):
             if mixtape['track_count'] >= TRACKS_PER_MIXTAPE:
                 error = 'Mixtape is full and cannot be added to.'
 
+            track_description = request.form['trackBody']
+
             if error is not None:
                 flash(error)
             else:
                 db = get_db()
 
                 db.execute(
-                    'INSERT INTO track (author_id, mixtape_id, youtube_id)'
-                    ' VALUES (?, ?, ?)',
-                    (g.user['id'], mixtape['id'], youtube_id)
+                    'INSERT INTO track (author_id, mixtape_id, youtube_id, body)'
+                    ' VALUES (?, ?, ?, ?)',
+                    (g.user['id'], mixtape['id'], youtube_id, track_description)
                 )
                 db.commit()
 

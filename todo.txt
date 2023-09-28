@@ -2,28 +2,27 @@ stuff that effects css:
 + add limit to number of tracks that can be added
 + automatically convert on track maximum
 + add download links / currently converting to index
-
 + rename mixtapes to correct name on download, and add art + tracklist to description
 + add tracklist to finished mixtapes
 + make art mandatory
-
-- allow mixtapes to be streamed
-- prompt user to create k
++ allow mixtapes to be streamed
 
 - add description to tracks
 - limit description and title (basically all text fields) to reasonable lengths
-- add comments section to mixtapes?
+- remove mixtape update page
+- warn user before adding final track
 - number tracks
-- paginate index page
 - add CSS
-- prevent fullpage reloads where possible
-
 - validate all actions in routes (logged in, owns mixtape, mixtape not locked/is available, etc).
 - add admin tools
 - move data out of static folder (so i can just .gitignore the whole thing)
 - errant TODOs
 
 not mvp:
+- add user descriptions
+- paginate index page
 - allow mixtapes to be public/private
 - suggest making private mixtapes public on conversion
 - show all mixtapes contributed/created as user
+- prevent fullpage reloads where possible
+- add comments section to mixtapes?
