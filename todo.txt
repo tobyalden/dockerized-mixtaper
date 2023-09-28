@@ -1,4 +1,16 @@
 stuff that effects css:
+
+- remove mixtape update page
+- limit description and title (basically all text fields) to reasonable lengths
+- warn user before adding final track
+- number tracks
+
+- add CSS
+- validate all actions in routes (logged in, owns mixtape, mixtape not locked/is available, etc).
+- add admin tools
+- move data out of static folder (so i can just .gitignore the whole thing)
+- errant TODOs
+
 + add limit to number of tracks that can be added
 + automatically convert on track maximum
 + add download links / currently converting to index
@@ -6,17 +18,7 @@ stuff that effects css:
 + add tracklist to finished mixtapes
 + make art mandatory
 + allow mixtapes to be streamed
-
-- add description to tracks
-- limit description and title (basically all text fields) to reasonable lengths
-- remove mixtape update page
-- warn user before adding final track
-- number tracks
-- add CSS
-- validate all actions in routes (logged in, owns mixtape, mixtape not locked/is available, etc).
-- add admin tools
-- move data out of static folder (so i can just .gitignore the whole thing)
-- errant TODOs
++ add description to tracks
 
 not mvp:
 - add user descriptions

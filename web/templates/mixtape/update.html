@@ -15,8 +15,4 @@
     <input type ="file" name="art" id="art" accept="image/*">{{ request.form['art'] }}</textarea>
     <input type="submit" value="Save">
   </form>
-  <hr>
-  <form action="{{ url_for('mixtape.delete', id=mixtape['id']) }}" method="post">
-    <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
-  </form>
 {% endblock %}

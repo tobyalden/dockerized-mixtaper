@@ -131,7 +131,29 @@ def view(url):
     mixtape = get_mixtape_by_url(url, False) # TODO: False here should be based on if the mix is public or not
     tracks = get_tracks(mixtape['id'])
     if request.method == 'POST':
-        if 'deleteMixtape' in request.form:
+        if 'confirmEditTitle' in request.form:
+            if g.user is None or mixtape['author_id'] != g.user['id']:
+                abort(403)
+
+            new_title = request.form['newTitle']
+            error = None
+
+            if not new_title or new_title == "":
+                # TODO: scrub bad stuff
+                error = 'Title is required'
+
+            if error is not None:
+                flash(error)
+            else:
+                db = get_db()
+
+                db.execute(
+                    'UPDATE mixtape SET title = ? WHERE id = ?',
+                    (new_title, mixtape['id'])
+                )
+                db.commit()
+            return redirect(url_for('mixtape.view', url=mixtape['url']))
+        elif 'deleteMixtape' in request.form:
             # Delete mixtape
             if g.user is None or mixtape['author_id'] != g.user['id']:
                 abort(403)
