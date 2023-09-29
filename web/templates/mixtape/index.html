@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import user_card %}
+{% from 'macros.html' import user_card, mixtape_card %}
 
 {% block header %}
     <h1>{% block title %}Mixtapes{% endblock %}</h1>
@@ -9,29 +9,9 @@
 {% endblock %}
 
 {% block content %}
-    {% for mixtape in mixtapes %}
-        <article class="mixtape">
-            <header>
-                <div>
-                    <h1><a href="{{ url_for('mixtape.view', url=mixtape['url']) }}">{{ mixtape['title'] }}</a></h1>
-                    {% if mixtape['art'] %}
-                        <img class="mixtapeArt" src="{{ url_for('static', filename='/mixtape_art/' + mixtape['art']) }}"/>
-                    {% endif %}
-                    {{ mixtape['track_count'] }} tracks
-
-                    {% if mixtape['converted'] %}
-                        <a class="action" href="{{ url_for('mixtape.download', url=mixtape['url']) }}">Download</a><br>
-                    {% elif mixtape['locked'] and not mixtape['converted'] %}
-                        Mixtape currently converting...
-                    {% endif %}
-
-                    <div class="about">by {{ user_card(mixtape['username'], mixtape['avatar']) }} on {{ mixtape['created'].strftime('%Y-%m-%d') }}</div>
-                </div>
-            </header>
-            <p class="body">{{ mixtape['body'] }}</p>
-        </article>
-        {% if not loop.last %}
-            <hr>
-        {% endif %}
-    {% endfor %}
+        <div class="container">
+            {% for mixtape in mixtapes %}
+                {{ mixtape_card(mixtape) }}
+            {% endfor %}
+        </div>
 {% endblock %}

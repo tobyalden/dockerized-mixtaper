@@ -4,7 +4,38 @@
 }
 
 .mixtapeArt {
-    height: 200px;
+    object-fit: cover;
+    width: 500px;
+    height: 500px;
+}
+
+.mixtapeCard {
+    position: relative;
+}
+
+.mixtapeCardInfo {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+}
+
+.mixtapeCardTitle {
+    font-size: 32px;
+    color: white;
+    background-color: black;
+    padding-left: 5px;
+    padding-right: 5px;
+    max-width: fit-content;
+}
+
+.mixtapeCardUser {
+    font-size: 16px;
+    color: white;
+    background-color: gray;
+    margin-top: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    max-width: fit-content;
 }
 
 .icon {
