@@ -1,6 +1,6 @@
 stuff that effects css:
 
-- remove mixtape update page
+- allow editing artwork
 - limit description and title (basically all text fields) to reasonable lengths
 - warn user before adding final track
 - number tracks
