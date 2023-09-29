@@ -25,7 +25,6 @@
                 </div>
                 {% if g.user and g.user['id'] == mixtape['author_id'] %}
                     <br>
-                    <a class="action" href="{{ url_for('mixtape.update', url=mixtape['url']) }}">Edit</a><br>
                     {% if mixtape['converted'] %}
                     <a class="action" href="{{ url_for('mixtape.download', url=mixtape['url']) }}">Download</a><br><br>
                         <audio controls src="{{ url_for('mixtape.download', url=mixtape['url']) }}"></audio>
@@ -63,8 +62,12 @@
                 <form method="post">
                     <label for="title">Add to mixtape:</label>
                     <input name="youtubeUrl" id="youtubeUrl" placeholder="youtube.com/watch?v=3__0ulE2UDo" required>
-                    <input name="trackBody" id="trackBody" placeholder="your comment about this track" required>
-                    <input type="submit" value="Click to add">
+                    <input name="trackBody" id="trackBody" placeholder="your comment about this track" >
+                    {% if one_track_from_full %}
+                        <input type="submit" value="Click to add final track" onclick="return confirm('Are you sure?');">
+                    {% else %}
+                        <input type="submit" value="Click to add">
+                    {% endif %}
                 </form>
             {% endif %}
 

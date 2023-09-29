@@ -130,6 +130,7 @@ def get_track(track_id):
 def view(url):
     mixtape = get_mixtape_by_url(url, False) # TODO: False here should be based on if the mix is public or not
     tracks = get_tracks(mixtape['id'])
+    one_track_from_full = mixtape["track_count"] == TRACKS_PER_MIXTAPE - 1;
     if request.method == 'POST':
         if 'confirmEditTitle' in request.form:
             if g.user is None or mixtape['author_id'] != g.user['id']:
@@ -258,52 +259,7 @@ def view(url):
                 else:
                     return redirect(url_for('mixtape.view', url=mixtape['url']))
 
-    return render_template('mixtape/view.html', mixtape=mixtape, tracks=tracks)
-
-@bp.route('/<url>/update', methods=('GET', 'POST'))
-@login_required
-def update(url):
-    mixtape = get_mixtape_by_url(url)
-
-    if request.method == 'POST':
-        title = request.form['title']
-        body = request.form['body']
-        error = None
-
-        if not title:
-            error = 'Title is required.'
-
-        art = None
-        if 'art' in request.files:
-            file = request.files['art']
-            if allowed_image_file(file.filename):
-                art = url + '.' + get_image_extension(file.filename)
-                if mixtape['art']:
-                    old_filename = os.path.join(current_app.config['MIXTAPE_ART_FOLDER'], mixtape['art'])
-                    if os.path.exists(old_filename):
-                        os.remove(old_filename)
-                file.save(os.path.join(current_app.config['MIXTAPE_ART_FOLDER'], art))
-
-        if error is not None:
-            flash(error)
-        else:
-            db = get_db()
-            if art:
-                db.execute(
-                    'UPDATE mixtape SET title = ?, body = ?, art = ?'
-                    ' WHERE id = ?',
-                    (title, body, art, mixtape['id'])
-                )
-            else:
-                db.execute(
-                    'UPDATE mixtape SET title = ?, body = ?'
-                    ' WHERE id = ?',
-                    (title, body, mixtape['id'])
-                )
-            db.commit()
-            return redirect(url_for('mixtape.view', url=mixtape['url']))
-
-    return render_template('mixtape/update.html', mixtape=mixtape)
+    return render_template('mixtape/view.html', mixtape=mixtape, tracks=tracks, one_track_from_full=one_track_from_full)
 
 @bp.route('/<url>/convert', methods=('GET', 'POST'))
 @login_required
