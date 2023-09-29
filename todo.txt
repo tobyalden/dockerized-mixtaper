@@ -1,15 +1,15 @@
 stuff that effects css:
 
-- warn user before adding final track
 - number tracks
-
 - limit description and title (basically all text fields) to reasonable lengths
+
 - add CSS
 - validate all actions in routes (logged in, owns mixtape, mixtape not locked/is available, etc).
 - add admin tools
 - move data out of static folder (so i can just .gitignore the whole thing)
 - errant TODOs
 
++ warn user before adding final track
 + allow editing artwork
 + add limit to number of tracks that can be added
 + automatically convert on track maximum
