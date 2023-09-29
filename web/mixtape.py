@@ -153,6 +153,30 @@ def view(url):
                 )
                 db.commit()
             return redirect(url_for('mixtape.view', url=mixtape['url']))
+        elif 'confirmEditArt' in request.form:
+            if g.user is None or mixtape['author_id'] != g.user['id']:
+                abort(403)
+
+            error = None
+            art = None
+            if 'newArt' in request.files:
+                file = request.files['newArt']
+                if allowed_image_file(file.filename):
+                    art = url + '.' + get_image_extension(file.filename)
+                    file.save(os.path.join(current_app.config['MIXTAPE_ART_FOLDER'], art))
+            if not art:
+                error = 'Art is required.'
+
+            if error is not None:
+                flash(error)
+            else:
+                db = get_db()
+                db.execute(
+                    'UPDATE mixtape SET art = ? WHERE id = ?',
+                    (art, mixtape['id'])
+                )
+                db.commit()
+            return redirect(url_for('mixtape.view', url=mixtape['url']))
         elif 'deleteMixtape' in request.form:
             # Delete mixtape
             if g.user is None or mixtape['author_id'] != g.user['id']:

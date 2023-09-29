@@ -9,11 +9,10 @@
         </form>
         {% if mixtape['art'] %}
             <img class="mixtapeArt" src="{{ url_for('static', filename='/mixtape_art/' + mixtape['art']) }}"/>
-        {% endif %}
-        <br>{{ mixtape["track_count"] }} tracks
-        </form>
-        {% if mixtape['art'] %}
-            <img class="mixtapeArt" src="{{ url_for('static', filename='/mixtape_art/' + mixtape['art']) }}"/>
+            <form method="post" enctype="multipart/form-data">
+                <input type ="file" name="newArt" id="newArt" accept="image/*" >
+                <input name="confirmEditArt" id="confirmEditArt" type="submit" value="Update Art">
+            </form>
         {% endif %}
         <br>{{ mixtape["track_count"] }} tracks
 {% endblock %}

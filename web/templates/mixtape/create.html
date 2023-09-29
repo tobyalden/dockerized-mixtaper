@@ -7,11 +7,11 @@
 {% block content %}
   <form method="post" enctype="multipart/form-data">
     <label for="title">Title:</label><br>
-    <input name="title" id="title" value="{{ request.form['title'] }}" required><br><br>
+    <input name="title" id="title" required><br><br>
     <label for="body">Body:</label><br>
-    <textarea name="body" id="body">{{ request.form['body'] }}</textarea><br><br>
+    <textarea name="body" id="body"></textarea><br><br>
     <label for="file">Art:</label><br>
-    <input type ="file" name="art" id="art" accept="image/*">{{ request.form['art'] }}</textarea>
+    <input type="file" name="art" id="art" accept="image/*" >
     <input type="submit" value="Save">
   </form>
 {% endblock %}
