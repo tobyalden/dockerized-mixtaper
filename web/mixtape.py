@@ -35,6 +35,8 @@ def index():
         ' GROUP BY m.id'
         ' ORDER BY m.created DESC'
     ).fetchall()
+    # mixtapes_per_row = 2
+    # mixtapes_in_rows = [mixtapes[i:i + mixtapes_per_row] for i in range(0, len(mixtapes), mixtapes_per_row)]
     return render_template('mixtape/index.html', mixtapes=mixtapes)
 
 @bp.route('/create', methods=('GET', 'POST'))

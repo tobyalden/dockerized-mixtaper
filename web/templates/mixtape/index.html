@@ -9,9 +9,12 @@
 {% endblock %}
 
 {% block content %}
-        <div class="container">
-            {% for mixtape in mixtapes %}
-                {{ mixtape_card(mixtape) }}
-            {% endfor %}
+            <div class="container">
+                {% for mixtape in mixtapes %}
+                        <div class="">
+                            {{ mixtape_card(mixtape) }}
+                        </div>
+                {% endfor %}
+            </div>
         </div>
 {% endblock %}
