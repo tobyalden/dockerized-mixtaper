@@ -1,10 +1,37 @@
 body {
     margin: 0px;
+    font-family: sans-serif;
 }
 
 .avatar {
     width: 50px;
     height: 50px;
+    display: block;
+}
+
+.header {
+    background-image: url("https://as2.ftcdn.net/v2/jpg/01/55/67/07/1000_F_155670713_Qz3dRx8IH91mkOLcOH7yAmn30BaW4KZK.jpg");
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    min-height: 50px
+}
+
+.header-siteName {
+    padding-left: 10px;
+}
+
+.header-spacer {
+    flex-grow: 1;
+}
+
+.header-username {
+    padding-right: 10px;
+}
+
+.header-userAvatar {
 }
 
 .container {

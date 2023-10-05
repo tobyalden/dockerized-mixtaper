@@ -1,10 +1,23 @@
 {% macro user_card(username, avatar) -%}
-<h4><a href="{{ url_for('user.view', username=username) }}">{{ username }}</a></h4>
     {% if avatar %}
         <img class="avatar" src="{{ url_for('static', filename='/user_avatars/' + avatar) }}"/>
     {% else %}
         <img class="avatar" src="{{ url_for('static', filename='/default_avatar.png') }}"/>
     {% endif %}
+{%- endmacro %}
+
+{% macro user_avatar(username, avatar) -%}
+    <a href="{{ url_for('user.view', username=username) }}">
+    {% if avatar %}
+        <img class="avatar" src="{{ url_for('static', filename='/user_avatars/' + avatar) }}"/>
+    {% else %}
+        <img class="avatar" src="{{ url_for('static', filename='/default_avatar.png') }}"/>
+    {% endif %}
+    </a>
+{%- endmacro %}
+
+{% macro user_name(username) -%}
+    <a href="{{ url_for('user.view', username=username) }}">{{ username }}</a>
 {%- endmacro %}
 
 {% macro mixtape_card(mixtape) -%}
@@ -15,4 +28,22 @@
             <div class="mixtapeCardUser">by mellymelon</div>
         </div>
     </div>
+{%- endmacro %}
+
+{% macro site_header() -%}
+<div class="header">
+    <div class="header-siteName">makeamixtape.com</div>
+    <div class="header-spacer"></div>
+    {% if g.user %}
+        <a href="{{ url_for('user.view', username=username) }}">
+        <div class="header-username">{{ user_name(g.user['username']) }}</div>
+        <div class="header-userAvatar">
+            {{ user_avatar(g.user['username'], g.user['avatar']) }}
+        </div>
+        </a>
+    {% else %}
+        <a class="header-username" href="{{ url_for('auth.register') }}">Register</a>
+        <a class="header-username" href="{{ url_for('auth.login') }}">Log In</a>
+    {% endif %}
+</div>
 {%- endmacro %}
