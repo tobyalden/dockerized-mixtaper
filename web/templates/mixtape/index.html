@@ -1,13 +1,6 @@
 {% extends 'base.html' %}
 {% from 'macros.html' import user_card, mixtape_card %}
 
-{% block header %}
-    <h1>{% block title %}Mixtapes{% endblock %}</h1>
-    {% if g.user %}
-        <a class="action" href="{{ url_for('mixtape.create') }}">Create New Mixtape</a>
-    {% endif %}
-{% endblock %}
-
 {% block content %}
             <div class="container">
                 {% for mixtape in mixtapes %}

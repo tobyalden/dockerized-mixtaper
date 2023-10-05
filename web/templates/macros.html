@@ -36,14 +36,15 @@
     <div class="header-spacer"></div>
     {% if g.user %}
         <a href="{{ url_for('user.view', username=username) }}">
-        <div class="header-username">{{ user_name(g.user['username']) }}</div>
+        <div class="header-padding">{{ user_name(g.user['username']) }}</div>
         <div class="header-userAvatar">
             {{ user_avatar(g.user['username'], g.user['avatar']) }}
         </div>
+        <div class="header-padding"><a class="action" href="{{ url_for('mixtape.create') }}">Create New Mixtape</a></div>
         </a>
     {% else %}
-        <a class="header-username" href="{{ url_for('auth.register') }}">Register</a>
-        <a class="header-username" href="{{ url_for('auth.login') }}">Log In</a>
+        <a class="header-padding" href="{{ url_for('auth.register') }}">Register</a>
+        <a class="header-padding" href="{{ url_for('auth.login') }}">Log In</a>
     {% endif %}
 </div>
 {%- endmacro %}

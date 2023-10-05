@@ -27,8 +27,12 @@ body {
     flex-grow: 1;
 }
 
-.header-username {
+.header-padding {
+    padding-left: 10px;
     padding-right: 10px;
+}
+
+.header-username {
 }
 
 .header-userAvatar {
