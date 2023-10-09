@@ -2,12 +2,10 @@
 {% from 'macros.html' import user_card, mixtape_card %}
 
 {% block content %}
-            <div class="container">
-                {% for mixtape in mixtapes %}
-                        <div class="">
-                            {{ mixtape_card(mixtape) }}
-                        </div>
-                {% endfor %}
-            </div>
-        </div>
+    <div class="container">
+        {% for mixtape in mixtapes %}
+            {{ mixtape_card(mixtape) }}
+        {% endfor %}
+    </div>
+    <script src="{{url_for('static', filename='js/mixtape_index.js')}}"></script>
 {% endblock %}

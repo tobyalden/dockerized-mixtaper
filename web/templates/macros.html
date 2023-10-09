@@ -21,18 +21,26 @@
 {%- endmacro %}
 
 {% macro mixtape_card(mixtape) -%}
-    <div class="mixtapeCard">
-        <img class="mixtapeArt" src="{{ url_for('static', filename='/mixtape_art/' + mixtape['art']) }}"/>
+<div class="mixtapeCard" style="background-image: url({{ url_for('static', filename='/mixtape_art/' + mixtape['art']) }})">
+        <!--<img class="mixtapeArt" src="{{ url_for('static', filename='/mixtape_art/' + mixtape['art']) }}"/>-->
         <div class="mixtapeCardInfo">
-            <div class="mixtapeCardTitle">mY COol Title</div>
-            <div class="mixtapeCardUser">by mellymelon</div>
+            <div class="mixtapeCardTitle"><a href="{{ url_for('mixtape.view', url=mixtape['url']) }}">{{ mixtape['title'] }}</a></div>
+            <div class="mixtapeCardUser">by {{ mixtape['username'] }}</div>
+        </div>
+        <div class="mixtapeCardAudio">
+            {% if mixtape['converted'] %}
+                <audio controls src="{{ url_for('mixtape.download', url=mixtape['url']) }}"></audio>
+            {% else %}
+            <a href="{{ url_for('mixtape.view', url=mixtape['url']) }}"><div class="mixtapeCardTracks">{{ mixtape['track_count'] }} / 7 tracks</div></a>
+            {% endif %}
         </div>
     </div>
 {%- endmacro %}
 
 {% macro site_header() -%}
 <div class="header">
-    <div class="header-siteName">makeamixtape.com</div>
+    <div class="header-siteName sm-view"><a href="{{ url_for('mixtape.index') }}">mg 🌱</a></div>
+    <div class="header-siteName lg-view"><a href="{{ url_for('mixtape.index') }}">mixtape garden 🌱</a></div>
     <div class="header-spacer"></div>
     {% if g.user %}
         <a href="{{ url_for('user.view', username=username) }}">
@@ -40,11 +48,11 @@
         <div class="header-userAvatar">
             {{ user_avatar(g.user['username'], g.user['avatar']) }}
         </div>
-        <div class="header-padding"><a class="action" href="{{ url_for('mixtape.create') }}">Create New Mixtape</a></div>
+        <div class="header-padding"><a class="button-color action pseudo button" href="{{ url_for('mixtape.create') }}"><i class="fa fa-pencil"></i> New</a></div>
         </a>
     {% else %}
-        <a class="header-padding" href="{{ url_for('auth.register') }}">Register</a>
-        <a class="header-padding" href="{{ url_for('auth.login') }}">Log In</a>
+        <a class="pseudo button header-padding" href="{{ url_for('auth.register') }}">Register</a>
+        <a class="pseudo button header-padding" href="{{ url_for('auth.login') }}">Log In</a>
     {% endif %}
 </div>
 {%- endmacro %}
