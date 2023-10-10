@@ -27,13 +27,14 @@
             <div class="mixtapeCardTitle"><a href="{{ url_for('mixtape.view', url=mixtape['url']) }}">{{ mixtape['title'] }}</a></div>
             <div class="mixtapeCardUser">by {{ mixtape['username'] }}</div>
         </div>
-        <div class="mixtapeCardAudio">
-            {% if mixtape['converted'] %}
+        <div class="mixtapeCardSpacer"></div>
+        {% if mixtape['converted'] %}
+            <div class="mixtapeCardAudio">
                 <audio controls src="{{ url_for('mixtape.download', url=mixtape['url']) }}"></audio>
-            {% else %}
-            <a href="{{ url_for('mixtape.view', url=mixtape['url']) }}"><div class="mixtapeCardTracks">{{ mixtape['track_count'] }} / 7 tracks</div></a>
-            {% endif %}
-        </div>
+            </div>
+        {% else %}
+            <div class="mixtapeCardTracks"><a href="{{ url_for('mixtape.view', url=mixtape['url']) }}">{{ mixtape['track_count'] }} / 7 tracks</a></div>
+        {% endif %}
     </div>
 {%- endmacro %}
 

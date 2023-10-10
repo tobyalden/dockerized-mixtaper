@@ -2,7 +2,7 @@ body {
     margin: 0px;
     font-family: sans-serif;
     height: auto;
-    background-color: black;
+    /*background-color: black;*/
 }
 
 .lg-view {
@@ -92,26 +92,17 @@ a {
     background-position: center;
     background-size: cover;
     /*aspect-ratio : 2 / 1;*/
-    height: 180px;
 }
 
 .mixtapeCardInfo {
     padding-top: 16px;
     padding-left: 16px;
+    padding-right: 16px;
     padding-bottom: 16px;
 }
 
 .mixtapeCardTitle {
-    font-size: 32px;
-    color: white;
-    background-color: black;
-    padding-left: 5px;
-    padding-right: 5px;
-    max-width: fit-content;
-}
-
-.mixtapeCardTracks {
-    font-size: 32px;
+    font-size: 16px;
     color: white;
     background-color: black;
     padding-left: 5px;
@@ -129,15 +120,28 @@ a {
     max-width: fit-content;
 }
 
-.mixtapeCardAudio {
-    /*padding-left: 16px;*/
-    /*padding-bottom: 16px;*/
-    /*align-self: ;*/
+.mixtapeCardSpacer {
+    flex: 1;
+}
+
+.mixtapeCardTracks {
+    font-size: 24px;
+    color: white;
+    background-color: black;
+    max-width: fit-content;
     align-self: center;
-    /*position: absolute;*/
-    /*bottom: 16px;*/
-    /*left: 50%;*/
-    /*transform: translate(-50%, 0%);*/
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-bottom: 16px;
+}
+
+.mixtapeCardAudio {
+    align-self: center;
+    margin-bottom: 16px;
+}
+
+.mixtapeCardAudio audio {
+    display: block;
 }
 
 .playIcon {
