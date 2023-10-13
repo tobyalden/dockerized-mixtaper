@@ -52,7 +52,7 @@
         <div class="header-padding"><a class="button-color action pseudo button" href="{{ url_for('mixtape.create') }}"><i class="fa fa-pencil"></i> New</a></div>
         </a>
     {% else %}
-        <a class="pseudo button header-padding" href="{{ url_for('auth.register') }}">Register</a>
+        <a class="pseudo button" href="{{ url_for('auth.register') }}">Register</a>
         <a class="pseudo button header-padding" href="{{ url_for('auth.login') }}">Log In</a>
     {% endif %}
 </div>
