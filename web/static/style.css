@@ -188,12 +188,12 @@ a {
     background: #323232;
 }
 
-.deleteMixtape {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: center;
-    padding-top: 50px;
-    padding-bottom: 50px;
+.deleteMixtapeForm {
+    /*width: 100%;*/
+}
+
+.deleteMixtapeButton {
+    margin-top: 20px;
 }
 
 .mixtapeCard {

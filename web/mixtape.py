@@ -76,6 +76,47 @@ def create():
 
     return render_template('mixtape/create.html')
 
+@bp.route('/edit/<url>', methods=('GET', 'POST'))
+@login_required
+def edit(url):
+    mixtape = get_mixtape_by_url(url, False) # TODO: False here should be based on if the mix is public or not
+    if request.method == 'POST':
+        title = request.form['title']
+        body = request.form['body']
+        error = None
+
+        if not title:
+            error = 'Title is required.'
+
+        art = None
+        if 'art' in request.files:
+            file = request.files['art']
+            if allowed_image_file(file.filename):
+                art = url + '.' + get_image_extension(file.filename)
+                file.save(os.path.join(current_app.config['MIXTAPE_ART_FOLDER'], art))
+
+        if error is not None:
+            flash(error)
+        else:
+            db = get_db()
+            if art is None:
+                db.execute(
+                    'UPDATE mixtape SET title = ?, body = ?'
+                    ' WHERE url = ?',
+                    (title, body, url)
+                )
+            else:
+                db.execute(
+                    'UPDATE mixtape SET title = ?, body = ?, art = ?'
+                    ' WHERE url = ?',
+                    (title, body, art, url)
+                )
+            db.commit()
+
+            return redirect(url_for('mixtape.view', url=url))
+
+    return render_template('mixtape/edit.html', mixtape=mixtape)
+
 def get_uuid():
     # TODO: Ensure UUIDs are unique and don't conflict with other URLs
     return shortuuid.ShortUUID().random(length=8)

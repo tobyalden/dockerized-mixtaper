@@ -2,15 +2,19 @@
 
 {% block content %}
     <div class="side-space newMixtapeForm">
-        <h1>NEW MIXTAPE</h1>
+        <h1>EDIT MIXTAPE</h1>
         <form method="post" enctype="multipart/form-data">
             <label for="title">Title</label>
-            <input name="title" id="title" required><br>
+            <input name="title" id="title" value="{{ mixtape['title'] }}" required><br>
             <label for="body">Description</label>
-            <textarea name="body" id="body"></textarea><br>
+            <textarea name="body" id="body">{{ mixtape['body'] }}</textarea><br>
             <label for="file">Art</label><br>
             <input class="" type="file" name="art" id="art" accept="image/*" >
             <input class="newMixtapeButton" type="submit" value="Save">
         </form>
+        <form class="deleteMixtapeForm" method="post">
+            <input class="deleteMixtapeButton error" name="deleteMixtape" type="submit" value="Delete mixtape (doesn't work atm)" onclick="return confirm('Are you sure?');">
+        </form>
     </div>
 {% endblock %}
+

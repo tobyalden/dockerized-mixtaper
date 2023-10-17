@@ -28,6 +28,9 @@
             {% else %}
                 <div class="mixtapeDescription">No description.</div>
             {% endif %}
+            {% if mixtape['author_id'] == g.user['id'] %}
+                <a href="{{ url_for('mixtape.edit', url=mixtape['url']) }}">Edit</a>
+            {% endif %}
         </div>
     </div>
     <div class="mixtapeTracks">
