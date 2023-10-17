@@ -1,7 +1,7 @@
 import os
 from flask import Flask, request, jsonify
 
-TRACKS_PER_MIXTAPE = 2
+TRACKS_PER_MIXTAPE = 7
 ALLOWED_IMAGE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'bmp'}
 
 def create_app(test_config=None):

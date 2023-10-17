@@ -7,24 +7,42 @@
             {{ mixtape_card(mixtape) }}
         </div>
         <div class="mixtapeDetails">
-            <div class="mixtapeDescription">{{ mixtape['body'] }}</div><br>
-            <div class="about">Created {{ mixtape['created'].strftime('%m/%d/%Y') }}.</div>
-            Edit stuff will go here. Created by author. Date created & completed. Add track.
+            {% if g.user and not mixtape['locked'] %}
+                <form class="addToMixtape card" method="post">
+                    <header>
+                        Add to mixtape:
+                    </header>
+                    <footer>
+                        <input name="youtubeUrl" id="youtubeUrl" placeholder="youtube.com/watch?v=3__0ulE2UDo" required>
+                        <input name="trackBody" id="trackBody" placeholder="Optional comment" >
+                        {% if one_track_from_full %}
+                            <input type="submit" value="Click to add final track" onclick="return confirm('Are you sure?');">
+                        {% else %}
+                            <input type="submit" value="Click to add">
+                        {% endif %}
+                    </footer>
+                </form>
+            {% endif %}
+            {% if mixtape['body'] %}
+                <div class="mixtapeDescription">{{ mixtape['body'] }}</div>
+            {% endif %}
         </div>
     </div>
     <div class="mixtapeTracks">
         {% for track in tracks %}
             <div class="mixtapeTrack">
-                <span>Track # {{ loop.index }}</span><br>
-                <iframe frameborder="1" src="https://www.youtube.com/embed/{{ track['youtube_id'] }}"></iframe> 
-                <div class="about">by {{ track['username'] }} on {{ track['created'].strftime('%Y-%m-%d') }}</div>
-                <p>{{ track['body'] }}</p>
-                {% if g.user and not mixtape['locked'] and (mixtape['author_id'] == g.user['id'] or track['author_id'] == g.user['id']) %}
-                    <form method="post">
-                        <input name="deleteTrack" type="submit" value="Delete track">
-                        <input name="trackId" value="{{ track['id'] }}" hidden>
-                    </form>
-                {% endif %}
+                <div class="mixtapeTrackTitle">
+                    <span>Track # {{ loop.index }}</span><br>
+                    {% if g.user and not mixtape['locked'] and (mixtape['author_id'] == g.user['id'] or track['author_id'] == g.user['id']) %}
+                        <form method="post">
+                            <input class="error" name="deleteTrack" type="submit" value="Delete track">
+                            <input name="trackId" value="{{ track['id'] }}" hidden>
+                        </form>
+                    {% endif %}
+                </div>
+                <iframe frameborder="0" src="https://www.youtube.com/embed/{{ track['youtube_id'] }}"></iframe> 
+                <div class="about">added by {{ track['username'] }} on {{ track['created'].strftime('%Y-%m-%d') }}</div>
+                <p style="font-style: italic;">{{ track['body'] }}</p>
             </div>
         {% endfor%}
     </div>
