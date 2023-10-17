@@ -18,9 +18,25 @@ textarea {
     height: 10em;
 }
 
-.mix-button {
-    color: black;
-    background: lightgreen;
+.newMixtapeForm {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    /*max-width: 700px;*/
+}
+
+.siteFooter {
+    color: grey;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.newMixtapeButton {
+    margin-top: 25px;
+    width: 100%;
 }
 
 .side-space {

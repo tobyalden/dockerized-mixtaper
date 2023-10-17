@@ -1,4 +1,4 @@
-{% from 'macros.html' import user_card, site_header %}
+{% from 'macros.html' import user_card, site_header, site_footer %}
 
 <!doctype html>
 <title>{% block title %}{% endblock %} - Flaskr</title>
@@ -17,3 +17,5 @@
   {% endfor %}
   {% block content %}{% endblock %}
 </section>
+
+{{ site_footer() }}

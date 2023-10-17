@@ -32,6 +32,8 @@
             <div class="mixtapeCardAudio">
                 <audio controls src="{{ url_for('mixtape.download', url=mixtape['url']) }}"></audio>
             </div>
+        {% elif mixtape['locked'] %}
+            <div class="mixtapeCardTracks"><a href="{{ url_for('mixtape.view', url=mixtape['url']) }}">Converting...</a></div>
         {% else %}
             <div class="mixtapeCardTracks"><a href="{{ url_for('mixtape.view', url=mixtape['url']) }}">{{ mixtape['track_count'] }} / 7 tracks</a></div>
         {% endif %}
@@ -55,5 +57,11 @@
         <a class="pseudo button" href="{{ url_for('auth.register') }}">Register</a>
         <a class="pseudo button header-padding" href="{{ url_for('auth.login') }}">Log In</a>
     {% endif %}
+</div>
+{%- endmacro %}
+
+{% macro site_footer() -%}
+<div class="siteFooter">
+    <div></div>
 </div>
 {%- endmacro %}

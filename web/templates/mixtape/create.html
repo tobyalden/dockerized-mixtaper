@@ -1,13 +1,8 @@
 {% extends 'base.html' %}
 
-{% block header %}
-    <div class="side-space">
-        <h1>{% block title %}New Mixtape{% endblock %}</h1>
-    </div>
-{% endblock %}
-
 {% block content %}
-    <div class="side-space">
+    <div class="side-space newMixtapeForm">
+        <h1>{% block title %}NEW MIXTAPE{% endblock %}</h1>
         <form method="post" enctype="multipart/form-data">
             <label for="title">Title</label>
             <input name="title" id="title" required><br>
@@ -15,7 +10,7 @@
             <textarea name="body" id="body"></textarea><br>
             <label for="file">Art</label><br>
             <input class="" type="file" name="art" id="art" accept="image/*" >
-            <input class="mix-button" type="submit" value="Save">
+            <input class="newMixtapeButton" type="submit" value="Save">
         </form>
     </div>
 {% endblock %}
