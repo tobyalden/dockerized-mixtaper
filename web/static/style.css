@@ -36,16 +36,6 @@ textarea {
     display:none;
 }
 
-@media screen and (max-width: 768px) {
-    .lg-view{
-       display: none;
-    }
-
-    .sm-view{
-       display: inline-block;
-    }
-}
-
 a {
     color: white;
 }
@@ -93,6 +83,9 @@ a {
 .header-userAvatar {
 }
 
+.center {
+}
+
 .container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -100,12 +93,59 @@ a {
     grid-row-gap: 20px;
 }
 
+.mixtapeView {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+.mixtapeDetails {
+    padding-top: 40px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.mixtapeCardView {
+    width: 100%;
+}
+
+.mixtapeTracks {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    padding-top: 40px;
+}
+
+.mixtapeTrack {
+    margin-left: auto;
+    margin-right: auto;
+    /*flex: 1;*/
+    padding-top: 16px;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.mixtapeTrack iframe {
+    width: 700px;
+    max-width: 100%;
+    height: 200px;
+}
+
 .mixtapeArt {
-    /*aspect-ratio : 1 / 1;*/
     object-fit: cover;
     height: 30%;
     width: 30%;
     vertical-align: bottom;
+}
+
+.mixtapeArtView {
+    object-fit: cover;
+    width: 100%;
+    max-height: 500px;
+}
+
+.mixtapeDescription {
+    font-style: italic;
 }
 
 .mixtapeCard {
@@ -114,7 +154,11 @@ a {
     background-image: url("https://as2.ftcdn.net/v2/jpg/01/55/67/07/1000_F_155670713_Qz3dRx8IH91mkOLcOH7yAmn30BaW4KZK.jpg");
     background-position: center;
     background-size: cover;
-    /*aspect-ratio : 2 / 1;*/
+    aspect-ratio : 1 / 1;
+}
+
+.mixtapeCardView {
+    max-width: 500px;
 }
 
 .mixtapeCardInfo {
@@ -181,4 +225,17 @@ a {
 .icon {
     width: 20px;
     height: 20px;
+}
+
+@media screen and (max-width: 768px) {
+    .lg-view {
+       display: none;
+    }
+
+    .sm-view {
+       display: inline-block;
+    }
+    .mixtapeCard {
+        aspect-ratio: 2 / 1;
+    }
 }

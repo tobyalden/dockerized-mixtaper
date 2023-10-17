@@ -1,84 +1,33 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import user_card %}
-
-{% block header %}
-        <form method="post">
-            <input name="newTitle" id="newTitle" value={{ mixtape['title'] }} placeholder="bar" required disabled>
-            <img id="editTitle" class="icon" src="{{ url_for('static', filename='edit_icon.png') }}"/>
-            <input name="confirmEditTitle" id="confirmEditTitle" type="submit" hidden>
-        </form>
-        {% if mixtape['art'] %}
-            <img class="mixtapeArt" src="{{ url_for('static', filename='/mixtape_art/' + mixtape['art']) }}"/>
-            <form method="post" enctype="multipart/form-data">
-                <input type ="file" name="newArt" id="newArt" accept="image/*" >
-                <input name="confirmEditArt" id="confirmEditArt" type="submit" value="Update Art">
-            </form>
-        {% endif %}
-        <br>{{ mixtape["track_count"] }} tracks
-{% endblock %}
+{% from 'macros.html' import user_card, mixtape_card %}
 
 {% block content %}
-        <article class="mixtape">
-            <header>
-                <div>
-                    <div class="about">by {{ user_card(mixtape['username'], mixtape['avatar']) }} on {{ mixtape['created'].strftime('%Y-%m-%d') }}</div>
-                </div>
-                {% if g.user and g.user['id'] == mixtape['author_id'] %}
-                    <br>
-                    {% if mixtape['converted'] %}
-                    <a class="action" href="{{ url_for('mixtape.download', url=mixtape['url']) }}">Download</a><br><br>
-                        <audio controls src="{{ url_for('mixtape.download', url=mixtape['url']) }}"></audio>
-                    {% elif mixtape['locked'] and not mixtape['converted'] %}
-                        Mixtape currently converting...
-                    {% endif %}
+    <div class="mixtapeView">
+        <div class="mixtapeCardView">
+            {{ mixtape_card(mixtape) }}
+        </div>
+        <div class="mixtapeDetails">
+            <div class="mixtapeDescription">{{ mixtape['body'] }}</div><br>
+            <div class="about">Created {{ mixtape['created'].strftime('%m/%d/%Y') }}.</div>
+            Edit stuff will go here. Created by author. Date created & completed. Add track.
+        </div>
+    </div>
+    <div class="mixtapeTracks">
+        {% for track in tracks %}
+            <div class="mixtapeTrack">
+                <span>Track # {{ loop.index }}</span><br>
+                <iframe frameborder="1" src="https://www.youtube.com/embed/{{ track['youtube_id'] }}"></iframe> 
+                <div class="about">by {{ track['username'] }} on {{ track['created'].strftime('%Y-%m-%d') }}</div>
+                <p>{{ track['body'] }}</p>
+                {% if g.user and not mixtape['locked'] and (mixtape['author_id'] == g.user['id'] or track['author_id'] == g.user['id']) %}
+                    <form method="post">
+                        <input name="deleteTrack" type="submit" value="Delete track">
+                        <input name="trackId" value="{{ track['id'] }}" hidden>
+                    </form>
                 {% endif %}
-            </header>
-
-            <br>
-
-            {% for track in tracks %}
-                <article class="track">
-                    <header>
-                        <div>
-                            <span>Track # {{ loop.index }}</span>
-                            <iframe src="https://www.youtube.com/embed/{{ track['youtube_id'] }}"></iframe> 
-                            <div class="about">by {{ track['username'] }} on {{ track['created'].strftime('%Y-%m-%d') }}</div>
-                            <p>{{ track['body'] }}</p>
-                            {% if g.user and not mixtape['locked'] and (mixtape['author_id'] == g.user['id'] or track['author_id'] == g.user['id']) %}
-                                <form method="post">
-                                    <input name="deleteTrack" type="submit" value="Delete track">
-                                    <input name="trackId" value="{{ track['id'] }}" hidden>
-                                </form>
-                            {% endif %}
-                        </div>
-                    </header>
-                </article>
-                {% if not loop.last %}
-                    <hr>
-                {% endif %}
-            {% endfor %}
-
-            {% if g.user and not mixtape['locked'] %}
-                <p class="body">{{ mixtape['body'] }}</p>
-                <form method="post">
-                    <label for="title">Add to mixtape:</label>
-                    <input name="youtubeUrl" id="youtubeUrl" placeholder="youtube.com/watch?v=3__0ulE2UDo" required>
-                    <input name="trackBody" id="trackBody" placeholder="your comment about this track" >
-                    {% if one_track_from_full %}
-                        <input type="submit" value="Click to add final track" onclick="return confirm('Are you sure?');">
-                    {% else %}
-                        <input type="submit" value="Click to add">
-                    {% endif %}
-                </form>
-            {% endif %}
-
-            {% if g.user['id'] == mixtape['author_id'] %}
-                <form method="post">
-                    <input name="deleteMixtape" type="submit" value="Delete mixtape" onclick="return confirm('Are you sure?');">
-                </form>
-            {% endif %}
-
-        </article>
+            </div>
+        {% endfor%}
+    </div>
     <script src="{{url_for('static', filename='js/mixtape_view.js')}}"></script>
 {% endblock %}
 
