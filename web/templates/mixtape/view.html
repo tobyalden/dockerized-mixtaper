@@ -23,14 +23,15 @@
                     </footer>
                 </form>
             {% endif %}
+            {% if mixtape['author_id'] == g.user['id'] %}
+                <a class="editMixtapeButton pseudo button" href="{{ url_for('mixtape.edit', url=mixtape['url']) }}">Edit Mixtape</a>
+            {% endif %}
             {% if mixtape['body'] %}
                 <div class="mixtapeDescription">{{ mixtape['body'] }}</div>
             {% else %}
                 <div class="mixtapeDescription">No description.</div>
             {% endif %}
-            {% if mixtape['author_id'] == g.user['id'] %}
-                <a href="{{ url_for('mixtape.edit', url=mixtape['url']) }}">Edit</a>
-            {% endif %}
+            <div>
         </div>
     </div>
     <div class="mixtapeTracks">

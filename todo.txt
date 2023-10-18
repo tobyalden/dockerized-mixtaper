@@ -1,9 +1,9 @@
 stuff that effects css:
 
 - add CSS:
-    - edit mixtape page
-    - user page
-    - flash error
+    + edit mixtape page
+    + user page
+    + flash error
 
 - limit description and title (basically all text fields) to reasonable lengths
 - validate all actions in routes (logged in, owns mixtape, mixtape not locked/is available, etc).

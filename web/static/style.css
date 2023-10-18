@@ -34,6 +34,10 @@ textarea {
     padding-bottom: 20px;
 }
 
+.editMixtapeButton {
+    width: 100%;
+}
+
 .newMixtapeButton {
     margin-top: 25px;
     width: 100%;
@@ -135,6 +139,7 @@ a {
     padding-top: 20px;
     padding-left: 30px;
     padding-right: 30px;
+    min-width: 350px;
 }
 
 .mixtapeTrackTitle {
