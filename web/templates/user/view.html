@@ -11,7 +11,7 @@
         {% if g.user['id'] == user['id'] %}
             <form method="post" enctype="multipart/form-data">
                 <label for="file">Avatar:</label>
-                <input type ="file" name="avatar" id="avatar" >{{ request.form['avatar'] }}</textarea>
+                <input type ="file" name="avatar" id="avatar" accept="image/*">{{ request.form['avatar'] }}</textarea>
                 <input type="submit" value="Upload">
           </form>
         {% endif %}

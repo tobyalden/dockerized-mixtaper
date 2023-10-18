@@ -25,11 +25,11 @@ def view(username):
 
     if request.method == 'POST':
         error = None
-        if 'avatar' not in request.files:
-            error = 'No image file chosen.'
-        else:
+        if 'avatar' in request.files:
             file = request.files['avatar']
-            if not allowed_image_file(file.filename):
+            if file.filename == '':
+                error = 'No image file attached.'
+            elif not allowed_image_file(file.filename):
                 error = 'Image file type not allowed. Allowed image types are: ' + ', '.join(ALLOWED_IMAGE_EXTENSIONS)
             else:
                 avatar = username + '.' + get_image_extension(file.filename)
