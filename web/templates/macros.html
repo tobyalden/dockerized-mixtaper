@@ -16,6 +16,16 @@
     </a>
 {%- endmacro %}
 
+{% macro big_user_avatar(username, avatar) -%}
+    <a href="{{ url_for('user.view', username=username) }}">
+    {% if avatar %}
+        <img class="big-avatar" src="{{ url_for('static', filename='/user_avatars/' + avatar) }}"/>
+    {% else %}
+        <img class="big-avatar" src="{{ url_for('static', filename='/default_avatar.png') }}"/>
+    {% endif %}
+    </a>
+{%- endmacro %}
+
 {% macro user_name(username) -%}
     <a href="{{ url_for('user.view', username=username) }}">{{ username }}</a>
 {%- endmacro %}

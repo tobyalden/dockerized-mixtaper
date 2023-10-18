@@ -24,9 +24,14 @@ def view(username):
         abort(404, f"User with username {username} doesn't exist.")
 
     if request.method == 'POST':
-        if 'avatar' in request.files:
+        error = None
+        if 'avatar' not in request.files:
+            error = 'No image file chosen.'
+        else:
             file = request.files['avatar']
-            if allowed_image_file(file.filename):
+            if not allowed_image_file(file.filename):
+                error = 'Image file type not allowed. Allowed image types are: ' + ', '.join(ALLOWED_IMAGE_EXTENSIONS)
+            else:
                 avatar = username + '.' + get_image_extension(file.filename)
                 if user['avatar']:
                     old_filename = os.path.join(current_app.config['USER_AVATAR_FOLDER'], user['avatar'])
@@ -41,6 +46,10 @@ def view(username):
                     (avatar, user['id'])
                 )
                 db.commit()
+                return redirect(url_for('user.view', username=user['username']))
+
+        if error is not None:
+            flash(error)
 
     return render_template('user/view.html', user=user)
 

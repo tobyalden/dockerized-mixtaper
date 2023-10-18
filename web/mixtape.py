@@ -7,7 +7,7 @@ from flask import (
 from werkzeug.exceptions import abort
 from werkzeug.utils import secure_filename
 
-from app import TRACKS_PER_MIXTAPE
+from app import (TRACKS_PER_MIXTAPE, ALLOWED_IMAGE_EXTENSIONS)
 from auth import login_required
 from db import get_db
 from utils import (convert_mixtape, get_image_extension, allowed_image_file)
@@ -57,6 +57,8 @@ def create():
             if allowed_image_file(file.filename):
                 art = url + '.' + get_image_extension(file.filename)
                 file.save(os.path.join(current_app.config['MIXTAPE_ART_FOLDER'], art))
+            else:
+                error = 'Image file type not allowed. Allowed image types are: ' + ', '.join(ALLOWED_IMAGE_EXTENSIONS)
 
         if not art:
             error = 'Art is required.'
@@ -94,6 +96,8 @@ def edit(url):
             if allowed_image_file(file.filename):
                 art = url + '.' + get_image_extension(file.filename)
                 file.save(os.path.join(current_app.config['MIXTAPE_ART_FOLDER'], art))
+            else:
+                error = 'Image file type not allowed. Allowed image types are: ' + ', '.join(ALLOWED_IMAGE_EXTENSIONS)
 
         if error is not None:
             flash(error)
@@ -208,6 +212,8 @@ def view(url):
                 if allowed_image_file(file.filename):
                     art = url + '.' + get_image_extension(file.filename)
                     file.save(os.path.join(current_app.config['MIXTAPE_ART_FOLDER'], art))
+                else:
+                    error = 'Image file type not allowed. Allowed image types are: ' + ', '.join(ALLOWED_IMAGE_EXTENSIONS)
             if not art:
                 error = 'Art is required.'
 

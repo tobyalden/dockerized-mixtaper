@@ -1,24 +1,23 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import user_card %}
+{% from 'macros.html' import big_user_avatar %}
 
 {% block header %}
 {% endblock %}
 
 {% block content %}
-    {% if g.user['id'] == user['id'] %}
-        <form method="post" enctype="multipart/form-data">
-            <label for="file">Avatar:</label><br><br>
-            <input type ="file" name="avatar" id="avatar" accept="image/*">{{ request.form['avatar'] }}</textarea>
-            <input type="submit" value="Upload">
-      </form>
-    {% endif %}
-
-    {{ user_card(user['username'], user['avatar']) }}
-    <br>
-    Mixtapes created: TBD
-    <br>
-    Mixtapes contributed to: TBD
-
-    <a href="{{ url_for('auth.logout') }}">Log Out</a>
+    <div class="side-space newMixtapeForm">
+        <h1>{{ user['username'] }}</h1>
+        {{ big_user_avatar(g.user['username'], g.user['avatar']) }}
+        {% if g.user['id'] == user['id'] %}
+            <form method="post" enctype="multipart/form-data">
+                <label for="file">Avatar:</label>
+                <input type ="file" name="avatar" id="avatar" >{{ request.form['avatar'] }}</textarea>
+                <input type="submit" value="Upload">
+          </form>
+        {% endif %}
+        {% if g.user['id'] == user['id'] %}
+            <a class="pseudo button" href="{{ url_for('auth.logout') }}">Log Out</a>
+        {% endif %}
+    </div>
 {% endblock %}
 

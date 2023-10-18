@@ -62,6 +62,12 @@ a {
     display: block;
 }
 
+.big-avatar {
+    width: 100px;
+    height: 100px;
+    display: block;
+}
+
 .header {
     /*background-image: url("https://as2.ftcdn.net/v2/jpg/01/55/67/07/1000_F_155670713_Qz3dRx8IH91mkOLcOH7yAmn30BaW4KZK.jpg");*/
     background-color: black;
