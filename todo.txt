@@ -1,10 +1,6 @@
 stuff that effects css:
 
-- add CSS:
-    + edit mixtape page
-    + user page
-    + flash error
-
+- read # per tape in index.html from var
 - limit description and title (basically all text fields) to reasonable lengths
 - validate all actions in routes (logged in, owns mixtape, mixtape not locked/is available, etc).
 - add admin tools
@@ -23,12 +19,16 @@ stuff that effects css:
 + make art mandatory
 + allow mixtapes to be streamed
 + add description to tracks
++ add CSS:
+    + edit mixtape page
+    + user page
+    + flash error
 
 not mvp:
 - add user descriptions
 - paginate index page
 - allow mixtapes to be public/private
-- suggest making private mixtapes public on conversion
+- suggest making private mixtapes public on conversion (doesn't make sense if you're not the one adding the final track)
 - show all mixtapes contributed/created as user
 - prevent fullpage reloads where possible
 - add comments section to mixtapes?

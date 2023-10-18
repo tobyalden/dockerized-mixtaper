@@ -3,6 +3,10 @@ from flask import Flask, request, jsonify
 
 TRACKS_PER_MIXTAPE = 7
 ALLOWED_IMAGE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'bmp'}
+MAX_USERNAME_LENGTH = 30
+MAX_MIXTAPE_TITLE_LENGTH = 50
+MAX_MIXTAPE_DESCRIPTION_LENGTH = 256
+MAX_TRACK_DESCRIPTION_LENGTH = 256
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)

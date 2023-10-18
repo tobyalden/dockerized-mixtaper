@@ -5,9 +5,9 @@
         <h1>EDIT MIXTAPE</h1>
         <form method="post" enctype="multipart/form-data">
             <label for="title">Title</label>
-            <input name="title" id="title" value="{{ mixtape['title'] }}" required><br>
-            <label for="body">Description (optional)</label>
-            <textarea name="body" id="body">{{ mixtape['body'] }}</textarea><br>
+            <input name="title" id="title" maxlength="{{ MAX_MIXTAPE_TITLE_LENGTH }}" value="{{ mixtape['title'] }}" required><br>
+            <label for="body">Description</label>
+            <textarea name="body" id="body" maxlength="{{ MAX_MIXTAPE_DESCRIPTION_LENGTH }}">{{ mixtape['body'] }}</textarea><br>
             <label for="file">Art</label><br>
             <input class="" type="file" name="art" id="art" accept="image/*" >
             <input class="newMixtapeButton" type="submit" value="Save">

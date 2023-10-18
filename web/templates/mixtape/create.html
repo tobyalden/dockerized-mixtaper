@@ -5,11 +5,11 @@
         <h1>NEW MIXTAPE</h1>
         <form method="post" enctype="multipart/form-data">
             <label for="title">Title</label>
-            <input name="title" id="title" required><br>
-            <label for="body">Description (optional)</label>
-            <textarea name="body" id="body"></textarea><br>
+            <input name="title" id="title" maxlength="{{ MAX_MIXTAPE_TITLE_LENGTH }}" required><br>
+            <label for="body">Description</label>
+            <textarea name="body" id="body" maxlength="{{ MAX_MIXTAPE_DESCRIPTION_LENGTH }}"></textarea><br>
             <label for="file">Art</label><br>
-            <input class="" type="file" name="art" id="art" accept="image/*" >
+            <input class="" type="file" name="art" id="art" accept="image/*" required>
             <input class="newMixtapeButton" type="submit" value="Save">
         </form>
     </div>

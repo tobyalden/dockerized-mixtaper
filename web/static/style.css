@@ -36,6 +36,7 @@ textarea {
 
 .editMixtapeButton {
     width: 100%;
+    margin-bottom: 0px;
 }
 
 .newMixtapeButton {
@@ -165,9 +166,6 @@ a {
 }
 
 .mixtapeTrack {
-    margin-left: auto;
-    margin-right: auto;
-    /*flex: 1;*/
     padding-top: 16px;
     padding-left: 16px;
     padding-right: 16px;
@@ -194,14 +192,32 @@ a {
 
 .mixtapeDescription {
     font-style: italic;
-    font-size: 1.2em;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    /*font-size: 1.2em;*/
+    padding-top: 15px;
+    padding-bottom: 15px;
+    /*white-space: wrap;*/
+    /*overflow: hidden;*/
 }
 
 .about {
     color: gray;
     font-size: 16px;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+}
+
+.trackDescription {
+    font-style: italic;
+    overflow-wrap: break-word;
+    max-width: min(100vw, 700px);
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.about span {
+    flex: 1;
+    padding-right: 10px;
 }
 
 .addToMixtape {

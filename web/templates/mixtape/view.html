@@ -7,22 +7,6 @@
             {{ mixtape_card(mixtape) }}
         </div>
         <div class="mixtapeDetails">
-            {% if g.user and not mixtape['locked'] %}
-                <form class="addToMixtape card" method="post">
-                    <header>
-                        Add to mixtape:
-                    </header>
-                    <footer>
-                        <input name="youtubeUrl" id="youtubeUrl" placeholder="youtube.com/watch?v=3__0ulE2UDo" required>
-                        <input name="trackBody" id="trackBody" placeholder="Optional comment" >
-                        {% if one_track_from_full %}
-                            <input class="warning" type="submit" value="Add final track" onclick="return confirm('Are you sure?');">
-                        {% else %}
-                            <input type="submit" value="Add track">
-                        {% endif %}
-                    </footer>
-                </form>
-            {% endif %}
             {% if mixtape['author_id'] == g.user['id'] %}
                 <a class="editMixtapeButton pseudo button" href="{{ url_for('mixtape.edit', url=mixtape['url']) }}">Edit Mixtape</a>
             {% endif %}
@@ -30,6 +14,22 @@
                 <div class="mixtapeDescription">{{ mixtape['body'] }}</div>
             {% else %}
                 <div class="mixtapeDescription">No description.</div>
+            {% endif %}
+            {% if g.user and not mixtape['locked'] %}
+                <form class="addToMixtape card" method="post">
+                    <header>
+                        Add to mixtape:
+                    </header>
+                    <footer>
+                        <input name="youtubeUrl" id="youtubeUrl" placeholder="youtube.com/watch?v=3__0ulE2UDo" required>
+                        <input name="trackBody" id="trackBody" placeholder="Comment" maxlength="{{ MAX_TRACK_DESCRIPTION_LENGTH }}">
+                        {% if one_track_from_full %}
+                            <input class="warning" type="submit" value="Add final track" onclick="return confirm('Are you sure?');">
+                        {% else %}
+                            <input type="submit" value="Add track">
+                        {% endif %}
+                    </footer>
+                </form>
             {% endif %}
             <div>
         </div>
@@ -39,6 +39,10 @@
             <div class="mixtapeTrack">
                 <div class="mixtapeTrackTitle">
                     <span>Track # {{ loop.index }}</span><br>
+                </div>
+                <iframe frameborder="0" src="https://www.youtube.com/embed/{{ track['youtube_id'] }}"></iframe>
+                <div class="about">
+                    <span>added by {{ track['username'] }}</span>
                     {% if g.user and not mixtape['locked'] and (mixtape['author_id'] == g.user['id'] or track['author_id'] == g.user['id']) %}
                         <form method="post">
                             <input class="error" name="deleteTrack" type="submit" value="Delete track">
@@ -46,10 +50,8 @@
                         </form>
                     {% endif %}
                 </div>
-                <iframe frameborder="0" src="https://www.youtube.com/embed/{{ track['youtube_id'] }}"></iframe> 
-                <div class="about">added by {{ track['username'] }} on {{ track['created'].strftime('%Y-%m-%d') }}</div>
-                <p style="font-style: italic;">{{ track['body'] }}</p>
             </div>
+            <p class="trackDescription">{{ track['body'] }}</p>
         {% endfor%}
     </div>
     <script src="{{url_for('static', filename='js/mixtape_view.js')}}"></script>

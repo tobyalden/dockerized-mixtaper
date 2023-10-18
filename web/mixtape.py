@@ -7,7 +7,7 @@ from flask import (
 from werkzeug.exceptions import abort
 from werkzeug.utils import secure_filename
 
-from app import (TRACKS_PER_MIXTAPE, ALLOWED_IMAGE_EXTENSIONS)
+from app import (TRACKS_PER_MIXTAPE, ALLOWED_IMAGE_EXTENSIONS, MAX_MIXTAPE_TITLE_LENGTH, MAX_MIXTAPE_DESCRIPTION_LENGTH, MAX_TRACK_DESCRIPTION_LENGTH)
 from auth import login_required
 from db import get_db
 from utils import (convert_mixtape, get_image_extension, allowed_image_file)
@@ -44,7 +44,9 @@ def index():
 def create():
     if request.method == 'POST':
         title = request.form['title']
+        title = title[:MAX_MIXTAPE_TITLE_LENGTH]
         body = request.form['body']
+        body = body[:MAX_MIXTAPE_DESCRIPTION_LENGTH]
         url = get_uuid()
         error = None
 
@@ -76,7 +78,7 @@ def create():
 
             return redirect(url_for('mixtape.view', url=url))
 
-    return render_template('mixtape/create.html')
+    return render_template('mixtape/create.html', MAX_MIXTAPE_TITLE_LENGTH=MAX_MIXTAPE_TITLE_LENGTH, MAX_MIXTAPE_DESCRIPTION_LENGTH=MAX_MIXTAPE_DESCRIPTION_LENGTH)
 
 @bp.route('/edit/<url>', methods=('GET', 'POST'))
 @login_required
@@ -84,7 +86,9 @@ def edit(url):
     mixtape = get_mixtape_by_url(url, False) # TODO: False here should be based on if the mix is public or not
     if request.method == 'POST':
         title = request.form['title']
+        title = title[:MAX_MIXTAPE_TITLE_LENGTH]
         body = request.form['body']
+        body = body[:MAX_MIXTAPE_DESCRIPTION_LENGTH]
         error = None
 
         if not title:
@@ -93,11 +97,12 @@ def edit(url):
         art = None
         if 'art' in request.files:
             file = request.files['art']
-            if allowed_image_file(file.filename):
-                art = url + '.' + get_image_extension(file.filename)
-                file.save(os.path.join(current_app.config['MIXTAPE_ART_FOLDER'], art))
-            else:
-                error = 'Image file type not allowed. Allowed image types are: ' + ', '.join(ALLOWED_IMAGE_EXTENSIONS)
+            if file.filename != '':
+                if allowed_image_file(file.filename):
+                    art = url + '.' + get_image_extension(file.filename)
+                    file.save(os.path.join(current_app.config['MIXTAPE_ART_FOLDER'], art))
+                else:
+                    error = 'Image file type not allowed. Allowed image types are: ' + ', '.join(ALLOWED_IMAGE_EXTENSIONS)
 
         if error is not None:
             flash(error)
@@ -119,7 +124,7 @@ def edit(url):
 
             return redirect(url_for('mixtape.view', url=url))
 
-    return render_template('mixtape/edit.html', mixtape=mixtape)
+    return render_template('mixtape/edit.html', mixtape=mixtape, MAX_MIXTAPE_TITLE_LENGTH=MAX_MIXTAPE_TITLE_LENGTH, MAX_MIXTAPE_DESCRIPTION_LENGTH=MAX_MIXTAPE_DESCRIPTION_LENGTH)
 
 def get_uuid():
     # TODO: Ensure UUIDs are unique and don't conflict with other URLs
@@ -289,6 +294,7 @@ def view(url):
                 error = 'Mixtape is full and cannot be added to.'
 
             track_description = request.form['trackBody']
+            track_description = track_description[:MAX_TRACK_DESCRIPTION_LENGTH]
 
             if error is not None:
                 flash(error)
@@ -308,7 +314,7 @@ def view(url):
                 else:
                     return redirect(url_for('mixtape.view', url=mixtape['url']))
 
-    return render_template('mixtape/view.html', mixtape=mixtape, tracks=tracks, one_track_from_full=one_track_from_full)
+    return render_template('mixtape/view.html', mixtape=mixtape, tracks=tracks, one_track_from_full=one_track_from_full, MAX_TRACK_DESCRIPTION_LENGTH=MAX_TRACK_DESCRIPTION_LENGTH)
 
 @bp.route('/<url>/convert', methods=('GET', 'POST'))
 @login_required
