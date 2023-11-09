@@ -37,7 +37,7 @@ def index():
     ).fetchall()
     # mixtapes_per_row = 2
     # mixtapes_in_rows = [mixtapes[i:i + mixtapes_per_row] for i in range(0, len(mixtapes), mixtapes_per_row)]
-    return render_template('mixtape/index.html', mixtapes=mixtapes)
+    return render_template('mixtape/index.html', mixtapes=mixtapes, max_tracks=TRACKS_PER_MIXTAPE)
 
 @bp.route('/create', methods=('GET', 'POST'))
 @login_required
@@ -314,7 +314,7 @@ def view(url):
                 else:
                     return redirect(url_for('mixtape.view', url=mixtape['url']))
 
-    return render_template('mixtape/view.html', mixtape=mixtape, tracks=tracks, one_track_from_full=one_track_from_full, MAX_TRACK_DESCRIPTION_LENGTH=MAX_TRACK_DESCRIPTION_LENGTH)
+    return render_template('mixtape/view.html', mixtape=mixtape, tracks=tracks, one_track_from_full=one_track_from_full, MAX_TRACK_DESCRIPTION_LENGTH=MAX_TRACK_DESCRIPTION_LENGTH, max_tracks=TRACKS_PER_MIXTAPE)
 
 @bp.route('/<url>/convert', methods=('GET', 'POST'))
 @login_required

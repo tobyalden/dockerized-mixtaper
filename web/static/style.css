@@ -4,6 +4,7 @@ body {
     height: auto;
     background-color: black;
     color: white;
+    overflow-wrap: break-word;
 }
 
 input {
@@ -209,7 +210,6 @@ a {
 
 .trackDescription {
     font-style: italic;
-    overflow-wrap: break-word;
     max-width: min(100vw, 700px);
     padding-left: 16px;
     padding-right: 16px;
@@ -250,6 +250,10 @@ a {
     padding-left: 16px;
     padding-right: 16px;
     padding-bottom: 16px;
+}
+
+.mixtapeCardAvatar {
+    /*float: right;*/
 }
 
 .mixtapeCardTitle {

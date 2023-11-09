@@ -1,13 +1,11 @@
 stuff that effects css:
 
 - read # per tape in index.html from var
-- limit description and title (basically all text fields) to reasonable lengths
 - validate all actions in routes (logged in, owns mixtape, mixtape not locked/is available, etc).
-- add admin tools
 - move data out of static folder (so i can just .gitignore the whole thing)
 - errant TODOs
-- escape bad text (e.g. too many newlines)
 
++ limit USERNAME ! description and title (basically all text fields) to reasonable lengths
 + number tracks
 + warn user before adding final track
 + allow editing artwork
@@ -32,3 +30,7 @@ not mvp:
 - show all mixtapes contributed/created as user
 - prevent fullpage reloads where possible
 - add comments section to mixtapes?
+- add admin tools
+- escape bad text (e.g. too many newlines)
+- use actual mysql DB
+- add avatars to posts
