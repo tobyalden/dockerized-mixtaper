@@ -1,1 +1,8 @@
 .DS_Store
+web/.venv/
+web/dump.rdb
+web/static/mixtapegarden.sqlite
+web/static/mixtape_art/
+web/static/mixtapes/
+web/static/user_avatars/
+web/youtube_rips/
