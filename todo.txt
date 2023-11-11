@@ -1,9 +1,11 @@
 stuff that effects css:
 
+- limit username length
 - move data out of static folder (so i can just .gitignore the whole thing)
 - add is_admin field to user
 - validate all actions in routes (logged in, owns mixtape, mixtape not locked/is available, etc).
 - errant TODOs
+- improve flash messages (green confirmation ones, red error ones)
 
 + read # per tape in index.html from var
 + limit USERNAME ! description and title (basically all text fields) to reasonable lengths
@@ -18,6 +20,7 @@ stuff that effects css:
 + make art mandatory
 + allow mixtapes to be streamed
 + add description to tracks
++ escape bad text (e.g. too many newlines)
 + add CSS:
     + edit mixtape page
     + user page
@@ -32,6 +35,6 @@ not mvp:
 - prevent fullpage reloads where possible
 - add comments section to mixtapes?
 - add admin tools
-- escape bad text (e.g. too many newlines)
 - use actual mysql DB
 - add avatars to posts
+- editing username/password

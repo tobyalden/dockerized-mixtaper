@@ -26,6 +26,14 @@ textarea {
     /*max-width: 700px;*/
 }
 
+#password {
+    margin-bottom: 20px;
+}
+
+[type=checkbox]:checked+.checkable:after {
+    color: white;
+}
+
 .siteFooter {
     color: grey;
     display: flex;

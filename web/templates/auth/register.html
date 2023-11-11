@@ -5,10 +5,15 @@
         <h1>REGISTER</h1>
         <form method="post">
             <label for="username">Username</label>
-            <input name="username" id="username" required>
+            <input name="username" id="username" maxlength="{{ MAX_USERNAME_LENGTH }}" required>
             <label for="password">Password</label>
             <input type="password" name="password" id="password" required>
+            <label>
+                <input type="checkbox">
+                <span class="checkable" onclick="togglePasswordVisibility()">Show Password</span>
+            </label>
             <input class="newMixtapeButton" type="submit" value="Register">
         </form>
     </div>
+    <script src="{{url_for('static', filename='js/toggle_password_visibility.js')}}"></script>
 {% endblock %}

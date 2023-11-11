@@ -1,5 +1,6 @@
 import functools
 
+from app import MAX_USERNAME_LENGTH
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
@@ -21,6 +22,8 @@ def register():
             error = 'Username is required.'
         elif not password:
             error = 'Password is required.'
+        elif len(username) > MAX_USERNAME_LENGTH:
+            error = 'Username is too long'
 
         if error is None:
             try:
@@ -36,7 +39,7 @@ def register():
 
         flash(error)
 
-    return render_template('auth/register.html')
+    return render_template('auth/register.html', MAX_USERNAME_LENGTH=MAX_USERNAME_LENGTH)
 
 @bp.route('/login', methods=('GET', 'POST'))
 def login():

@@ -8,7 +8,12 @@
             <input name="username" id="username" required>
             <label for="password">Password</label>
             <input type="password" name="password" id="password" required>
+            <label>
+                <input type="checkbox">
+                <span class="checkable" onclick="togglePasswordVisibility()">Show Password</span>
+            </label>
             <input class="newMixtapeButton" type="submit" value="Log In">
         </form>
     </div>
+    <script src="{{url_for('static', filename='js/toggle_password_visibility.js')}}"></script>
 {% endblock %}
