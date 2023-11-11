@@ -1,6 +1,6 @@
 import functools
 
-from app import MAX_USERNAME_LENGTH
+from app import (MAX_USERNAME_LENGTH, FLASH_ERROR, FLASH_SUCCESS)
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
@@ -33,11 +33,14 @@ def register():
                 )
                 db.commit()
             except db.IntegrityError:
-                error = f"User {username} is already registered."
+                error = "Username is already taken."
             else:
+                flash("Username registered. Please log in.", FLASH_SUCCESS)
                 return redirect(url_for("auth.login"))
 
-        flash(error)
+        if error:
+            flash(error, FLASH_ERROR)
+
 
     return render_template('auth/register.html', MAX_USERNAME_LENGTH=MAX_USERNAME_LENGTH)
 
@@ -53,16 +56,17 @@ def login():
         ).fetchone()
 
         if user is None:
-            error = 'Incorrect username.'
+            error = 'Incorrect username or password.'
         elif not check_password_hash(user['password'], password):
-            error = 'Incorrect password.'
+            error = 'Incorrect password or password.'
 
         if error is None:
             session.clear()
             session['user_id'] = user['id']
+            flash("Logged in as {}.".format(user['username']), FLASH_SUCCESS)
             return redirect(url_for('index'))
 
-        flash(error)
+        flash(error, FLASH_ERROR)
 
     return render_template('auth/login.html')
 
@@ -80,6 +84,7 @@ def load_logged_in_user():
 @bp.route('/logout')
 def logout():
     session.clear()
+    flash("Logged out.", FLASH_SUCCESS)
     return redirect(url_for('index'))
 
 def login_required(view):

@@ -1,11 +1,15 @@
 mvp:
 
-- improve flash messages (green confirmation ones, red error ones)
-- allow deleting mixtapes
+- allow uploading custom audio files
 - add is_admin field to user
 - validate all actions in routes (logged in, owns mixtape, mixtape not locked/is available, etc).
 - errant TODOs
+- update README
 
+- don't forget to toggle redis before deploying
+
++ improve flash messages (green confirmation ones, red error ones)
++ allow deleting mixtapes
 + limit username length
 + read # per tape in index.html from var
 + limit USERNAME ! description and title (basically all text fields) to reasonable lengths

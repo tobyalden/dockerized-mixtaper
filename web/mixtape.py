@@ -7,7 +7,11 @@ from flask import (
 from werkzeug.exceptions import abort
 from werkzeug.utils import secure_filename
 
-from app import (TRACKS_PER_MIXTAPE, ALLOWED_IMAGE_EXTENSIONS, MAX_MIXTAPE_TITLE_LENGTH, MAX_MIXTAPE_DESCRIPTION_LENGTH, MAX_TRACK_DESCRIPTION_LENGTH)
+from app import (
+    TRACKS_PER_MIXTAPE, ALLOWED_IMAGE_EXTENSIONS, MAX_MIXTAPE_TITLE_LENGTH,
+    MAX_MIXTAPE_DESCRIPTION_LENGTH, MAX_TRACK_DESCRIPTION_LENGTH, FLASH_ERROR,
+    FLASH_SUCCESS
+)
 from auth import login_required
 from db import get_db
 from utils import (convert_mixtape, get_image_extension, allowed_image_file)
@@ -66,7 +70,7 @@ def create():
             error = 'Art is required.'
 
         if error is not None:
-            flash(error)
+            flash(error, FLASH_ERROR)
         else:
             db = get_db()
             db.execute(
@@ -75,6 +79,7 @@ def create():
                 (title, body, g.user['id'], url, art)
             )
             db.commit()
+            flash("Created new mixtape.", FLASH_SUCCESS)
 
             return redirect(url_for('mixtape.view', url=url))
 
@@ -85,44 +90,69 @@ def create():
 def edit(url):
     mixtape = get_mixtape_by_url(url, False) # TODO: False here should be based on if the mix is public or not
     if request.method == 'POST':
-        title = request.form['title']
-        title = title[:MAX_MIXTAPE_TITLE_LENGTH]
-        body = request.form['body']
-        body = body[:MAX_MIXTAPE_DESCRIPTION_LENGTH]
-        error = None
+        if 'title' in request.form:
+            title = request.form['title']
+            title = title[:MAX_MIXTAPE_TITLE_LENGTH]
+            body = request.form['body']
+            body = body[:MAX_MIXTAPE_DESCRIPTION_LENGTH]
+            error = None
 
-        if not title:
-            error = 'Title is required.'
+            if not title:
+                error = 'Title is required.'
 
-        art = None
-        if 'art' in request.files:
-            file = request.files['art']
-            if file.filename != '':
-                if allowed_image_file(file.filename):
-                    art = url + '.' + get_image_extension(file.filename)
-                    file.save(os.path.join(current_app.config['MIXTAPE_ART_FOLDER'], art))
-                else:
-                    error = 'Image file type not allowed. Allowed image types are: ' + ', '.join(ALLOWED_IMAGE_EXTENSIONS)
+            art = None
+            if 'art' in request.files:
+                file = request.files['art']
+                if file.filename != '':
+                    if allowed_image_file(file.filename):
+                        art = url + '.' + get_image_extension(file.filename)
+                        file.save(os.path.join(current_app.config['MIXTAPE_ART_FOLDER'], art))
+                    else:
+                        error = 'Image file type not allowed. Allowed image types are: ' + ', '.join(ALLOWED_IMAGE_EXTENSIONS)
 
-        if error is not None:
-            flash(error)
-        else:
-            db = get_db()
-            if art is None:
-                db.execute(
-                    'UPDATE mixtape SET title = ?, body = ?'
-                    ' WHERE url = ?',
-                    (title, body, url)
-                )
+            if error is not None:
+                flash(error, FLASH_ERROR)
             else:
-                db.execute(
-                    'UPDATE mixtape SET title = ?, body = ?, art = ?'
-                    ' WHERE url = ?',
-                    (title, body, art, url)
-                )
+                db = get_db()
+                if art is None:
+                    db.execute(
+                        'UPDATE mixtape SET title = ?, body = ?'
+                        ' WHERE url = ?',
+                        (title, body, url)
+                    )
+                else:
+                    db.execute(
+                        'UPDATE mixtape SET title = ?, body = ?, art = ?'
+                        ' WHERE url = ?',
+                        (title, body, art, url)
+                    )
+                db.commit()
+                flash("Updated mixtape.", FLASH_SUCCESS)
+
+                return redirect(url_for('mixtape.view', url=url))
+        elif 'deleteMixtape' in request.form:
+            if g.user is None or mixtape['author_id'] != g.user['id']:
+                abort(403)
+
+            db = get_db()
+            db.execute(
+                'DELETE FROM mixtape '
+                ' WHERE id = ?',
+                (mixtape['id'],)
+            )
+            db.execute(
+                'DELETE FROM track '
+                ' WHERE mixtape_id = ?',
+                (mixtape['id'],)
+            )
             db.commit()
 
-            return redirect(url_for('mixtape.view', url=url))
+            mixtape_path = os.path.join(current_app.config['MIXES_FOLDER'], mixtape['url'] + '.mp3')
+            if os.path.exists(mixtape_path):
+                os.remove(mixtape_path)
+
+            flash("Deleted mixtape.", FLASH_SUCCESS)
+            return redirect(url_for('mixtape.index'))
 
     return render_template('mixtape/edit.html', mixtape=mixtape, MAX_MIXTAPE_TITLE_LENGTH=MAX_MIXTAPE_TITLE_LENGTH, MAX_MIXTAPE_DESCRIPTION_LENGTH=MAX_MIXTAPE_DESCRIPTION_LENGTH)
 
@@ -184,78 +214,7 @@ def view(url):
     tracks = get_tracks(mixtape['id'])
     one_track_from_full = mixtape["track_count"] == TRACKS_PER_MIXTAPE - 1;
     if request.method == 'POST':
-        if 'confirmEditTitle' in request.form:
-            if g.user is None or mixtape['author_id'] != g.user['id']:
-                abort(403)
-
-            new_title = request.form['newTitle']
-            error = None
-
-            if not new_title or new_title == "":
-                # TODO: scrub bad stuff
-                error = 'Title is required'
-
-            if error is not None:
-                flash(error)
-            else:
-                db = get_db()
-
-                db.execute(
-                    'UPDATE mixtape SET title = ? WHERE id = ?',
-                    (new_title, mixtape['id'])
-                )
-                db.commit()
-            return redirect(url_for('mixtape.view', url=mixtape['url']))
-        elif 'confirmEditArt' in request.form:
-            if g.user is None or mixtape['author_id'] != g.user['id']:
-                abort(403)
-
-            error = None
-            art = None
-            if 'newArt' in request.files:
-                file = request.files['newArt']
-                if allowed_image_file(file.filename):
-                    art = url + '.' + get_image_extension(file.filename)
-                    file.save(os.path.join(current_app.config['MIXTAPE_ART_FOLDER'], art))
-                else:
-                    error = 'Image file type not allowed. Allowed image types are: ' + ', '.join(ALLOWED_IMAGE_EXTENSIONS)
-            if not art:
-                error = 'Art is required.'
-
-            if error is not None:
-                flash(error)
-            else:
-                db = get_db()
-                db.execute(
-                    'UPDATE mixtape SET art = ? WHERE id = ?',
-                    (art, mixtape['id'])
-                )
-                db.commit()
-            return redirect(url_for('mixtape.view', url=mixtape['url']))
-        elif 'deleteMixtape' in request.form:
-            # Delete mixtape
-            if g.user is None or mixtape['author_id'] != g.user['id']:
-                abort(403)
-
-            db = get_db()
-            db.execute(
-                'DELETE FROM mixtape '
-                ' WHERE id = ?',
-                (mixtape['id'],)
-            )
-            db.execute(
-                'DELETE FROM track '
-                ' WHERE mixtape_id = ?',
-                (mixtape['id'],)
-            )
-            db.commit()
-
-            mixtape_path = os.path.join(current_app.config['MIXES_FOLDER'], mixtape['url'] + '.mp3')
-            if os.path.exists(mixtape_path):
-                os.remove(mixtape_path)
-
-            return redirect(url_for('mixtape.index'))
-        elif 'deleteTrack' in request.form:
+        if 'deleteTrack' in request.form:
             # Delete track from mixtape
             track = get_track(request.form['trackId'])
             if (
@@ -297,7 +256,7 @@ def view(url):
             track_description = track_description[:MAX_TRACK_DESCRIPTION_LENGTH]
 
             if error is not None:
-                flash(error)
+                flash(error, FLASH_ERROR)
             else:
                 db = get_db()
 
@@ -312,6 +271,7 @@ def view(url):
                     # Convert mixtape
                     return redirect(url_for('mixtape.convert', url=mixtape['url']))
                 else:
+                    flash("Added track.", FLASH_SUCCESS)
                     return redirect(url_for('mixtape.view', url=mixtape['url']))
 
     return render_template('mixtape/view.html', mixtape=mixtape, tracks=tracks, one_track_from_full=one_track_from_full, MAX_TRACK_DESCRIPTION_LENGTH=MAX_TRACK_DESCRIPTION_LENGTH, max_tracks=TRACKS_PER_MIXTAPE)
@@ -330,7 +290,7 @@ def convert(url):
         error = 'Mixtape is locked and cannot be converted.'
 
     if error is not None:
-        flash(error)
+        flash(error, FLASH_ERROR)
     else:
         db = get_db()
         db.execute(
@@ -350,6 +310,7 @@ def convert(url):
             mixtape['url']
         )
 
+        flash("Added final track. Mixtape converting...", FLASH_SUCCESS)
         return redirect(url_for('mixtape.view', url=mixtape['url']))
 
     return render_template('mixtape/update.html', mixtape=mixtape)
@@ -362,7 +323,6 @@ def download(url):
         mixtape['url'] + '.mp3',
         as_attachment=True
     )
-    # return redirect(url_for('mixtape.index'))
 
 def get_youtube_id(url):
     if url.startswith(('youtu', 'www')):

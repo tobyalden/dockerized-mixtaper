@@ -6,7 +6,7 @@ from flask import (
 )
 
 from db import get_db
-from app import ALLOWED_IMAGE_EXTENSIONS
+from app import (ALLOWED_IMAGE_EXTENSIONS, FLASH_ERROR, FLASH_SUCCESS)
 from utils import (get_image_extension, allowed_image_file)
 
 bp = Blueprint('user', __name__)
@@ -46,10 +46,11 @@ def view(username):
                     (avatar, user['id'])
                 )
                 db.commit()
+                flash("Updated avatar.", FLASH_SUCCESS)
                 return redirect(url_for('user.view', username=user['username']))
 
         if error is not None:
-            flash(error)
+            flash(error, FLASH_ERROR)
 
     return render_template('user/view.html', user=user)
 

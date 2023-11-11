@@ -8,6 +8,9 @@ MAX_MIXTAPE_TITLE_LENGTH = 50
 MAX_MIXTAPE_DESCRIPTION_LENGTH = 256
 MAX_TRACK_DESCRIPTION_LENGTH = 256
 
+FLASH_ERROR = 'error'
+FLASH_SUCCESS = 'success'
+
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
