@@ -43,6 +43,14 @@ textarea {
     padding-bottom: 20px;
 }
 
+.siteFooter a {
+    color: grey;
+}
+
+.siteFooter a:hover {
+    color: lightgrey;
+}
+
 .editMixtapeButton {
     width: 100%;
     margin-bottom: 16px;
