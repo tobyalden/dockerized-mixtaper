@@ -1,12 +1,12 @@
-stuff that effects css:
+mvp:
 
-- limit username length
-- move data out of static folder (so i can just .gitignore the whole thing)
+- improve flash messages (green confirmation ones, red error ones)
+- allow deleting mixtapes
 - add is_admin field to user
 - validate all actions in routes (logged in, owns mixtape, mixtape not locked/is available, etc).
 - errant TODOs
-- improve flash messages (green confirmation ones, red error ones)
 
++ limit username length
 + read # per tape in index.html from var
 + limit USERNAME ! description and title (basically all text fields) to reasonable lengths
 + number tracks
