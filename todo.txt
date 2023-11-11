@@ -1,10 +1,11 @@
 stuff that effects css:
 
-- read # per tape in index.html from var
-- validate all actions in routes (logged in, owns mixtape, mixtape not locked/is available, etc).
 - move data out of static folder (so i can just .gitignore the whole thing)
+- add is_admin field to user
+- validate all actions in routes (logged in, owns mixtape, mixtape not locked/is available, etc).
 - errant TODOs
 
++ read # per tape in index.html from var
 + limit USERNAME ! description and title (basically all text fields) to reasonable lengths
 + number tracks
 + warn user before adding final track
