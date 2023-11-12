@@ -255,7 +255,6 @@ def view(url):
             track = get_track(request.form["trackId"])
             if (
                 mixtape["locked"]
-                or not owns_mixtape(g.user, mixtape)
                 or not owns_track(g.user, track)
             ):
                 abort(403)
