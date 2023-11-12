@@ -13,7 +13,6 @@ from flask import (
 )
 
 from werkzeug.exceptions import abort
-from werkzeug.utils import secure_filename
 
 from app import (
     TRACKS_PER_MIXTAPE,
@@ -267,7 +266,7 @@ def view(url):
             flash("Deleted track.", FLASH_SUCCESS)
 
             return redirect(url_for("mixtape.view", url=mixtape["url"]))
-        elif "youtubeUrl" in request.form:
+        if "youtubeUrl" in request.form:
             if g.user is None:
                 abort(403)
 
@@ -280,7 +279,7 @@ def view(url):
 
             try:
                 youtube_id = get_youtube_id(youtube_url)
-            except:
+            except ValueError:
                 error = "Not a valid YouTube URL."
 
             if mixtape["locked"]:
@@ -307,9 +306,9 @@ def view(url):
                 if mixtape["track_count"] == TRACKS_PER_MIXTAPE - 1:
                     # Convert mixtape
                     return redirect(url_for("mixtape.convert", url=mixtape["url"]))
-                else:
-                    flash("Added track.", FLASH_SUCCESS)
-                    return redirect(url_for("mixtape.view", url=mixtape["url"]))
+
+                flash("Added track.", FLASH_SUCCESS)
+                return redirect(url_for("mixtape.view", url=mixtape["url"]))
 
     return render_template(
         "mixtape/view.html",
@@ -350,7 +349,7 @@ def convert(url):
         for track in tracks:
             youtube_ids.append(track["youtube_id"])
 
-        job = job_queue.enqueue(convert_mixtape, youtube_ids, mixtape["url"])
+        job_queue.enqueue(convert_mixtape, youtube_ids, mixtape["url"])
 
         flash("Added final track. Mixtape converting...", FLASH_SUCCESS)
         return redirect(url_for("mixtape.view", url=mixtape["url"]))
@@ -380,7 +379,7 @@ def get_youtube_id(url):
     if "youtube" in query.hostname:
         if query.path == "/watch":
             return parse_qs(query.query)["v"][0]
-        elif query.path.startswith(("/embed/", "/v/")):
+        if query.path.startswith(("/embed/", "/v/")):
             return query.path.split("/")[2]
     elif "youtu.be" in query.hostname:
         return query.path[1:]

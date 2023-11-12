@@ -1,6 +1,5 @@
 import os
 
-from flask import Blueprint
 from flask import (
     Blueprint,
     flash,
@@ -9,13 +8,13 @@ from flask import (
     render_template,
     request,
     url_for,
-    send_from_directory,
     current_app,
 )
 
 from db import get_db
 from app import ALLOWED_IMAGE_EXTENSIONS, FLASH_ERROR, FLASH_SUCCESS
 from utils import get_image_extension, allowed_image_file
+from werkzeug.exceptions import abort
 
 bp = Blueprint("user", __name__)
 

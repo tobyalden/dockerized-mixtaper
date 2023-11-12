@@ -1,8 +1,8 @@
 mvp:
 
-- python lintn
 - don't forget to toggle redis before deploying
 
++ python lintn
 + errant TODOs
 + add is_admin field to user
 + validate all actions in routes (logged in, owns mixtape, mixtape not locked/is available, etc).

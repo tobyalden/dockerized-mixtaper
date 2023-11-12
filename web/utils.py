@@ -1,6 +1,6 @@
 from app import create_app, ALLOWED_IMAGE_EXTENSIONS
 from db import get_db
-from mutagen.id3 import ID3, APIC, TIT2, TPE1, COMM, USLT
+from mutagen.id3 import ID3, APIC, TIT2, TPE1, USLT
 from PIL import Image
 
 
@@ -85,7 +85,7 @@ def convert_mixtape(youtube_ids, mixtape_url):
 
     mixed_tracks = None
     for i, track in enumerate(all_tracks):
-        if mixed_tracks == None:
+        if mixed_tracks is None:
             mixed_tracks = track
         else:
             last_track_length = len(all_tracks[i - 1])

@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, jsonify
+from flask import Flask
 
 TRACKS_PER_MIXTAPE = 7
 ALLOWED_IMAGE_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "bmp"}
@@ -52,6 +52,5 @@ def create_app(test_config=None):
 
     app.register_blueprint(user.bp)
 
-    import utils
 
     return app
