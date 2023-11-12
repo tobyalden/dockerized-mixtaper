@@ -159,7 +159,6 @@ def edit(url):
     return render_template('mixtape/edit.html', mixtape=mixtape, MAX_MIXTAPE_TITLE_LENGTH=MAX_MIXTAPE_TITLE_LENGTH, MAX_MIXTAPE_DESCRIPTION_LENGTH=MAX_MIXTAPE_DESCRIPTION_LENGTH)
 
 def get_uuid():
-    # TODO: Ensure UUIDs are unique and don't conflict with other URLs
     return shortuuid.ShortUUID().random(length=8)
 
 def get_mixtape_by_url(url):
@@ -188,8 +187,6 @@ def get_tracks(mixtape_id):
         (mixtape_id,)
     ).fetchall()
 
-    # TODO: Probably need to do some validation here
-
     return tracks
 
 def get_track(track_id):
@@ -205,11 +202,10 @@ def get_track(track_id):
         abort(404, f"Track with ID {track_id} doesn't exist.")
 
     return track
-    # TODO: Probably need to do some validation here
 
 @bp.route('/<url>', methods=('GET', 'POST'))
 def view(url):
-    mixtape = get_mixtape_by_url(url) # TODO: False here should be based on if the mix is public or not
+    mixtape = get_mixtape_by_url(url)
     tracks = get_tracks(mixtape['id'])
     one_track_from_full = mixtape["track_count"] == TRACKS_PER_MIXTAPE - 1;
     if request.method == 'POST':
@@ -282,8 +278,6 @@ def view(url):
 @bp.route('/<url>/convert', methods=('GET', 'POST'))
 @login_required
 def convert(url):
-    # TODO: Check you are the owner of the mixtape - this could be a decorator
-    # TODO: Don't allow converting mixtapes that are locked or w/o 7 tracks
     mixtape = get_mixtape_by_url(url)
     tracks = get_tracks(mixtape['id'])
 
@@ -294,6 +288,8 @@ def convert(url):
 
     if mixtape['locked']:
         error = 'Mixtape is locked and cannot be converted.'
+    if mixtape['track_count'] != TRACKS_PER_MIXTAPE:
+        error = 'Mixtape does not have enough tracks to be converted.'
 
     if error is not None:
         flash(error, FLASH_ERROR)
@@ -344,5 +340,5 @@ def get_youtube_id(url):
     elif 'youtu.be' in query.hostname:
         return query.path[1:]
     else:
-        raise ValueError ## TODO: Don't throw ValueError
+        raise ValueError
 

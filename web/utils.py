@@ -34,7 +34,6 @@ def convert_mixtape(youtube_ids, mixtape_url):
             (mixtape_url,)
         ).fetchone()
 
-    # TODO: Rewrite using os.path.join()
     rip_directory = './youtube_rips/' + mixtape_url + '/'
 
     if os.path.isdir(rip_directory):
@@ -97,7 +96,6 @@ def convert_mixtape(youtube_ids, mixtape_url):
 
     mixed_tracks.export(mixtape_path, format="mp3", bitrate="320k")
 
-    # TODO: Use mutagen to add tracklist to description as well as artist and album
     tags = ID3(mixtape_path)
     art_path = os.path.join(app.config['MIXTAPE_ART_FOLDER'], mixtape['art'])
 
@@ -112,7 +110,7 @@ def convert_mixtape(youtube_ids, mixtape_url):
         tags.add(
             APIC(
                 encoding=3,
-                mime='image/png', # TODO: Ensure there _is_ art
+                mime='image/png',
                 type=3, # 3 is for the cover image
                 desc=u'Cover',
                 data=art.read()

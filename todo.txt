@@ -1,11 +1,10 @@
 mvp:
 
-- add is_admin field to user
+- python lintn
 - errant TODOs
-- update README
-
 - don't forget to toggle redis before deploying
 
++ add is_admin field to user
 + validate all actions in routes (logged in, owns mixtape, mixtape not locked/is available, etc).
 + improve flash messages (green confirmation ones, red error ones)
 + allow deleting mixtapes
@@ -42,3 +41,4 @@ not mvp:
 - add avatars to posts
 - editing username/password
 - allow uploading custom audio files
+- update README, release source code
