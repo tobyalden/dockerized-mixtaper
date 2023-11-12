@@ -3,6 +3,11 @@ from db import get_db
 from mutagen.id3 import ID3, APIC, TIT2, TPE1, COMM, USLT
 from PIL import Image
 
+def owns_mixtape(user, mixtape):
+    return user is not None and (mixtape['author_id'] == user['id'] or user['is_admin'])
+
+def owns_track(user, track):
+    return user is not None and (track['author_id'] == user['id'] or user['is_admin'])
 
 def get_image_extension(filename):
     return filename.rsplit('.', 1)[1].lower()

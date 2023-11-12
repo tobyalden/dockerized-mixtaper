@@ -14,7 +14,7 @@ from app import (
 )
 from auth import login_required
 from db import get_db
-from utils import (convert_mixtape, get_image_extension, allowed_image_file)
+from utils import (convert_mixtape, get_image_extension, allowed_image_file, owns_mixtape, owns_track)
 
 import shortuuid
 from urllib.parse import urlparse, parse_qs
@@ -47,6 +47,9 @@ def index():
 @login_required
 def create():
     if request.method == 'POST':
+        if g.user is None:
+            abort(403)
+
         title = request.form['title']
         title = title[:MAX_MIXTAPE_TITLE_LENGTH]
         body = request.form['body']
@@ -88,8 +91,10 @@ def create():
 @bp.route('/edit/<url>', methods=('GET', 'POST'))
 @login_required
 def edit(url):
-    mixtape = get_mixtape_by_url(url, False) # TODO: False here should be based on if the mix is public or not
+    mixtape = get_mixtape_by_url(url)
     if request.method == 'POST':
+        if not owns_mixtape(g.user, mixtape):
+            abort(403)
         if 'title' in request.form:
             title = request.form['title']
             title = title[:MAX_MIXTAPE_TITLE_LENGTH]
@@ -131,9 +136,6 @@ def edit(url):
 
                 return redirect(url_for('mixtape.view', url=url))
         elif 'deleteMixtape' in request.form:
-            if g.user is None or mixtape['author_id'] != g.user['id']:
-                abort(403)
-
             db = get_db()
             db.execute(
                 'DELETE FROM mixtape '
@@ -160,7 +162,7 @@ def get_uuid():
     # TODO: Ensure UUIDs are unique and don't conflict with other URLs
     return shortuuid.ShortUUID().random(length=8)
 
-def get_mixtape_by_url(url, check_author=True):
+def get_mixtape_by_url(url):
     mixtape = get_db().execute(
         'SELECT m.id, m.url, m.art, m.locked, m.converted, m.title, m.body, m.created, m.author_id, u.username, u.avatar, COUNT(t.mixtape_id) AS track_count'
         ' FROM mixtape m'
@@ -174,12 +176,9 @@ def get_mixtape_by_url(url, check_author=True):
     if mixtape is None:
         abort(404, f"Mixtape with URL {url} doesn't exist.")
 
-    if check_author and (g.user is None or mixtape['author_id'] != g.user['id']):
-        abort(403)
-
     return mixtape
 
-def get_tracks(mixtape_id, check_author=True):
+def get_tracks(mixtape_id):
     db = get_db()
     tracks = db.execute(
         'SELECT t.id, t.youtube_id, t.created, t.author_id, t.body, u.username'
@@ -210,7 +209,7 @@ def get_track(track_id):
 
 @bp.route('/<url>', methods=('GET', 'POST'))
 def view(url):
-    mixtape = get_mixtape_by_url(url, False) # TODO: False here should be based on if the mix is public or not
+    mixtape = get_mixtape_by_url(url) # TODO: False here should be based on if the mix is public or not
     tracks = get_tracks(mixtape['id'])
     one_track_from_full = mixtape["track_count"] == TRACKS_PER_MIXTAPE - 1;
     if request.method == 'POST':
@@ -218,9 +217,9 @@ def view(url):
             # Delete track from mixtape
             track = get_track(request.form['trackId'])
             if (
-                g.user is None or
                 mixtape['locked'] or
-                (mixtape['author_id'] != g.user['id'] and track['author_id'] != g.user['id'])
+                not owns_mixtape(g.user, mixtape) or
+                not owns_track(g.user, track)
             ):
                 abort(403)
 
@@ -231,9 +230,13 @@ def view(url):
                 (track['id'],)
             )
             db.commit()
+            flash("Deleted track.", FLASH_SUCCESS)
 
             return redirect(url_for('mixtape.view', url=mixtape['url']))
         elif 'youtubeUrl' in request.form:
+            if g.user is None:
+                abort(403)
+
             # Add track to mixtape
             youtube_url = request.form['youtubeUrl']
             error = None
@@ -284,6 +287,9 @@ def convert(url):
     mixtape = get_mixtape_by_url(url)
     tracks = get_tracks(mixtape['id'])
 
+    if not owns_mixtape(g.user, mixtape):
+        abort(403)
+
     error = None
 
     if mixtape['locked']:
@@ -317,7 +323,7 @@ def convert(url):
 
 @bp.route('/<url>/download', methods=('GET', 'POST'))
 def download(url):
-    mixtape = get_mixtape_by_url(url, False) # TODO: False here should be based on if the mix is public or not
+    mixtape = get_mixtape_by_url(url)
     return send_from_directory(
         os.path.join(os.path.dirname(current_app.instance_path), current_app.config['MIXES_FOLDER']),
         mixtape['url'] + '.mp3',

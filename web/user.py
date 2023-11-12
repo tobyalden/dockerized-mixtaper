@@ -24,6 +24,9 @@ def view(username):
         abort(404, f"User with username {username} doesn't exist.")
 
     if request.method == 'POST':
+        if g.user['id'] != user['id']:
+            abort(403)
+
         error = None
         if 'avatar' in request.files:
             file = request.files['avatar']

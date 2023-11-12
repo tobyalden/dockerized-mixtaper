@@ -7,7 +7,7 @@
             {{ mixtape_card(mixtape, max_tracks) }}
         </div>
         <div class="mixtapeDetails">
-            {% if mixtape['author_id'] == g.user['id'] %}
+            {% if mixtape['author_id'] == g.user['id'] or g.user['is_admin'] %}
                 <a class="editMixtapeButton pseudo button" href="{{ url_for('mixtape.edit', url=mixtape['url']) }}">Edit Mixtape</a>
             {% endif %}
             {% if mixtape['body'] %}
@@ -41,7 +41,7 @@
                 <iframe frameborder="0" src="https://www.youtube.com/embed/{{ track['youtube_id'] }}"></iframe>
                 <div class="about">
                     <span>added by {{ track['username'] }}</span>
-                    {% if g.user and not mixtape['locked'] and (mixtape['author_id'] == g.user['id'] or track['author_id'] == g.user['id']) %}
+                    {% if g.user and not mixtape['locked'] and (mixtape['author_id'] == g.user['id'] or track['author_id'] == g.user['id'] or g.user['is_admin']) %}
                         <form method="post">
                             <input class="error" name="deleteTrack" type="submit" value="Delete track">
                             <input name="trackId" value="{{ track['id'] }}" hidden>

@@ -1,13 +1,12 @@
 mvp:
 
-- allow uploading custom audio files
 - add is_admin field to user
-- validate all actions in routes (logged in, owns mixtape, mixtape not locked/is available, etc).
 - errant TODOs
 - update README
 
 - don't forget to toggle redis before deploying
 
++ validate all actions in routes (logged in, owns mixtape, mixtape not locked/is available, etc).
 + improve flash messages (green confirmation ones, red error ones)
 + allow deleting mixtapes
 + limit username length
@@ -42,3 +41,4 @@ not mvp:
 - use actual mysql DB
 - add avatars to posts
 - editing username/password
+- allow uploading custom audio files
