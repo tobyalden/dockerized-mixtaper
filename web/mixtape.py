@@ -41,8 +41,8 @@ from redis import Redis
 
 bp = Blueprint("mixtape", __name__)
 
-# redis = Redis(host='redis', port=6379)
-redis = Redis()  # For testing outside of docker
+redis = Redis(host='redis', port=6379)
+# redis = Redis()  # For testing outside of docker
 job_queue = Queue(connection=redis)
 
 
