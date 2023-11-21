@@ -244,14 +244,6 @@ a {
     align-items: center;
 }
 
-.trackAuthorCard a {
-    color: lightgray;
-}
-
-.trackAuthorCard a:hover {
-    color: white;
-}
-
 .trackAuthorCardName {
     padding-left: 10px;
     padding-right: 10px;
