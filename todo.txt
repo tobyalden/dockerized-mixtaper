@@ -36,9 +36,9 @@ not mvp:
 - show all mixtapes contributed/created as user
 - prevent fullpage reloads where possible
 - add comments section to mixtapes?
-- add admin tools
++ add admin tools
 - use actual mysql DB
-- add avatars to posts
++ add avatars to posts
 - editing username/password
 - allow uploading custom audio files
 - update README, release source code
