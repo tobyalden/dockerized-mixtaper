@@ -35,7 +35,9 @@
         <!--<img class="mixtapeArt" src="{{ url_for('static', filename='/mixtape_art/' + mixtape['art']) }}"/>-->
         <div class="mixtapeCardInfo">
             <div class="mixtapeCardTitle"><a href="{{ url_for('mixtape.view', url=mixtape['url']) }}">{{ mixtape['title'] }}</a></div>
-            <div class="mixtapeCardUser">by {{ mixtape['username'] }}</div>
+            <div class="mixtapeCardUser">
+                by {{ mixtape['username'] }}
+            </div>
         </div>
         <div class="mixtapeCardSpacer"></div>
         {% if mixtape['converted'] %}

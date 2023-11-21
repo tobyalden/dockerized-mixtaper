@@ -7,7 +7,7 @@
 {% block content %}
     <div class="side-space newMixtapeForm">
         <h1>{{ user['username'] }}</h1>
-        {{ big_user_avatar(g.user['username'], g.user['avatar']) }}
+        {{ big_user_avatar(user['username'], user['avatar']) }}
         {% if g.user['id'] == user['id'] %}
             <form method="post" enctype="multipart/form-data">
                 <label for="file">Avatar:</label>

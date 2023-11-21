@@ -219,7 +219,7 @@ def get_mixtape_by_url(url):
 def get_tracks(mixtape_id):
     db = get_db()
     tracks = db.execute(
-        "SELECT t.id, t.youtube_id, t.created, t.author_id, t.body, u.username"
+        "SELECT t.id, t.youtube_id, t.created, t.author_id, t.body, u.username, u.avatar"
         " FROM track t INNER JOIN user u ON t.author_id = u.id"
         " WHERE t.mixtape_id = ?"
         " ORDER BY t.created ASC",

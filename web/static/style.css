@@ -53,7 +53,7 @@ textarea {
 
 .editMixtapeButton {
     width: 100%;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
 }
 
 .newMixtapeButton {
@@ -188,7 +188,7 @@ a {
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;
-    /*padding-top: 10px;*/
+    margin-bottom: 10px;
 }
 
 .mixtapeTrack {
@@ -219,18 +219,43 @@ a {
 .mixtapeDescription {
     font-style: italic;
     /*font-size: 1.2em;*/
-    padding-top: 15px;
-    padding-bottom: 15px;
+    margin-bottom: 10px;
     /*white-space: wrap;*/
     /*overflow: hidden;*/
 }
 
-.about {
+.mixtapeAuthorCard {
     color: gray;
     font-size: 16px;
     display: flex;
-    flex-flow: row wrap;
-    align-items: flex-start;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.mixtapeAuthorCardName {
+    padding-left: 10px;
+}
+
+.trackAuthorCard {
+    color: gray;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.trackAuthorCard a {
+    color: lightgray;
+}
+
+.trackAuthorCard a:hover {
+    color: white;
+}
+
+.trackAuthorCardName {
+    padding-left: 10px;
+    padding-right: 10px;
+    flex: 1;
 }
 
 .trackDescription {
@@ -247,6 +272,7 @@ a {
 
 .addToMixtape {
     background: #323232;
+    margin-top: 16px;
 }
 
 .deleteMixtapeForm {
