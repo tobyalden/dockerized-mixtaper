@@ -14,6 +14,16 @@
     {% endif %}
 {%- endmacro %}
 
+{% macro user_avatar_linked(username, avatar) -%}
+    <a href="{{ url_for('user.view', username=username) }}">
+        {% if avatar %}
+            <img class="avatar" src="{{ url_for('static', filename='/user_avatars/' + avatar) }}"/>
+        {% else %}
+            <img class="avatar" src="{{ url_for('static', filename='/default_avatar.png') }}"/>
+        {% endif %}
+    </a>
+{%- endmacro %}
+
 {% macro big_user_avatar(username, avatar) -%}
     <a href="{{ url_for('user.view', username=username) }}">
     {% if avatar %}
@@ -56,16 +66,14 @@
     <div class="header-siteName lg-view"><a href="{{ url_for('mixtape.index') }}">mixtape garden 🌱</a></div>
     <div class="header-spacer"></div>
     {% if g.user %}
-        <a href="{{ url_for('user.view', username=username) }}">
         <div class="header-padding">{{ user_name(g.user['username']) }}</div>
         <div class="header-userAvatar">
-            {{ user_avatar(g.user['username'], g.user['avatar']) }}
+            {{ user_avatar_linked(g.user['username'], g.user['avatar']) }}
         </div>
         {% if g.user['is_admin'] %}
         <div style="padding-left: 10px; padding-right: 10px;"><i class="fa-solid fa-crown"></i></div>
         {% endif %}
         <div class="header-padding"><a class="button-color action pseudo button" href="{{ url_for('mixtape.create') }}"><i class="fa fa-pencil"></i> New</a></div>
-        </a>
     {% else %}
         <a class="pseudo button" href="{{ url_for('auth.register') }}">Register</a>
         <a class="pseudo button header-padding" href="{{ url_for('auth.login') }}">Log In</a>
