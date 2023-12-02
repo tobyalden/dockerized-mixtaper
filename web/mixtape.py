@@ -357,7 +357,7 @@ def convert(url):
         for track in tracks:
             youtube_ids.append(track["youtube_id"])
 
-        job_queue.enqueue(convert_mixtape, youtube_ids, mixtape["url"])
+        job_queue.enqueue(convert_mixtape, youtube_ids, mixtape["url"], job_timeout=600)
 
         flash("Added final track. Mixtape converting...", FLASH_SUCCESS)
         return redirect(url_for("mixtape.view", url=mixtape["url"]))
