@@ -42,7 +42,12 @@
 <div class="mixtapeCard" style="background-image: url({{ url_for('static', filename='/mixtape_art/' + mixtape['art']) }})">
         <!--<img class="mixtapeArt" src="{{ url_for('static', filename='/mixtape_art/' + mixtape['art']) }}"/>-->
         <div class="mixtapeCardInfo">
-            <div class="mixtapeCardTitle"><a href="{{ url_for('mixtape.view', url=mixtape['url']) }}">{{ mixtape['title'] }}</a></div>
+            <div class="mixtapeCardTitle"><a href="{{ url_for('mixtape.view', url=mixtape['url']) }}">
+                    {% if mixtape['hidden'] %}
+                        <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                    {% endif %}
+                    {{ mixtape['title'] }}
+                </a></div>
             <div class="mixtapeCardUser">
                 by {{ mixtape['username'] }}
             </div>

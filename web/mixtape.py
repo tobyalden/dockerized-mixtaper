@@ -49,13 +49,18 @@ job_queue = Queue(connection=redis)
 @bp.route("/")
 def index():
     db = get_db()
+    logged_in_uid = -1
+    if g.user:
+        logged_in_uid = g.user['id']
     mixtapes = db.execute(
-        "SELECT m.id, m.url, m.art, m.title, m.body, m.created, m.author_id, m.locked, m.converted, u.username, u.avatar, COUNT(t.mixtape_id) as track_count"
+        "SELECT m.id, m.url, m.art, m.title, m.body, m.created, m.author_id, m.locked, m.converted, m.hidden, u.username, u.avatar, COUNT(t.mixtape_id) as track_count"
         " FROM mixtape m"
         " INNER JOIN user u ON m.author_id = u.id"
         " LEFT JOIN track t ON m.id = t.mixtape_id"
+        " WHERE m.hidden = 0 OR m.author_id = ?"
         " GROUP BY m.id"
-        " ORDER BY m.created DESC"
+        " ORDER BY m.created DESC",
+        (logged_in_uid,)
     ).fetchall()
     # mixtapes_per_row = 2
     # mixtapes_in_rows = [mixtapes[i:i + mixtapes_per_row] for i in range(0, len(mixtapes), mixtapes_per_row)]
@@ -75,6 +80,9 @@ def create():
         title = title[:MAX_MIXTAPE_TITLE_LENGTH]
         body = request.form["body"]
         body = body[:MAX_MIXTAPE_DESCRIPTION_LENGTH]
+        hidden = False
+        if "hidden" in request.form:
+            hidden = True
         url = get_uuid()
         error = None
 
@@ -101,9 +109,9 @@ def create():
         else:
             db = get_db()
             db.execute(
-                "INSERT INTO mixtape (title, body, author_id, url, art)"
-                " VALUES (?, ?, ?, ?, ?)",
-                (title, body, g.user["id"], url, art),
+                "INSERT INTO mixtape (title, body, author_id, url, art, hidden)"
+                " VALUES (?, ?, ?, ?, ?, ?)",
+                (title, body, g.user["id"], url, art, hidden),
             )
             db.commit()
             flash("Created new mixtape.", FLASH_SUCCESS)
@@ -129,6 +137,9 @@ def edit(url):
             title = title[:MAX_MIXTAPE_TITLE_LENGTH]
             body = request.form["body"]
             body = body[:MAX_MIXTAPE_DESCRIPTION_LENGTH]
+            hidden = False
+            if "hidden" in request.form:
+                hidden = True
             error = None
 
             if not title:
@@ -155,14 +166,15 @@ def edit(url):
                 db = get_db()
                 if art is None:
                     db.execute(
-                        "UPDATE mixtape SET title = ?, body = ?" " WHERE url = ?",
-                        (title, body, url),
+                        "UPDATE mixtape SET title = ?, body = ?, hidden = ?"
+                        " WHERE url = ?",
+                        (title, body, hidden, url),
                     )
                 else:
                     db.execute(
-                        "UPDATE mixtape SET title = ?, body = ?, art = ?"
+                        "UPDATE mixtape SET title = ?, body = ?, art = ?, hidden = ?"
                         " WHERE url = ?",
-                        (title, body, art, url),
+                        (title, body, art, hidden, url),
                     )
                 db.commit()
                 flash("Updated mixtape.", FLASH_SUCCESS)
@@ -199,7 +211,7 @@ def get_mixtape_by_url(url):
     mixtape = (
         get_db()
         .execute(
-            "SELECT m.id, m.url, m.art, m.locked, m.converted, m.title, m.body, m.created, m.author_id, u.username, u.avatar, COUNT(t.mixtape_id) AS track_count"
+            "SELECT m.id, m.url, m.art, m.locked, m.converted, m.title, m.body, m.created, m.author_id, m.hidden, u.username, u.avatar, COUNT(t.mixtape_id) AS track_count"
             " FROM mixtape m"
             " INNER JOIN user u ON m.author_id = u.id"
             " LEFT JOIN track t ON m.id = t.mixtape_id"

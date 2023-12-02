@@ -29,7 +29,13 @@ textarea {
 .hideMixtapeCheckbox {
     display: flex;
     padding-top: 10px;
-    padding-bottom: 10px;
+    /*padding-bottom: 10px;*/
+}
+
+@media screen and (max-width: 768px) {
+    .hideMixtapeCheckbox span {
+        /*padding-right: 20px;*/
+    }
 }
 
 #password {

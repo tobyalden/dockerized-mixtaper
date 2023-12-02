@@ -10,6 +10,19 @@
             <textarea name="body" id="body" maxlength="{{ MAX_MIXTAPE_DESCRIPTION_LENGTH }}">{{ mixtape['body'] }}</textarea><br>
             <label for="file">Art</label><br>
             <input class="" type="file" name="art" id="art" accept="image/*" >
+            <div class="hideMixtapeCheckbox">
+                <div>
+                <label>
+                    {% if mixtape['hidden'] %}
+                        <input name="hidden" type="checkbox" checked>
+                    {% else %}
+                        <input name="hidden" type="checkbox">
+                    {% endif %}
+                    <span class="checkable"></span>
+                </label>
+                </div>
+                <div>Hide from frontpage</div>
+            </div>
             <input class="newMixtapeButton" type="submit" value="Save">
         </form>
             <hr style="width: 300px">
