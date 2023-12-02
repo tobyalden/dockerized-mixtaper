@@ -337,9 +337,6 @@ def convert(url):
     mixtape = get_mixtape_by_url(url)
     tracks = get_tracks(mixtape["id"])
 
-    if not owns_mixtape(g.user, mixtape):
-        abort(403)
-
     error = None
 
     if mixtape["locked"]:
