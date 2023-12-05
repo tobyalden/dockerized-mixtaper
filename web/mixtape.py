@@ -339,8 +339,8 @@ def convert(url):
 
     error = None
 
-    if mixtape["locked"]:
-        error = "Mixtape is locked and cannot be converted."
+    # if mixtape["locked"]:
+        # error = "Mixtape is locked and cannot be converted."
     if mixtape["track_count"] != TRACKS_PER_MIXTAPE:
         error = "Mixtape does not have enough tracks to be converted."
 
