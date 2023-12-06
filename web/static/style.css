@@ -19,11 +19,20 @@ textarea {
     height: 10em;
 }
 
+
 .newMixtapeForm {
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
     /*max-width: 700px;*/
+}
+
+.newMixtapeForm h1 {
+    padding-bottom: 0px;
+}
+
+.requiredAsterix {
+    color: #90EE90;
 }
 
 .hideMixtapeCheckbox {

@@ -86,9 +86,6 @@ def create():
         url = get_uuid()
         error = None
 
-        if not title:
-            error = "Title is required."
-
         art = None
         if "art" in request.files:
             file = request.files["art"]
@@ -101,7 +98,9 @@ def create():
                     + ", ".join(ALLOWED_IMAGE_EXTENSIONS)
                 )
 
-        if not art:
+        if not title:
+            error = "Title is required."
+        elif not art:
             error = "Art is required."
 
         if error is not None:

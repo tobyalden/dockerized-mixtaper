@@ -3,12 +3,13 @@
 {% block content %}
     <div class="side-space newMixtapeForm">
         <h1>EDIT MIXTAPE</h1>
+        <h4><span class="requiredAsterix">*</span> indicates required field</h4>
         <form method="post" enctype="multipart/form-data">
-            <label for="title">Title</label>
-            <input name="title" id="title" maxlength="{{ MAX_MIXTAPE_TITLE_LENGTH }}" value="{{ mixtape['title'] }}" required><br>
+            <label for="title"><span class="requiredAsterix">*</span> Title</label>
+            <input name="title" id="title" maxlength="{{ MAX_MIXTAPE_TITLE_LENGTH }}" value="{{ mixtape['title'] }}" ><br>
             <label for="body">Description</label>
             <textarea name="body" id="body" maxlength="{{ MAX_MIXTAPE_DESCRIPTION_LENGTH }}">{{ mixtape['body'] }}</textarea><br>
-            <label for="file">Art</label><br>
+            <label for="file"><span class="requiredAsterix">*</span> Art</label><br>
             <input class="" type="file" name="art" id="art" accept="image/*" >
             <div class="hideMixtapeCheckbox">
                 <div>
