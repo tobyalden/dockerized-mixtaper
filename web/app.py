@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, send_from_directory
 
 TRACKS_PER_MIXTAPE = 7
 ALLOWED_IMAGE_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "bmp"}
@@ -12,9 +12,11 @@ FLASH_ERROR = "error"
 FLASH_SUCCESS = "success"
 
 
+
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
+        CUSTOM_STATIC_PATH=os.path.join(app.root_path, "cdn"),
         SECRET_KEY="dev",
         DATABASE=os.path.join(app.root_path, "static", "mixtapegarden.sqlite"),
         MIXES_FOLDER=os.path.join(app.root_path, "static", "mixtapes"),
@@ -52,5 +54,8 @@ def create_app(test_config=None):
 
     app.register_blueprint(user.bp)
 
+    @app.route('/cdn/<path:filename>')
+    def custom_static(filename):
+        return send_from_directory(app.config['CUSTOM_STATIC_PATH'], filename)
 
     return app
