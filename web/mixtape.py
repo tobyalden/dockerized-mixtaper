@@ -292,6 +292,9 @@ def view(url):
             except ValueError:
                 error = "Not a valid YouTube URL."
 
+            if len(youtube_id) != 11:
+                error = "Not a valid YouTube URL."
+
             if mixtape["locked"]:
                 error = "Mixtape is locked and cannot be added to."
 

@@ -1,5 +1,7 @@
 BETA:
 + don't store CSS and JS in docker volume (https://stackoverflow.com/questions/9513072/more-than-one-static-path-in-local-flask-instance)
+- add "what is this"?
+- add points, leaderboard (LOL)
 - verify youtube IDs are real
 - test to see if crossfading with ffmpeg uses less memory
 
