@@ -19,6 +19,11 @@ textarea {
     height: 10em;
 }
 
+.whatisthis {
+    padding: 10px;
+    background-color: grey;
+    font-style: italic;
+}
 
 .newMixtapeForm {
     display: flex;

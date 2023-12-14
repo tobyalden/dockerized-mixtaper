@@ -2,6 +2,11 @@
 {% from 'macros.html' import user_card, mixtape_card %}
 
 {% block content %}
+    {% if not g.user %}
+    <a href="{{ url_for('about') }}"><div class="whatisthis">
+        <i class="fa-solid fa-question-circle"></i> What is this?
+        </div></a>
+    {% endif %}
     <div class="container">
         {% for mixtape in mixtapes %}
             {{ mixtape_card(mixtape, max_tracks) }}

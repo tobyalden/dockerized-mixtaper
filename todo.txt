@@ -1,14 +1,14 @@
 BETA:
-+ don't store CSS and JS in docker volume (https://stackoverflow.com/questions/9513072/more-than-one-static-path-in-local-flask-instance)
+- verify youtube IDs are real (use API)
+- test to see if crossfading with ffmpeg uses less memory (or add time limit - maybe 15/20 minutes to start)
 - add "what is this"?
 - add points, leaderboard (LOL)
-- verify youtube IDs are real
-- test to see if crossfading with ffmpeg uses less memory
 
 mvp:
 
 - don't forget to toggle redis before deploying
 
++ don't store CSS and JS in docker volume (https://stackoverflow.com/questions/9513072/more-than-one-static-path-in-local-flask-instance)
 + python lintn
 + errant TODOs
 + add is_admin field to user

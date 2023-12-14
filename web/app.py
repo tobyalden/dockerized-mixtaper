@@ -1,5 +1,5 @@
 import os
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, render_template
 
 TRACKS_PER_MIXTAPE = 7
 ALLOWED_IMAGE_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "bmp"}
@@ -53,6 +53,10 @@ def create_app(test_config=None):
     import user
 
     app.register_blueprint(user.bp)
+
+    @app.route('/about')
+    def about():
+        return render_template("about.html")
 
     @app.route('/cdn/<path:filename>')
     def custom_static(filename):
