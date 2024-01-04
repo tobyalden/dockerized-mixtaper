@@ -1,5 +1,6 @@
 import os
-from flask import Flask, send_from_directory, render_template
+from flask import Flask, send_from_directory, render_template, session
+from datetime import timedelta
 
 TRACKS_PER_MIXTAPE = 7
 ALLOWED_IMAGE_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "bmp"}
@@ -22,6 +23,7 @@ def create_app(test_config=None):
         MIXES_FOLDER=os.path.join(app.root_path, "static", "mixtapes"),
         MIXTAPE_ART_FOLDER=os.path.join(app.root_path, "static", "mixtape_art"),
         USER_AVATAR_FOLDER=os.path.join(app.root_path, "static", "user_avatars"),
+        PERMANENT_SESSION_LIFETIME=timedelta(days=365)
     )
 
     if test_config is None:
@@ -61,5 +63,9 @@ def create_app(test_config=None):
     @app.route('/cdn/<path:filename>')
     def custom_static(filename):
         return send_from_directory(app.config['CUSTOM_STATIC_PATH'], filename)
+
+    @app.before_request
+    def make_session_permanent():
+        session.permanent = True
 
     return app

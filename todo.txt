@@ -1,13 +1,17 @@
 BETA:
+- don't log user out
+- pagination (~100?)
+- add download button to individual mixtape pages
 - verify youtube IDs are real (use API)
-- test to see if crossfading with ffmpeg uses less memory (or add time limit - maybe 15/20 minutes to start)
-- add "what is this"?
+- add time limit (use API) (15/20 min? could test w 20 min vid)
+
 - add points, leaderboard (LOL)
 
 mvp:
 
 - don't forget to toggle redis before deploying
 
++ add "what is this"?
 + don't store CSS and JS in docker volume (https://stackoverflow.com/questions/9513072/more-than-one-static-path-in-local-flask-instance)
 + python lintn
 + errant TODOs
