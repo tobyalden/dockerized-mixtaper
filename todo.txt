@@ -1,5 +1,4 @@
 BETA:
-- don't log user out
 - pagination (~100?)
 - add download button to individual mixtape pages
 - verify youtube IDs are real (use API)
@@ -11,6 +10,7 @@ mvp:
 
 - don't forget to toggle redis before deploying
 
++ don't log user out
 + add "what is this"?
 + don't store CSS and JS in docker volume (https://stackoverflow.com/questions/9513072/more-than-one-static-path-in-local-flask-instance)
 + python lintn

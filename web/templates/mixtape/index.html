@@ -12,6 +12,15 @@
             {{ mixtape_card(mixtape, max_tracks) }}
         {% endfor %}
     </div>
+    <div class="mixtapeNav">
+        {% if show_prev_page %}
+            <a class="pseudo button" href="{{ url_for('index', page=prev_page) }}"><i class="fa-solid fa-arrow-left"></i></a>
+        {% endif %}
+        <span class="spacer"></span>
+        {% if show_next_page %}
+            <a class="pseudo button" href="{{ url_for('index', page=next_page) }}"><i class="fa-solid fa-arrow-right"></i></a>
+        {% endif %}
+    </div>
 <footer>
   {{ site_footer() }}
 </footer>

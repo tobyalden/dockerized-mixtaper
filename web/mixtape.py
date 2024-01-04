@@ -22,6 +22,7 @@ from app import (
     MAX_TRACK_DESCRIPTION_LENGTH,
     FLASH_ERROR,
     FLASH_SUCCESS,
+    MIXTAPES_PER_PAGE
 )
 from auth import login_required
 from db import get_db
@@ -52,6 +53,10 @@ def index():
     logged_in_uid = -1
     if g.user:
         logged_in_uid = g.user['id']
+    page = int(request.args.get('page') or 0)
+    mixtape_count = db.execute(
+        "SELECT COUNT(*) FROM mixtape"
+    ).fetchone()
     mixtapes = db.execute(
         "SELECT m.id, m.url, m.art, m.title, m.body, m.created, m.author_id, m.locked, m.converted, m.hidden, u.username, u.avatar, COUNT(t.mixtape_id) as track_count"
         " FROM mixtape m"
@@ -59,13 +64,17 @@ def index():
         " LEFT JOIN track t ON m.id = t.mixtape_id"
         " WHERE m.hidden = 0 OR m.author_id = ?"
         " GROUP BY m.id"
-        " ORDER BY m.created DESC",
-        (logged_in_uid,)
+        " ORDER BY m.created DESC "
+        " LIMIT ? OFFSET ?",
+        (logged_in_uid, MIXTAPES_PER_PAGE, page * MIXTAPES_PER_PAGE)
     ).fetchall()
-    # mixtapes_per_row = 2
-    # mixtapes_in_rows = [mixtapes[i:i + mixtapes_per_row] for i in range(0, len(mixtapes), mixtapes_per_row)]
+    prev_page = page - 1
+    show_prev_page = prev_page >= 0
+    next_page = page + 1
+    show_next_page = mixtape_count[0] > next_page * MIXTAPES_PER_PAGE
     return render_template(
-        "mixtape/index.html", mixtapes=mixtapes, max_tracks=TRACKS_PER_MIXTAPE
+        "mixtape/index.html", mixtapes=mixtapes, max_tracks=TRACKS_PER_MIXTAPE,
+        prev_page=prev_page, next_page=next_page, show_prev_page=show_prev_page, show_next_page=show_next_page
     )
 
 
