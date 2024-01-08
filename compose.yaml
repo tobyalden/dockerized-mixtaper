@@ -37,6 +37,6 @@ services:
     depends_on:
       - redis
     command: rq worker --url redis://redis:6379
-    restart: on-failure
+    restart: always
 volumes:
   storage:
