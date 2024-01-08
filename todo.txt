@@ -1,10 +1,10 @@
 BETA:
-- pagination (~100?)
 - add download button to individual mixtape pages
 - verify youtube IDs are real (use API)
 - add time limit (use API) (15/20 min? could test w 20 min vid)
++ make RQ worker restart on crash
++ pagination (~100?)
 
-- add points, leaderboard (LOL)
 
 mvp:
 
@@ -53,3 +53,4 @@ not mvp:
 - editing username/password
 - allow uploading custom audio files
 - update README, release source code
+- add points, leaderboard (LOL)
