@@ -82,6 +82,22 @@ textarea {
     margin-bottom: 10px;
 }
 
+.pseudo.button {
+    color: black;
+    background-color: white;
+}
+
+.downloadMixtapeButton {
+    width: 100%;
+    margin-bottom: 10px;
+    background-color: black;
+}
+
+.pseudo.button.downloadMixtapeButton {
+    color: black;
+    background-color: lightgreen;
+}
+
 .newMixtapeButton {
     margin-top: 25px;
     width: 100%;
@@ -144,11 +160,6 @@ a {
     top: 0;
     z-index: 999;
     min-height: 50px
-}
-
-.pseudo.button {
-    color: black;
-    background-color: white;
 }
 
 .header-siteName {

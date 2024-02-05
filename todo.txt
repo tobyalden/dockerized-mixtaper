@@ -1,14 +1,14 @@
 BETA:
-- verify youtube IDs are real (use API)
-- add time limit (use API) (15/20 min? could test w 20 min vid)
-- add download button to individual mixtape pages
 
 
 mvp:
 
 - don't forget to toggle redis before deploying
 
++ add download button to individual mixtape pages
 + make RQ worker restart on crash
++ verify youtube IDs are real (use API)
++ add time limit (use API) (15/20 min? could test w 20 min vid)
 + pagination (~100?)
 + don't log user out
 + add "what is this"?
@@ -38,18 +38,17 @@ mvp:
     + edit mixtape page
     + user page
     + flash error
++ add admin tools
++ add avatars to posts
++ allow mixtapes to be public/private
 
 not mvp:
 - add user descriptions
-- paginate index page
-- allow mixtapes to be public/private
 - suggest making private mixtapes public on conversion (doesn't make sense if you're not the one adding the final track)
 - show all mixtapes contributed/created as user
 - prevent fullpage reloads where possible
 - add comments section to mixtapes?
-+ add admin tools
 - use actual mysql DB
-+ add avatars to posts
 - editing username/password
 - allow uploading custom audio files
 - update README, release source code

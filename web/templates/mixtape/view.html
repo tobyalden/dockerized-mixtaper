@@ -11,7 +11,10 @@
                 <div class="mixtapeDescription">{{ mixtape['body'] }}</div>
             {% endif %}
             {% if mixtape['author_id'] == g.user['id'] or g.user['is_admin'] %}
-                <a class="editMixtapeButton pseudo button" href="{{ url_for('mixtape.edit', url=mixtape['url']) }}">Edit Mixtape</a>
+                <a class="editMixtapeButton pseudo button" href="{{ url_for('mixtape.edit', url=mixtape['url']) }}"><i class="fas fa-edit"></i> Edit Mixtape</a>
+            {% endif %}
+            {% if mixtape['converted'] %}
+                <a class="downloadMixtapeButton pseudo button" href="{{ url_for('mixtape.download', url=mixtape['url']) }}"><i class="fa-solid fa-download"></i> Download as MP3</a>
             {% endif %}
             {% if g.user and not mixtape['locked'] %}
                 <form class="addToMixtape card" method="post">
