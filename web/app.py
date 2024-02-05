@@ -2,6 +2,13 @@ import os
 from flask import Flask, send_from_directory, render_template, session
 from datetime import timedelta
 
+def get_api_key_from_file(filename):
+    try:
+        with open(filename, 'r') as f:
+            return f.read().strip()
+    except FileNotFoundError:
+        print("'%s' file not found" % filename)
+
 TRACKS_PER_MIXTAPE = 7
 ALLOWED_IMAGE_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "bmp"}
 MAX_USERNAME_LENGTH = 30
@@ -9,11 +16,10 @@ MAX_MIXTAPE_TITLE_LENGTH = 50
 MAX_MIXTAPE_DESCRIPTION_LENGTH = 256
 MAX_TRACK_DESCRIPTION_LENGTH = 256
 MIXTAPES_PER_PAGE = 100
+YOUTUBE_API_KEY = get_api_key_from_file("youtube_api_key")
 
 FLASH_ERROR = "error"
 FLASH_SUCCESS = "success"
-
-
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)

@@ -1,4 +1,6 @@
 import os
+import re
+from datetime import timedelta
 
 from flask import (
     Blueprint,
@@ -22,7 +24,8 @@ from app import (
     MAX_TRACK_DESCRIPTION_LENGTH,
     FLASH_ERROR,
     FLASH_SUCCESS,
-    MIXTAPES_PER_PAGE
+    MIXTAPES_PER_PAGE,
+    YOUTUBE_API_KEY
 )
 from auth import login_required
 from db import get_db
@@ -39,6 +42,10 @@ from urllib.parse import urlparse, parse_qs
 
 from rq import Queue
 from redis import Redis
+
+from pyyoutube import Api
+
+api = Api(api_key=YOUTUBE_API_KEY)
 
 bp = Blueprint("mixtape", __name__)
 
@@ -297,12 +304,13 @@ def view(url):
                 error = "YouTube URL is required."
 
             try:
-                youtube_id = get_youtube_id(youtube_url)
-            except ValueError:
+                youtube_id = validate_youtube_id(youtube_url)
+                if len(youtube_id) != 11:
+                    error = "Not a valid YouTube URL."
+            except InvalidID:
                 error = "Not a valid YouTube URL."
-
-            if len(youtube_id) != 11:
-                error = "Not a valid YouTube URL."
+            except VideoTooLong:
+                error = "Video too long. It must be under 20 minutes."
 
             if mixtape["locked"]:
                 error = "Mixtape is locked and cannot be added to."
@@ -389,18 +397,51 @@ def download(url):
     )
 
 
-def get_youtube_id(url):
+class InvalidID(Exception):
+    pass
+
+class VideoTooLong(Exception):
+    pass
+
+def validate_youtube_id(url):
     if url.startswith(("youtu", "www")):
         url = "http://" + url
 
     query = urlparse(url)
 
+    youtube_id = None
     if "youtube" in query.hostname:
         if query.path == "/watch":
-            return parse_qs(query.query)["v"][0]
+            youtube_id = parse_qs(query.query)["v"][0]
         if query.path.startswith(("/embed/", "/v/")):
-            return query.path.split("/")[2]
+            youtube_id = query.path.split("/")[2]
     elif "youtu.be" in query.hostname:
-        return query.path[1:]
+        youtube_id = query.path[1:]
     else:
-        raise ValueError
+        raise InvalidID
+
+    video_by_id = api.get_video_by_id(video_id=youtube_id)
+    if len(video_by_id.items) < 1:
+        raise InvalidID
+
+    duration_in_sec = get_seconds_from_timestamp(
+        video_by_id.items[0].contentDetails.duration
+    )
+    if duration_in_sec > 20 * 60:
+        raise VideoTooLong
+
+    return youtube_id
+
+
+def get_seconds_from_timestamp(ts):
+    hours_pattern = re.compile(r'(\d+)H')
+    minutes_pattern = re.compile(r'(\d+)M')
+    seconds_pattern = re.compile(r'(\d+)S')
+    hours_parse = hours_pattern.search(ts)
+    minutes_parse = minutes_pattern.search(ts)
+    seconds_parse = seconds_pattern.search(ts)
+    minutes = int(minutes_parse.group(1)) if minutes_parse else 0
+    hours  = int(hours_parse.group(1)) if hours_parse else 0
+    seconds  = int(seconds_parse.group(1)) if seconds_parse else 0
+    total_seconds = 60*60*hours + 60*minutes + seconds
+    return total_seconds

@@ -1,15 +1,15 @@
 BETA:
-- add download button to individual mixtape pages
 - verify youtube IDs are real (use API)
 - add time limit (use API) (15/20 min? could test w 20 min vid)
-+ make RQ worker restart on crash
-+ pagination (~100?)
+- add download button to individual mixtape pages
 
 
 mvp:
 
 - don't forget to toggle redis before deploying
 
++ make RQ worker restart on crash
++ pagination (~100?)
 + don't log user out
 + add "what is this"?
 + don't store CSS and JS in docker volume (https://stackoverflow.com/questions/9513072/more-than-one-static-path-in-local-flask-instance)
