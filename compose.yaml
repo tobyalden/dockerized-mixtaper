@@ -1,5 +1,7 @@
 services:
   nginx-proxy:
+    mem_limit: 150m
+    memswap_limit: 150m
     build: nginx
     restart: always
     volumes:
@@ -7,20 +9,24 @@ services:
     environment: 
       - FLASK_SERVER_ADDR=web-app:8000
     ports:
-      - "80:80"
+      - "8001:80"
     depends_on:
       - web-app
     healthcheck:
-      test: ["CMD-SHELL", "curl --silent --fail localhost:80/health-check || exit 1"]
+      test: ["CMD-SHELL", "curl --silent --fail localhost:8001/health-check || exit 1"]
       interval: 10s
       timeout: 10s
       retries: 3
     command: /app/start.sh
   redis:
+    mem_limit: 150m
+    memswap_limit: 150m
     image: redislabs/redismod
     ports:
       - '6379:6379'
   web-app:
+    mem_limit: 150m
+    memswap_limit: 150m
     build: web
     volumes:
       - storage:/home/app/static
@@ -31,6 +37,8 @@ services:
       - redis
     command: gunicorn -w 3 -t 60 -b 0.0.0.0:8000 "app:create_app()"
   rq-worker:
+    mem_limit: 500m
+    memswap_limit: 1g
     build: web
     volumes:
       - storage:/home/app/static
