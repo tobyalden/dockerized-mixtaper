@@ -61,27 +61,37 @@ def index():
     if g.user:
         logged_in_uid = g.user['id']
     page = int(request.args.get('page') or 0)
-    mixtape_count = db.execute(
-        "SELECT COUNT(*) FROM mixtape"
-    ).fetchone()
+    mixtape_filter = request.args.get('mixtape_filter')
+    count_query = "SELECT COUNT(*) FROM mixtape m"
+    if mixtape_filter == "completed":
+        count_query += " WHERE m.converted = 1"
+    elif mixtape_filter == "unfinished":
+        count_query += " WHERE m.converted = 0"
+    mixtape_count = db.execute(count_query).fetchone()
+    query = "SELECT m.id, m.url, m.art, m.title, m.body, m.created, m.author_id, m.locked, m.converted, m.hidden, u.username, u.avatar, COUNT(t.mixtape_id) as track_count"
+    query += " FROM mixtape m"
+    query += " INNER JOIN user u ON m.author_id = u.id"
+    query += " LEFT JOIN track t ON m.id = t.mixtape_id"
+    query += " WHERE (m.hidden = 0 OR m.author_id = ?)"
+    if mixtape_filter == "completed":
+        query += " AND m.converted = 1"
+    elif mixtape_filter == "unfinished":
+        query += " AND m.converted = 0"
+    query += " GROUP BY m.id"
+    query += " ORDER BY m.created DESC "
+    query += " LIMIT ? OFFSET ?"
     mixtapes = db.execute(
-        "SELECT m.id, m.url, m.art, m.title, m.body, m.created, m.author_id, m.locked, m.converted, m.hidden, u.username, u.avatar, COUNT(t.mixtape_id) as track_count"
-        " FROM mixtape m"
-        " INNER JOIN user u ON m.author_id = u.id"
-        " LEFT JOIN track t ON m.id = t.mixtape_id"
-        " WHERE m.hidden = 0 OR m.author_id = ?"
-        " GROUP BY m.id"
-        " ORDER BY m.created DESC "
-        " LIMIT ? OFFSET ?",
+        query,
         (logged_in_uid, MIXTAPES_PER_PAGE, page * MIXTAPES_PER_PAGE)
     ).fetchall()
     prev_page = page - 1
     show_prev_page = prev_page >= 0
     next_page = page + 1
     show_next_page = mixtape_count[0] > next_page * MIXTAPES_PER_PAGE
+    # 1/0
     return render_template(
         "mixtape/index.html", mixtapes=mixtapes, max_tracks=TRACKS_PER_MIXTAPE,
-        prev_page=prev_page, next_page=next_page, show_prev_page=show_prev_page, show_next_page=show_next_page
+        prev_page=prev_page, next_page=next_page, show_prev_page=show_prev_page, show_next_page=show_next_page, mixtape_filter=mixtape_filter
     )
 
 
