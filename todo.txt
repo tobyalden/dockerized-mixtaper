@@ -1,5 +1,45 @@
-BETA:
+KNOWN BUGS:
+- errors out on "Premium" youtube tracks - need to see if i can check this with API
+- link previews (in discord and the like)
 
+- Feb 07 19:28:37 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    | [youtube] Extracting URL: rs6Y4kZ8qtw
+Feb 07 19:28:37 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    | [youtube] rs6Y4kZ8qtw: Downloading webpage
+Feb 07 19:28:38 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    | [youtube] rs6Y4kZ8qtw: Downloading ios player API JSON
+Feb 07 19:28:38 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    | [youtube] rs6Y4kZ8qtw: Downloading android player API JSON
+Feb 07 19:28:38 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    | [youtube] rs6Y4kZ8qtw: Downloading m3u8 information
+Feb 07 19:28:40 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    | [info] rs6Y4kZ8qtw: Downloading 1 format(s): 328
+Feb 07 19:28:40 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    | [download] Destination: ./youtube_rips/5Lm5cyBN/./temp/00007 Manu Chao - Me Gustas Tu (Official Audio).
+Feb 07 19:28:40 localhost mixtapegarden.sh[17528]: [1.5K blob data]
+Feb 07 19:28:40 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    | [info] Writing '%(autonumber)s - %(title)s' to: /home/app/static/mixtapes/5Lm5cyBN-tracklist.txt
+Feb 07 19:28:40 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    | [FixupM4a] Correcting container of "./youtube_rips/5Lm5cyBN/./temp/00007 Manu Chao - Me Gustas Tu (Offi
+Feb 07 19:28:41 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    | [ExtractAudio] Destination: ./youtube_rips/5Lm5cyBN/./temp/00007 Manu Chao - Me Gustas Tu (Official Aud
+Feb 07 19:28:43 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    | Deleting original file ./youtube_rips/5Lm5cyBN/./temp/00007 Manu Chao - Me Gustas Tu (Official Audio).m
+Feb 07 19:28:43 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    | [MoveFiles] Moving file "./youtube_rips/5Lm5cyBN/./temp/00007 Manu Chao - Me Gustas Tu (Official Audio)
+Feb 07 19:28:49 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    | 19:28:49 [Job ca678b53-dc05-41ee-87e2-adb36ec09ca2]: exception raised while executing (utils.convert_mi
+Feb 07 19:28:49 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    | Traceback (most recent call last):
+Feb 07 19:28:49 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    |   File "/home/app/venv/lib/python3.9/site-packages/rq/worker.py", line 1428, in perform_job
+Feb 07 19:28:49 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    |     rv = job.perform()
+Feb 07 19:28:49 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    |   File "/home/app/venv/lib/python3.9/site-packages/rq/job.py", line 1278, in perform
+Feb 07 19:28:49 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    |     self._result = self._execute()
+Feb 07 19:28:49 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    |   File "/home/app/venv/lib/python3.9/site-packages/rq/job.py", line 1315, in _execute
+Feb 07 19:28:49 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    |     result = self.func(*self.args, **self.kwargs)
+Feb 07 19:28:49 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    |   File "./utils.py", line 102, in convert_mixtape
+Feb 07 19:28:49 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    |     mixed_tracks = mixed_tracks.append(track, crossfade=crossfade_time)
+Feb 07 19:28:49 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    |   File "/home/app/venv/lib/python3.9/site-packages/pydub/audio_segment.py", line 1251, in append
+Feb 07 19:28:49 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    |     seg1, seg2 = AudioSegment._sync(self, seg)
+Feb 07 19:28:49 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    |   File "/home/app/venv/lib/python3.9/site-packages/pydub/audio_segment.py", line 440, in _sync
+Feb 07 19:28:49 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    |     return tuple(
+Feb 07 19:28:49 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    |   File "/home/app/venv/lib/python3.9/site-packages/pydub/audio_segment.py", line 441, in <genexpr>
+Feb 07 19:28:49 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    |     seg.set_channels(channels).set_frame_rate(frame_rate).set_sample_width(sample_width)
+Feb 07 19:28:49 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    |   File "/home/app/venv/lib/python3.9/site-packages/pydub/audio_segment.py", line 1055, in set_channels
+Feb 07 19:28:49 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    |     raise ValueError(
+Feb 07 19:28:49 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    | ValueError: AudioSegment.set_channels only supports mono-to-multi channel and multi-to-mono channel con
+Feb 07 19:28:50 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    |
+
+MOST WANTED FEATURES:
+- custom mp3 uploads
+- comments section
+- prevent fullpage reloads where possible
 
 mvp:
 
