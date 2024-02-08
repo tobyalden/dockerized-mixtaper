@@ -154,12 +154,15 @@ a {
     /*background-image: url("https://as2.ftcdn.net/v2/jpg/01/55/67/07/1000_F_155670713_Qz3dRx8IH91mkOLcOH7yAmn30BaW4KZK.jpg");*/
     background-color: black;
     color: white;
-    display: flex;
-    align-items: center;
     position: sticky;
     top: 0;
     z-index: 999;
     min-height: 50px
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
 }
 
 .header-siteName {
@@ -176,13 +179,41 @@ a {
     margin-right: 10px;
 }
 
-.header-username {
+.hamburger-menu {
+    padding-left: 20px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
-.header-userAvatar {
+#hamburger-menu-items {
+    display: flex;
+    flex-flow: row nowrap;
+    padding-left: 10px;
 }
 
-.center {
+@media screen and (max-width: 768px) {
+    .hamburger-menu {
+        display: block;
+    }
+    #hamburger-menu-items {
+        flex-flow: column nowrap;
+    }
+    .hamburger-spacer {
+        display: none;
+    }
+}
+
+.hamburger-menu-item {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    /*border-top: solid;*/
+    /*border-color: white;*/
+}
+
+.hamburger-menu-item i {
+    padding-right: 5px;
 }
 
 .container {
@@ -202,6 +233,10 @@ a {
 }
 
 .spacer {
+    flex: 1;
+}
+
+.hamburger-spacer {
     flex: 1;
 }
 

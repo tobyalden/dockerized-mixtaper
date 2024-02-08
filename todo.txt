@@ -1,6 +1,19 @@
+MOST WANTED FEATURES:
+- filter (completed/incomplete)
+- favorites
+- user profiles (created and contributed to)
+- custom mp3 uploads
+- comments section
+- prevent fullpage reloads where possible
+
+HOUSEKEEPING:
+- should really have a process for backing stuff up (this should probably be a priority)
+- may eventually run out of space
+
 KNOWN BUGS:
-- errors out on "Premium" youtube tracks - need to see if i can check this with API
 - link previews (in discord and the like)
+- errors out on "Premium" youtube tracks - need to see if i can check this with API
+- this error:
 
 - Feb 07 19:28:37 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    | [youtube] Extracting URL: rs6Y4kZ8qtw
 Feb 07 19:28:37 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    | [youtube] rs6Y4kZ8qtw: Downloading webpage
@@ -35,11 +48,6 @@ Feb 07 19:28:49 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker
 Feb 07 19:28:49 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    |     raise ValueError(
 Feb 07 19:28:49 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    | ValueError: AudioSegment.set_channels only supports mono-to-multi channel and multi-to-mono channel con
 Feb 07 19:28:50 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    |
-
-MOST WANTED FEATURES:
-- custom mp3 uploads
-- comments section
-- prevent fullpage reloads where possible
 
 mvp:
 
