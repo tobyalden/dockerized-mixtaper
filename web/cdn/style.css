@@ -225,11 +225,16 @@ a {
 
 .mixtapeNav {
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: row nowrap;
     justify-content: center;
+    align-items: center;
     padding-top: 20px;
     padding-left: 30px;
     padding-right: 30px;
+}
+
+.mixtapeNavCount {
+    text-align: center;
 }
 
 .spacer {

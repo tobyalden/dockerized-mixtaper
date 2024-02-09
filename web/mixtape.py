@@ -1,4 +1,5 @@
 import os
+import math
 import re
 from datetime import timedelta
 
@@ -88,10 +89,11 @@ def index():
     show_prev_page = prev_page >= 0
     next_page = page + 1
     show_next_page = mixtape_count[0] > next_page * MIXTAPES_PER_PAGE
-    # 1/0
+    total_pages = math.ceil(mixtape_count[0] / MIXTAPES_PER_PAGE)
     return render_template(
         "mixtape/index.html", mixtapes=mixtapes, max_tracks=TRACKS_PER_MIXTAPE,
-        prev_page=prev_page, next_page=next_page, show_prev_page=show_prev_page, show_next_page=show_next_page, mixtape_filter=mixtape_filter
+        prev_page=prev_page, next_page=next_page, show_prev_page=show_prev_page, show_next_page=show_next_page, mixtape_filter=mixtape_filter,
+        page=page + 1, total_pages=total_pages
     )
 
 

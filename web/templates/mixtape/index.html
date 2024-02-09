@@ -13,13 +13,21 @@
         {% endfor %}
     </div>
     <div class="mixtapeNav">
-        {% if show_prev_page %}
-            <a class="pseudo button" href="{{ url_for('index', page=prev_page, mixtape_filter=mixtape_filter) }}"><i class="fa-solid fa-arrow-left"></i></a>
-        {% endif %}
-        <span class="spacer"></span>
-        {% if show_next_page %}
-            <a class="pseudo button" href="{{ url_for('index', page=next_page, mixtape_filter=mixtape_filter) }}"><i class="fa-solid fa-arrow-right"></i></a>
-        {% endif %}
+        <div>
+            {% if show_prev_page %}
+                <a class="pseudo button spacer" href="{{ url_for('index', page=prev_page, mixtape_filter=mixtape_filter) }}"><i class="fa-solid fa-arrow-left"></i></a>
+            {% else %}
+                <a class="pseudo button spacer" style="visibility: hidden;"><i class="fa-solid fa-arrow-left"></i></a>
+            {% endif %}
+        </div>
+        <div class="mixtapeNavCount spacer"><b>{{ page }} of {{ total_pages }}</b></div>
+        <div>
+            {% if show_next_page %}
+                <a class="pseudo button spacer" href="{{ url_for('index', page=next_page, mixtape_filter=mixtape_filter) }}"><i class="fa-solid fa-arrow-right"></i></a>
+            {% else %}
+                <a class="pseudo button spacer" style="visibility: hidden;"><i class="fa-solid fa-arrow-left"></i></a>
+            {% endif %}
+        </div>
     </div>
 <footer>
   {{ site_footer() }}
