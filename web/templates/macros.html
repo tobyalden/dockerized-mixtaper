@@ -55,7 +55,7 @@
         <div class="mixtapeCardSpacer"></div>
         {% if mixtape['converted'] %}
             <div class="mixtapeCardAudio">
-                <audio preload="metadata" controls src="{{ url_for('mixtape.download', url=mixtape['url']) }}"></audio>
+                <audio preload="none" controls src="{{ url_for('mixtape.download', url=mixtape['url']) }}"></audio>
             </div>
         {% elif mixtape['locked'] %}
             <div class="mixtapeCardTracks"><a href="{{ url_for('mixtape.view', url=mixtape['url']) }}">Converting...</a></div>
