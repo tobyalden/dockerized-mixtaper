@@ -22,7 +22,7 @@ services:
     mem_limit: 150m
     memswap_limit: 150m
     image: redislabs/redismod
-    ports:
+    expose:
       - '6379:6379'
   web-app:
     mem_limit: 150m
