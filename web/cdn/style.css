@@ -422,6 +422,21 @@ a {
     flex: 1;
 }
 
+.mixtapeCardFav {
+    font-size: 1.5em;
+    /*background-color: white;*/
+    color: white;
+      text-shadow:
+          2px 2px 2px black,
+          0 0 1em black,
+          0 0 0.1em black;
+    /*max-width: fit-content;*/
+      align-self: center;
+    margin-top: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
 .mixtapeCardTracks {
     font-size: 24px;
     color: white;

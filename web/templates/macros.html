@@ -40,19 +40,21 @@
 
 {% macro mixtape_card(mixtape, max_tracks) -%}
 <div class="mixtapeCard" style="background-image: url({{ url_for('static', filename='/mixtape_art/' + mixtape['art']) }})">
-        <!--<img class="mixtapeArt" src="{{ url_for('static', filename='/mixtape_art/' + mixtape['art']) }}"/>-->
         <div class="mixtapeCardInfo">
-            <div class="mixtapeCardTitle"><a href="{{ url_for('mixtape.view', url=mixtape['url']) }}">
+            <div class="mixtapeCardTitle">
+                <a href="{{ url_for('mixtape.view', url=mixtape['url']) }}">
                     {% if mixtape['hidden'] %}
                         <i class="fa fa-eye-slash" aria-hidden="true"></i>
                     {% endif %}
                     {{ mixtape['title'] }}
-                </a></div>
+                </a>
+            </div>
             <div class="mixtapeCardUser">
                 by {{ mixtape['username'] }}
             </div>
         </div>
         <div class="mixtapeCardSpacer"></div>
+            <div class="mixtapeCardFav"><i class="fa-regular fa-heart"></i></div>
         {% if mixtape['converted'] %}
             <div class="mixtapeCardAudio">
                 <audio preload="none" controls src="{{ url_for('mixtape.download', url=mixtape['url']) }}"></audio>
@@ -60,9 +62,9 @@
         {% elif mixtape['locked'] %}
             <div class="mixtapeCardTracks"><a href="{{ url_for('mixtape.view', url=mixtape['url']) }}">Converting...</a></div>
         {% else %}
-        <div class="mixtapeCardTracks"><a href="{{ url_for('mixtape.view', url=mixtape['url']) }}">{{ mixtape['track_count'] }} / {{ max_tracks }} tracks</a></div>
+            <div class="mixtapeCardTracks"><a href="{{ url_for('mixtape.view', url=mixtape['url']) }}">{{ mixtape['track_count'] }} / {{ max_tracks }} tracks</a></div>
         {% endif %}
-    </div>
+        </div>
 {%- endmacro %}
 
 {% macro site_header() -%}
