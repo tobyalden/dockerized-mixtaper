@@ -63,12 +63,12 @@ def index():
         logged_in_uid = g.user['id']
     page = int(request.args.get('page') or 0)
     mixtape_filter = request.args.get('mixtape_filter')
-    count_query = "SELECT COUNT(*) FROM mixtape m"
+    count_query = "SELECT COUNT(*) FROM mixtape m WHERE (m.hidden = 0 OR m.author_id = ?)"
     if mixtape_filter == "completed":
-        count_query += " WHERE m.converted = 1"
+        count_query += " AND m.converted = 1"
     elif mixtape_filter == "unfinished":
-        count_query += " WHERE m.converted = 0"
-    mixtape_count = db.execute(count_query).fetchone()
+        count_query += " AND m.converted = 0"
+    mixtape_count = db.execute(count_query, (logged_in_uid, )).fetchone()
     query = "SELECT m.id, m.url, m.art, m.title, m.body, m.created, m.author_id, m.locked, m.converted, m.hidden, u.username, u.avatar, COUNT(t.mixtape_id) as track_count"
     query += " FROM mixtape m"
     query += " INNER JOIN user u ON m.author_id = u.id"
