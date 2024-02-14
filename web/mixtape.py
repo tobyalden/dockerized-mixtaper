@@ -88,7 +88,10 @@ def index():
     elif mixtape_filter == "unfinished":
         query += " AND m.converted = 0"
     query += " GROUP BY m.id"
-    query += " ORDER BY m.created DESC "
+    if mixtape_filter == "favorites":
+        query += " ORDER BY f.created DESC "
+    else:
+        query += " ORDER BY m.created DESC "
     query += " LIMIT ? OFFSET ?"
     args = (logged_in_uid, logged_in_uid, MIXTAPES_PER_PAGE, page * MIXTAPES_PER_PAGE)
     mixtapes = db.execute(query, args).fetchall()
@@ -97,6 +100,7 @@ def index():
     next_page = page + 1
     show_next_page = mixtape_count[0] > next_page * MIXTAPES_PER_PAGE
     total_pages = math.ceil(mixtape_count[0] / MIXTAPES_PER_PAGE)
+    total_pages = max(total_pages, 1)
     return render_template(
         "mixtape/index.html", mixtapes=mixtapes, max_tracks=TRACKS_PER_MIXTAPE,
         prev_page=prev_page, next_page=next_page, show_prev_page=show_prev_page, show_next_page=show_next_page, mixtape_filter=mixtape_filter,
