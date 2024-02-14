@@ -63,15 +63,15 @@ def index():
         logged_in_uid = g.user['id']
     page = int(request.args.get('page') or 0)
     mixtape_filter = request.args.get('mixtape_filter')
-    count_args = ()
-    count_query = "SELECT COUNT(*) FROM mixtape m"
-    if mixtape_filter == "completed":
-        count_query += " WHERE m.converted = 1"
+    count_args = (logged_in_uid,)
+    count_query = "SELECT COUNT(*) FROM mixtape m WHERE (m.hidden = 0 OR m.author_id = ?)"
+    if mixtape_filter == "favorites":
+        count_query = "SELECT COUNT(*) FROM mixtape m INNER JOIN favorite f ON (m.id = f.mixtape_id AND f.user_id = ?) WHERE (m.hidden = 0 OR m.author_id = ?)"
+        count_args = (logged_in_uid, logged_in_uid)
+    elif mixtape_filter == "completed":
+        count_query += " AND m.converted = 1"
     elif mixtape_filter == "unfinished":
-        count_query += " WHERE m.converted = 0"
-    elif mixtape_filter == "favorites":
-        count_query += " INNER JOIN favorite f ON (m.id = f.mixtape_id AND f.user_id = ?)"
-        count_args = (logged_in_uid,)
+        count_query += " AND m.converted = 0"
     mixtape_count = db.execute(count_query, count_args).fetchone()
 
     query = "SELECT m.id, m.url, m.art, m.title, m.body, m.created, m.author_id, m.locked, m.converted, m.hidden, u.username, u.avatar, COUNT(t.mixtape_id) as track_count, f.id as has_fav"
