@@ -54,7 +54,7 @@
             </div>
         </div>
         <div class="mixtapeCardSpacer"></div>
-        <div class="mixtapeCardFav" id="FAV-{{ mixtape['url'] }}" onclick="favoriteMixtape(this.id);"><i class="fa-regular fa-heart"></i></div>
+        <div class="mixtapeCardFav" id="FAV-{{ mixtape['url'] }}" onclick="favoriteMixtape(event, this.id);"><i class="fa-regular fa-heart"></i></div>
         {% if mixtape['converted'] %}
             <div class="mixtapeCardAudio">
                 <audio preload="none" controls src="{{ url_for('mixtape.download', url=mixtape['url']) }}"></audio>

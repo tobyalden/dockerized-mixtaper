@@ -1,5 +1,5 @@
 import os
-from flask import Flask, send_from_directory, render_template, session
+from flask import Flask, send_from_directory, render_template, session, request
 from datetime import timedelta
 
 def get_api_key_from_file(filename):

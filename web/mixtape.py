@@ -409,6 +409,29 @@ def download(url):
     )
 
 
+@bp.route('/favorite')
+def favorite():
+    mixtape_id = request.args.get('mixtape_id')
+
+    db = get_db()
+    favorite = db.execute(
+        "SELECT * FROM favorite WHERE user_id = ? AND mixtape_id = ?",
+        (g.user["id"], mixtape_id),
+    ).fetchone()
+
+    if favorite:
+        db.execute("DELETE FROM favorite WHERE id = ?", (favorite["id"],))
+        db.commit()
+    else:
+        db.execute(
+            "INSERT INTO favorite (user_id, mixtape_id)"
+            " VALUES (?, ?)",
+            (g.user["id"], mixtape_id),
+        )
+        db.commit()
+    return "Successfully added " + mixtape_id
+
+
 class InvalidID(Exception):
     pass
 
@@ -457,3 +480,4 @@ def get_seconds_from_timestamp(ts):
     seconds  = int(seconds_parse.group(1)) if seconds_parse else 0
     total_seconds = 60*60*hours + 60*minutes + seconds
     return total_seconds
+

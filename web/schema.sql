@@ -31,3 +31,12 @@ CREATE TABLE IF NOT EXISTS track (
     FOREIGN KEY (author_id) REFERENCES user (id),
     FOREIGN KEY (mixtape_id) REFERENCES mixtape (id)
 );
+
+CREATE TABLE IF NOT EXISTS favorite (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    mixtape_id INTEGER NOT NULL,
+    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES user (id),
+    FOREIGN KEY (mixtape_id) REFERENCES mixtape (id)
+);
