@@ -54,10 +54,12 @@
             </div>
         </div>
         <div class="mixtapeCardSpacer"></div>
-        {% if mixtape['has_fav'] %}
-            <div class="mixtapeCardFav" id="FAV-{{ mixtape['id'] }}" onclick="favoriteMixtape(event, this.id);"><i class="fa-solid fa-heart"></i></div>
-        {% else %}
-            <div class="mixtapeCardFav" id="FAV-{{ mixtape['id'] }}" onclick="favoriteMixtape(event, this.id);"><i class="fa-regular fa-heart"></i></div>
+        {% if g.user %}
+            {% if mixtape['has_fav'] %}
+                <div class="mixtapeCardFav" id="FAV-{{ mixtape['id'] }}" onclick="favoriteMixtape(event, this.id);"><i class="fa-solid fa-heart"></i></div>
+            {% else %}
+                <div class="mixtapeCardFav" id="FAV-{{ mixtape['id'] }}" onclick="favoriteMixtape(event, this.id);"><i class="fa-regular fa-heart"></i></div>
+            {% endif %}
         {% endif %}
         {% if mixtape['converted'] %}
             <div class="mixtapeCardAudio">
@@ -94,7 +96,9 @@
     </div>
     <div id="hamburger-menu-items" style="display: none;">
         <a href="{{ url_for('about') }}"><div class="hamburger-menu-item"><i class="fa-solid fa-question-circle"></i> ABOUT</div></a>
-        <a href="{{ url_for('index', mixtape_filter='favorites') }}"><div class="hamburger-menu-item"><i class="fa-solid fa-heart"></i> FAVORITES</div></a>
+        {% if g.user %}
+            <a href="{{ url_for('index', mixtape_filter='favorites') }}"><div class="hamburger-menu-item"><i class="fa-solid fa-heart"></i> FAVORITES</div></a>
+        {% endif %}
         <a href="{{ url_for('index', mixtape_filter='completed') }}"><div class="hamburger-menu-item"><i class="fa-solid fa-headphones"></i> COMPLETED</div></a>
         <a href="{{ url_for('index', mixtape_filter='unfinished') }}"><div class="hamburger-menu-item"><i class="fa-solid fa-hammer"></i></i> UNFINISHED</div></a>
         <div class="hamburger-menu-item hamburger-spacer"></div>
