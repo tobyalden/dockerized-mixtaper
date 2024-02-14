@@ -63,17 +63,25 @@ def index():
         logged_in_uid = g.user['id']
     page = int(request.args.get('page') or 0)
     mixtape_filter = request.args.get('mixtape_filter')
+    count_args = ()
     count_query = "SELECT COUNT(*) FROM mixtape m"
     if mixtape_filter == "completed":
         count_query += " WHERE m.converted = 1"
     elif mixtape_filter == "unfinished":
         count_query += " WHERE m.converted = 0"
-    mixtape_count = db.execute(count_query).fetchone()
+    elif mixtape_filter == "favorites":
+        count_query += " INNER JOIN favorite f ON (m.id = f.mixtape_id AND f.user_id = ?)"
+        count_args = (logged_in_uid,)
+    mixtape_count = db.execute(count_query, count_args).fetchone()
+
     query = "SELECT m.id, m.url, m.art, m.title, m.body, m.created, m.author_id, m.locked, m.converted, m.hidden, u.username, u.avatar, COUNT(t.mixtape_id) as track_count, f.id as has_fav"
     query += " FROM mixtape m"
     query += " INNER JOIN user u ON m.author_id = u.id"
     query += " LEFT JOIN track t ON m.id = t.mixtape_id"
-    query += " LEFT JOIN favorite f ON (m.id = f.mixtape_id AND f.user_id = ?)"
+    if mixtape_filter == "favorites":
+        query += " INNER JOIN favorite f ON (m.id = f.mixtape_id AND f.user_id = ?)"
+    else:
+        query += " LEFT JOIN favorite f ON (m.id = f.mixtape_id AND f.user_id = ?)"
     query += " WHERE (m.hidden = 0 OR m.author_id = ?)"
     if mixtape_filter == "completed":
         query += " AND m.converted = 1"
@@ -82,10 +90,8 @@ def index():
     query += " GROUP BY m.id"
     query += " ORDER BY m.created DESC "
     query += " LIMIT ? OFFSET ?"
-    mixtapes = db.execute(
-        query,
-        (logged_in_uid, logged_in_uid, MIXTAPES_PER_PAGE, page * MIXTAPES_PER_PAGE)
-    ).fetchall()
+    args = (logged_in_uid, logged_in_uid, MIXTAPES_PER_PAGE, page * MIXTAPES_PER_PAGE)
+    mixtapes = db.execute(query, args).fetchall()
     prev_page = page - 1
     show_prev_page = prev_page >= 0
     next_page = page + 1

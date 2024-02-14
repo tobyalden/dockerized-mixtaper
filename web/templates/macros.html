@@ -94,7 +94,7 @@
     </div>
     <div id="hamburger-menu-items" style="display: none;">
         <a href="{{ url_for('about') }}"><div class="hamburger-menu-item"><i class="fa-solid fa-question-circle"></i> ABOUT</div></a>
-        <!--<div class="hamburger-menu-item"><i class="fa-solid fa-heart"></i> FAVORITES</div>-->
+        <a href="{{ url_for('index', mixtape_filter='favorites') }}"><div class="hamburger-menu-item"><i class="fa-solid fa-heart"></i> FAVORITES</div></a>
         <a href="{{ url_for('index', mixtape_filter='completed') }}"><div class="hamburger-menu-item"><i class="fa-solid fa-headphones"></i> COMPLETED</div></a>
         <a href="{{ url_for('index', mixtape_filter='unfinished') }}"><div class="hamburger-menu-item"><i class="fa-solid fa-hammer"></i></i> UNFINISHED</div></a>
         <div class="hamburger-menu-item hamburger-spacer"></div>
