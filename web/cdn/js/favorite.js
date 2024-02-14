@@ -15,10 +15,10 @@ function favoriteMixtape(e, id) {
         mixtape_id: mixtapeId
       },
       success: function( result ) {
-          console.log("Favorited mixtape!");
+          console.log("Favorited (or unfavorited) mixtape!");
       },
       error: function() {
-          console.log("Couldn't favorite mixtape");
+          console.log("Couldn't favorite (or unfavorite) mixtape");
           // Toggle back on failure
           toggleHeart(id);
       }
