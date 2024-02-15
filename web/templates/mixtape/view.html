@@ -2,6 +2,10 @@
 {% from 'macros.html' import user_avatar, user_card, mixtape_card %}
 
 {% block content %}
+    <meta property="og:image" content="{{ url_for('static', filename='/mixtape_art/' + mixtape['art']) }}" />
+    <meta property="og:description" content="{{ mixtape['body'] }}" />
+    <meta property="og:title" content="{{ mixtape['title'] }}" />
+
     <div class="mixtapeView">
         <div class="mixtapeCardView">
             {{ mixtape_card(mixtape, max_tracks) }}

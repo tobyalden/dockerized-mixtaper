@@ -2,6 +2,10 @@
 {% from 'macros.html' import user_card, mixtape_card %}
 
 {% block content %}
+    <meta property="og:image" content="{{ url_for('static', filename='/link_preview.png') }}" />
+    <meta property="og:description" content="A collaborative mixtape making site" />
+    <meta property="og:title" content="mixtape garden" />
+
     {% if not g.user %}
     <a href="{{ url_for('about') }}"><div class="whatisthis">
         <i class="fa-solid fa-question-circle"></i> What is this?
