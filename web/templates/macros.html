@@ -106,6 +106,7 @@
     <div id="hamburger-menu-items" style="display: none;">
         <a href="{{ url_for('about') }}"><div class="hamburger-menu-item"><i class="fa-solid fa-question-circle"></i> ABOUT</div></a>
         {% if g.user %}
+            <a href="{{ url_for('index', mixtape_filter='mytapes') }}"><div class="hamburger-menu-item"><i class="fa-solid fa-circle-user"></i> MY TAPES</div></a>
             <a href="{{ url_for('index', mixtape_filter='favorites') }}"><div class="hamburger-menu-item"><i class="fa-solid fa-heart"></i> FAVORITES</div></a>
         {% endif %}
         <a href="{{ url_for('index', mixtape_filter='completed') }}"><div class="hamburger-menu-item"><i class="fa-solid fa-headphones"></i> COMPLETED</div></a>
