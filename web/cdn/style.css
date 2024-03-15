@@ -43,7 +43,7 @@ textarea {
 .hideMixtapeCheckbox {
     display: flex;
     padding-top: 10px;
-    /*padding-bottom: 10px;*/
+    padding-bottom: 0px;
 }
 
 @media screen and (max-width: 768px) {
@@ -99,7 +99,7 @@ textarea {
 }
 
 .newMixtapeButton {
-    margin-top: 25px;
+    margin-top: 20px;
     width: 100%;
 }
 
@@ -405,6 +405,17 @@ a {
     background-color: black;
     padding-left: 5px;
     padding-right: 5px;
+    max-width: fit-content;
+}
+
+.mixtapeCardHidden {
+    font-size: 16px;
+    color: white;
+    background-color: green;
+    margin-top: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-bottom: 5px;
     max-width: fit-content;
 }
 

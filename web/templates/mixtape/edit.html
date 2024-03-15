@@ -15,14 +15,18 @@
                 <div>
                 <label>
                     {% if mixtape['hidden'] %}
-                        <input name="hidden" type="checkbox" checked>
+                        <input name="isPublic" type="checkbox">
                     {% else %}
-                        <input name="hidden" type="checkbox">
+                        <input name="isPublic" type="checkbox" checked>
                     {% endif %}
                     <span class="checkable"></span>
                 </label>
                 </div>
-                <div>Hide from frontpage</div>
+                {% if mixtape['locked'] %}
+                    <div style="padding-top: 2px">Show on front page</div>
+                {% else %}
+                    <div style="padding-top: 2px">Allow anyone to add tracks</div>
+                {% endif %}
             </div>
             <input class="newMixtapeButton" type="submit" value="Save">
         </form>

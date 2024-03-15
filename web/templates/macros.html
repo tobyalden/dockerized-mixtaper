@@ -41,11 +41,20 @@
 {% macro mixtape_card(mixtape, max_tracks) -%}
 <div class="mixtapeCard" style="background-image: url({{ url_for('static', filename='/mixtape_art/' + mixtape['art']) }})">
         <div class="mixtapeCardInfo">
+            {% if mixtape['hidden'] %}
+                <div class="mixtapeCardHidden">
+                    <a href="{{ url_for('mixtape.view', url=mixtape['url']) }}">
+                        <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                        {% if mixtape['converted'] %}
+                            Hidden
+                        {% else %}
+                            Hidden until complete
+                        {% endif %}
+                    </a>
+                </div>
+            {% endif %}
             <div class="mixtapeCardTitle">
                 <a href="{{ url_for('mixtape.view', url=mixtape['url']) }}">
-                    {% if mixtape['hidden'] %}
-                        <i class="fa fa-eye-slash" aria-hidden="true"></i>
-                    {% endif %}
                     {{ mixtape['title'] }}
                 </a>
             </div>

@@ -121,9 +121,9 @@ def create():
         title = title[:MAX_MIXTAPE_TITLE_LENGTH]
         body = request.form["body"]
         body = body[:MAX_MIXTAPE_DESCRIPTION_LENGTH]
-        hidden = False
-        if "hidden" in request.form:
-            hidden = True
+        hidden = True
+        if "isPublic" in request.form:
+            hidden = False
         url = get_uuid()
         error = None
 
@@ -177,9 +177,9 @@ def edit(url):
             title = title[:MAX_MIXTAPE_TITLE_LENGTH]
             body = request.form["body"]
             body = body[:MAX_MIXTAPE_DESCRIPTION_LENGTH]
-            hidden = False
-            if "hidden" in request.form:
-                hidden = True
+            hidden = True
+            if "isPublic" in request.form:
+                hidden = False
             error = None
 
             if not title:

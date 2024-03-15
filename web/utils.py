@@ -150,7 +150,7 @@ def convert_mixtape(youtube_ids, mixtape_url):
     with app.app_context():
         db = get_db()
         db.execute(
-            "UPDATE mixtape SET converted = ?" " WHERE url = ?", (True, mixtape_url)
+            "UPDATE mixtape SET converted = ?, hidden = ?, updated = CURRENT_TIMESTAMP WHERE url = ?", (True, False, mixtape_url)
         )
         db.commit()
 
