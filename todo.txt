@@ -3,8 +3,9 @@ MOST WANTED FEATURES:
 + errors out on "Premium" youtube tracks - need to see if i can check this with API
 + sort by updated column (don't forget to backup and update in prod before pushing)
 + hide mixtapes by default - reveal on completion
-- "My tapes" hotlink
-- user profiles (created and contributed to)
++ "My tapes" hotlink
++ user profiles (created and contributed to)
+- let admins see hidden tapes on index
 
 - custom mp3 uploads
 - comments section

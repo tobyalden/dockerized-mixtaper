@@ -29,6 +29,7 @@ textarea {
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
+    padding-bottom: 50px;
     /*max-width: 700px;*/
 }
 
@@ -490,6 +491,32 @@ a {
     margin-left: 20px;
     margin-right: 20px;
     margin-bottom: 5px;
+}
+
+.userStats {
+    background: #323232;
+    margin-top: 25px;
+}
+
+.logout {
+    margin-top: 25px;
+}
+
+.userStat {
+    text-decoration: underline;
+}
+
+.statsIcon {
+    padding-top: 10px;
+    font-size: 1.2em;
+    width: 100%;
+    text-align: center;
+}
+
+.statsIconLabel {
+    display: block;
+    text-align: center;
+    font-weight: bold;
 }
 
 @media screen and (max-width: 768px) {

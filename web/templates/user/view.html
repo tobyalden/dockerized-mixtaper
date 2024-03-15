@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import big_user_avatar %}
+{% from 'macros.html' import big_user_avatar, mixtape_card %}
 
 {% block header %}
 {% endblock %}
@@ -15,8 +15,55 @@
                 <input type="submit" value="Upload">
           </form>
         {% endif %}
+
+        {% if mixtapes %}
+        <article class="userStats card">
+            <footer style="padding-top: 20px;">
+            {% if complete_mixtapes %}
+            <i class="fa-solid fa-headphones statsIcon"></i>
+            <span class="statsIconLabel">COMPLETED</span>
+                <ul>
+                {% for mixtape in complete_mixtapes %}
+                    <li style="padding-right: 25px">
+                        <a class="userStat" href="{{ url_for('mixtape.view', url=mixtape['url']) }}">
+                            {{ mixtape['title'] }}
+                        </a>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+            {% if unfinished_mixtapes %}
+                <i class="fa-solid fa-hammer statsIcon"></i>
+                <span class="statsIconLabel">UNFINISHED</span>
+                <ul>
+                {% for mixtape in unfinished_mixtapes %}
+                    <li style="padding-right: 25px">
+                        <a class="userStat" href="{{ url_for('mixtape.view', url=mixtape['url']) }}">
+                            {{ mixtape['title'] }}
+                        </a>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+            {% if favorites %}
+                <i class="fa-solid fa-heart statsIcon"></i>
+                <span class="statsIconLabel">FAVORITES</span>
+                <ul>
+                {% for mixtape in favorites %}
+                    <li style="padding-right: 25px">
+                        <a class="userStat" href="{{ url_for('mixtape.view', url=mixtape['url']) }}">
+                            {{ mixtape['title'] }}
+                        </a>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+            </footer>
+        </article>
+        {% endif %}
+
         {% if g.user['id'] == user['id'] %}
-            <a class="pseudo button" href="{{ url_for('auth.logout') }}">Log Out</a>
+            <a class="pseudo button logout" href="{{ url_for('auth.logout') }}">Log Out</a>
         {% endif %}
     </div>
 {% endblock %}

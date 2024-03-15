@@ -59,7 +59,9 @@
                 </a>
             </div>
             <div class="mixtapeCardUser">
-                by {{ mixtape['username'] }}
+                <a href="{{ url_for('user.view', username=mixtape['username']) }}">
+                    by {{ mixtape['username'] }}
+                </a>
             </div>
         </div>
         <div class="mixtapeCardSpacer"></div>
