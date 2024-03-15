@@ -54,20 +54,22 @@ redis = Redis(host='redis', port=6379)
 # redis = Redis()  # For testing outside of docker
 job_queue = Queue(connection=redis)
 
+def get_logged_in_uid():
+    logged_in_uid = -1
+    if g.user:
+        logged_in_uid = g.user['id']
+    return logged_in_uid
 
 @bp.route("/")
 def index():
     db = get_db()
-    logged_in_uid = -1
-    if g.user:
-        logged_in_uid = g.user['id']
     page = int(request.args.get('page') or 0)
     mixtape_filter = request.args.get('mixtape_filter')
-    count_args = (logged_in_uid,)
+    count_args = (get_logged_in_uid(),)
     count_query = "SELECT COUNT(*) FROM mixtape m WHERE (m.hidden = 0 OR m.author_id = ?)"
     if mixtape_filter == "favorites":
         count_query = "SELECT COUNT(*) FROM mixtape m INNER JOIN favorite f ON (m.id = f.mixtape_id AND f.user_id = ?) WHERE (m.hidden = 0 OR m.author_id = ?)"
-        count_args = (logged_in_uid, logged_in_uid)
+        count_args = (get_logged_in_uid(), get_logged_in_uid())
     elif mixtape_filter == "completed":
         count_query += " AND m.converted = 1"
     elif mixtape_filter == "unfinished":
@@ -93,7 +95,7 @@ def index():
     else:
         query += " ORDER BY m.created DESC "
     query += " LIMIT ? OFFSET ?"
-    args = (logged_in_uid, logged_in_uid, MIXTAPES_PER_PAGE, page * MIXTAPES_PER_PAGE)
+    args = (get_logged_in_uid(), get_logged_in_uid(), MIXTAPES_PER_PAGE, page * MIXTAPES_PER_PAGE)
     mixtapes = db.execute(query, args).fetchall()
     prev_page = page - 1
     show_prev_page = prev_page >= 0
@@ -249,13 +251,14 @@ def get_mixtape_by_url(url):
     mixtape = (
         get_db()
         .execute(
-            "SELECT m.id, m.url, m.art, m.locked, m.converted, m.title, m.body, m.created, m.author_id, m.hidden, u.username, u.avatar, COUNT(t.mixtape_id) AS track_count"
+            "SELECT m.id, m.url, m.art, m.locked, m.converted, m.title, m.body, m.created, m.author_id, m.hidden, u.username, u.avatar, COUNT(t.mixtape_id) AS track_count, f.id as has_fav"
             " FROM mixtape m"
             " INNER JOIN user u ON m.author_id = u.id"
             " LEFT JOIN track t ON m.id = t.mixtape_id"
+            " LEFT JOIN favorite f ON (m.id = f.mixtape_id AND f.user_id = ?)"
             " WHERE m.url = ?"
             " GROUP BY m.id",
-            (url,),
+            (get_logged_in_uid(), url,),
         )
         .fetchone()
     )

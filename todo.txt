@@ -1,7 +1,11 @@
 MOST WANTED FEATURES:
-- filter (completed/incomplete)
-- favorites
+- bugfix favorite on individual mixtape view
+- sort by updated column 
+- errors out on "Premium" youtube tracks - need to see if i can check this with API
+- "My tapes" hotlink
 - user profiles (created and contributed to)
+- hide mixtapes by default - reveal on completion
+
 - custom mp3 uploads
 - comments section
 - prevent fullpage reloads where possible
@@ -11,8 +15,7 @@ HOUSEKEEPING:
 - may eventually run out of space
 
 KNOWN BUGS:
-- link previews (in discord and the like)
-- errors out on "Premium" youtube tracks - need to see if i can check this with API
++ link previews (in discord and the like)
 - this error:
 
 - Feb 07 19:28:37 localhost mixtapegarden.sh[17528]: dockerized-mixtaper-rq-worker-1    | [youtube] Extracting URL: rs6Y4kZ8qtw
@@ -89,6 +92,8 @@ mvp:
 + add admin tools
 + add avatars to posts
 + allow mixtapes to be public/private
++ filter (completed/incomplete)
++ favorites
 
 not mvp:
 - add user descriptions
