@@ -46,7 +46,7 @@ from redis import Redis
 
 from pyyoutube import Api
 
-api = Api(api_key=YOUTUBE_API_KEY)
+youtube_api = Api(api_key=YOUTUBE_API_KEY)
 
 bp = Blueprint("mixtape", __name__)
 
@@ -469,7 +469,7 @@ def validate_youtube_id(url):
     else:
         raise InvalidID
 
-    video_by_id = api.get_video_by_id(video_id=youtube_id)
+    video_by_id = youtube_api.get_video_by_id(video_id=youtube_id)
     if len(video_by_id.items) < 1:
         raise InvalidID
 

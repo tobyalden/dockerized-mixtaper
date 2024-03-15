@@ -23,10 +23,11 @@
             {% if g.user and not mixtape['locked'] %}
                 <form class="addToMixtape card" method="post">
                     <header>
-                        Add to mixtape:
+                        Add to mixtape:<br>
                     </header>
+                        <span class="premiumnote"><i class="fa-solid fa-exclamation-circle"></i> Do not use YouTube Premium videos!</span>
                     <footer>
-                        <input name="youtubeUrl" id="youtubeUrl" placeholder="youtube.com/watch?v=3__0ulE2UDo" required>
+                        <input style="padding-top: 5px;" name="youtubeUrl" id="youtubeUrl" placeholder="youtube.com/watch?v=3__0ulE2UDo" required>
                         <input name="trackBody" id="trackBody" placeholder="Comment" maxlength="{{ MAX_TRACK_DESCRIPTION_LENGTH }}">
                         {% if one_track_from_full %}
                             <input class="warning" type="submit" value="Add final track" onclick="return confirm('Are you sure?');">

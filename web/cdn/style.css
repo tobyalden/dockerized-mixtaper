@@ -473,6 +473,14 @@ a {
     height: 20px;
 }
 
+.premiumnote {
+    color: lightgrey;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 5px;
+}
+
 @media screen and (max-width: 768px) {
     .lg-view {
        display: none;
