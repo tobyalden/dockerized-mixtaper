@@ -76,7 +76,7 @@ def index():
         count_query += " AND m.converted = 0"
     mixtape_count = db.execute(count_query, count_args).fetchone()
 
-    query = "SELECT m.id, m.url, m.art, m.title, m.body, m.created, m.author_id, m.locked, m.converted, m.hidden, u.username, u.avatar, COUNT(t.mixtape_id) as track_count, f.id as has_fav"
+    query = "SELECT m.id, m.url, m.art, m.title, m.body, m.author_id, m.locked, m.converted, m.hidden, u.username, u.avatar, COUNT(t.mixtape_id) as track_count, f.id as has_fav"
     query += " FROM mixtape m"
     query += " INNER JOIN user u ON m.author_id = u.id"
     query += " LEFT JOIN track t ON m.id = t.mixtape_id"
@@ -93,7 +93,7 @@ def index():
     if mixtape_filter == "favorites":
         query += " ORDER BY f.created DESC "
     else:
-        query += " ORDER BY m.created DESC "
+        query += " ORDER BY m.updated DESC "
     query += " LIMIT ? OFFSET ?"
     args = (get_logged_in_uid(), get_logged_in_uid(), MIXTAPES_PER_PAGE, page * MIXTAPES_PER_PAGE)
     mixtapes = db.execute(query, args).fetchall()
@@ -351,6 +351,10 @@ def view(url):
                 flash(error, FLASH_ERROR)
             else:
                 db = get_db()
+
+                db.execute(
+                    "UPDATE mixtape SET updated = CURRENT_TIMESTAMP WHERE id = ?", (mixtape["id"], )
+                )
 
                 db.execute(
                     "INSERT INTO track (author_id, mixtape_id, youtube_id, body)"

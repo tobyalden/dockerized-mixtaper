@@ -1,6 +1,6 @@
 MOST WANTED FEATURES:
 + bugfix favorite on individual mixtape view
-- errors out on "Premium" youtube tracks - need to see if i can check this with API
++ errors out on "Premium" youtube tracks - need to see if i can check this with API
 - sort by updated column 
 - "My tapes" hotlink
 - user profiles (created and contributed to)

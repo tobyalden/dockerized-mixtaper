@@ -34,7 +34,7 @@ def convert_mixtape(youtube_ids, mixtape_url):
         mixtape = (
             get_db()
             .execute(
-                "SELECT m.art, m.title, m.body, m.created, m.author_id"
+                "SELECT m.art, m.title, m.author_id"
                 " FROM mixtape m"
                 " WHERE m.url = ?",
                 (mixtape_url,),
