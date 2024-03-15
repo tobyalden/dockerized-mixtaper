@@ -48,7 +48,7 @@ def view(username):
         .fetchall()
     )
 
-    complete_mixtapes = [m for m in mixtapes if not m['converted']]
+    complete_mixtapes = [m for m in mixtapes if m['converted']]
     unfinished_mixtapes = [m for m in mixtapes if not m['converted']]
 
     favorites = (
