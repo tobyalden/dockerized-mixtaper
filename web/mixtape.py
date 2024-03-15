@@ -149,8 +149,8 @@ def create():
         else:
             db = get_db()
             db.execute(
-                "INSERT INTO mixtape (title, body, author_id, url, art, hidden)"
-                " VALUES (?, ?, ?, ?, ?, ?)",
+                "INSERT INTO mixtape (title, body, author_id, url, art, hidden, updated)"
+                " VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)",
                 (title, body, g.user["id"], url, art, hidden),
             )
             db.commit()

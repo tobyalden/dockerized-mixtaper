@@ -1,7 +1,7 @@
 MOST WANTED FEATURES:
 + bugfix favorite on individual mixtape view
 + errors out on "Premium" youtube tracks - need to see if i can check this with API
-- sort by updated column 
++ sort by updated column (don't forget to backup and update in prod before pushing)
 - "My tapes" hotlink
 - user profiles (created and contributed to)
 - hide mixtapes by default - reveal on completion
