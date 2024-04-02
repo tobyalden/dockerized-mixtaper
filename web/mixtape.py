@@ -16,6 +16,7 @@ from flask import (
 )
 
 from werkzeug.exceptions import abort
+from werkzeug.utils import secure_filename
 
 from app import (
     TRACKS_PER_MIXTAPE,
@@ -430,6 +431,7 @@ def download(url):
         ),
         mixtape["url"] + ".mp3",
         as_attachment=True,
+        download_name=secure_filename(mixtape["title"] + ".mp3")
     )
 
 
