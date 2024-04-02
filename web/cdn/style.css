@@ -346,6 +346,10 @@ a {
     flex: 1;
 }
 
+.trackAuthorCardName a {
+    color: lightgrey;
+}
+
 .trackDescription {
     font-style: italic;
     max-width: min(100vw, 700px);

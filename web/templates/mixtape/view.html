@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import user_avatar, user_card, mixtape_card %}
+{% from 'macros.html' import user_avatar, user_name, user_card, mixtape_card %}
 
 {% block content %}
     <meta property="og:image" content="{{ url_for('static', filename='/mixtape_art/' + mixtape['art']) }}" />
@@ -49,7 +49,7 @@
                 <iframe frameborder="0" src="https://www.youtube.com/embed/{{ track['youtube_id'] }}"></iframe>
                     <div class="trackAuthorCard">
                         {{ user_avatar(track['username'], track['avatar']) }}
-                        <span class="trackAuthorCardName"><span style="color: lightgrey;">{{ track['username'] }}</span> on {{ track['created'].strftime('%b %d, %Y') }}</span>
+                        <span class="trackAuthorCardName">{{ user_name(track['username']) }} on {{ track['created'].strftime('%b %d, %Y') }}</span>
                         {% if g.user and not mixtape['locked'] and (track['author_id'] == g.user['id'] or g.user['is_admin']) %}
                             <form method="post">
                                 <input class="error" name="deleteTrack" type="submit" value="Delete track">
