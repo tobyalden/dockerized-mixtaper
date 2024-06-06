@@ -2,9 +2,13 @@
 {% from 'macros.html' import user_avatar, user_name, user_card, mixtape_card %}
 
 {% block content %}
+    <meta property="og:type" content="music.song" />
+    <meta property="og:title" content="{{ mixtape['title'] }}" />
+    <meta property="og:url" content="{{ url_for('mixtape.view', url=mixtape['url']) }}">
     <meta property="og:image" content="{{ url_for('static', filename='/mixtape_art/' + mixtape['art']) }}" />
     <meta property="og:description" content="{{ mixtape['body'] }}" />
-    <meta property="og:title" content="{{ mixtape['title'] }}" />
+    <meta property="og:audio" content=""{{ url_for('mixtape.download', url=mixtape['url']) }} />
+    <meta property="og:site_name" content="mixtape garden 🌱" />
 
     <div class="mixtapeView">
         <div class="mixtapeCardView">
