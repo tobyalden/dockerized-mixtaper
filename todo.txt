@@ -1,4 +1,5 @@
 MOST WANTED FEATURES:
+- if conversion fails, surface error, mark as failed on mixtape, allow mixtape to be edited and retried
 + bugfix favorite on individual mixtape view
 + errors out on "Premium" youtube tracks - need to see if i can check this with API
 + sort by updated column (don't forget to backup and update in prod before pushing)
