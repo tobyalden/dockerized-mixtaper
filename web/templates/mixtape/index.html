@@ -11,6 +11,9 @@
         <i class="fa-solid fa-question-circle"></i> What is this?
         </div></a>
     {% endif %}
+    <div class="alert">
+        <i class="fa-solid fa-person-digging"></i> Mixtapes are currently unable to convert. Working on a fix, thanks for your patience.
+    </div>
     <div class="container">
         {% for mixtape in mixtapes %}
             {{ mixtape_card(mixtape, max_tracks) }}

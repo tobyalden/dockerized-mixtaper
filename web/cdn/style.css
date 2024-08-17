@@ -131,6 +131,13 @@ a {
     /*font-weight: bold;*/
 }
 
+.alert {
+    padding: 10px;
+    background: #f1807e;
+    color: black;
+    font-weight: bold;
+}
+
 .flash.error {
     background: #f1807e;
 }
