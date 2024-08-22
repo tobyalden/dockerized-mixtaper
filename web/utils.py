@@ -68,6 +68,8 @@ def convert_mixtape(youtube_ids, mixtape_url):
         "print_to_file": {
             "post_process": [("%(autonumber)s - %(title)s", tracklist_path)]
         },
+        "username": "oauth2",
+        "password": "",
     }
 
     print("going to download")

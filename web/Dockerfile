@@ -23,6 +23,7 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 RUN export FLASK_APP=app.py
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
+RUN pip install -U https://github.com/coletdjnz/yt-dlp-youtube-oauth2/archive/refs/heads/master.zip
 
 # define the port number the container should expose
 EXPOSE 5000
