@@ -138,6 +138,13 @@ a {
     font-weight: bold;
 }
 
+.alert-good {
+    padding: 10px;
+    background: #90EE90;
+    color: black;
+    font-weight: bold;
+}
+
 .flash.error {
     background: #f1807e;
 }
