@@ -67,6 +67,10 @@ def create_app(test_config=None):
     def about():
         return render_template("about.html")
 
+    @app.route('/goodbye')
+    def goodbye():
+        return render_template("goodbye.html")
+
     @app.route('/cdn/<path:filename>')
     def custom_static(filename):
         return send_from_directory(app.config['CUSTOM_STATIC_PATH'], filename)

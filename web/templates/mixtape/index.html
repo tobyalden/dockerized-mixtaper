@@ -6,14 +6,14 @@
     <meta property="og:description" content="A collaborative mixtape making site" />
     <meta property="og:title" content="mixtape garden" />
 
+    <a href="{{ url_for('goodbye') }}"><div class="alert-yellow">
+        <i class="fa-solid fa-cloud-moon"></i> The garden has ended, but will remain as an archive. Click to learn more.
+    </div></a>
     {% if not g.user %}
     <a href="{{ url_for('about') }}"><div class="whatisthis">
         <i class="fa-solid fa-question-circle"></i> What is this?
-        </div></a>
+    </div></a>
     {% endif %}
-    <div class="alert">
-        <i class="fa-solid fa-person-digging"></i> Mixtapes are currently unable to convert. Working on a fix, thanks for your patience.
-    </div>
     <div class="container">
         {% for mixtape in mixtapes %}
             {{ mixtape_card(mixtape, max_tracks) }}

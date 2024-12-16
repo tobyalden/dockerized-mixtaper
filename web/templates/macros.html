@@ -99,7 +99,7 @@
             {% if g.user['is_admin'] %}
             <div style="padding-left: 10px; padding-right: 10px;"><i class="fa-solid fa-crown"></i></div>
             {% endif %}
-            <div class="header-padding"><a class="button-color action pseudo button" href="{{ url_for('mixtape.create') }}"><i class="fa fa-pencil"></i> New</a></div>
+            <div class="header-padding"></div>
         {% else %}
             <a class="pseudo button" href="{{ url_for('auth.register') }}">Register</a>
             <a class="pseudo button header-padding" href="{{ url_for('auth.login') }}">Log In</a>

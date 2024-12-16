@@ -145,6 +145,13 @@ a {
     font-weight: bold;
 }
 
+.alert-yellow {
+    padding: 10px;
+    background: #B3EBF2;
+    color: black;
+    font-weight: bold;
+}
+
 .flash.error {
     background: #f1807e;
 }
