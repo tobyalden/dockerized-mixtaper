@@ -1,4 +1,4 @@
-FROM python:3.9.2-alpine
+FROM python:3.10.19-alpine
 
 
 # install gcc
@@ -23,7 +23,8 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 RUN export FLASK_APP=app.py
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
-RUN pip install -U https://github.com/coletdjnz/yt-dlp-youtube-oauth2/archive/refs/heads/master.zip
+#RUN pip install -U https://github.com/coletdjnz/yt-dlp-youtube-oauth2/archive/refs/heads/master.zip
+RUN pip install -U "yt-dlp[default]"
 
 # define the port number the container should expose
 EXPOSE 5000
