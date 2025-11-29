@@ -1,5 +1,7 @@
 FROM python:3.10.19-alpine
 
+# install deno
+RUN curl -fsSL https://deno.land/install.sh | sh
 
 # install gcc
 RUN apk update
