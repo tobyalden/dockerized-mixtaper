@@ -68,7 +68,7 @@ def convert_mixtape(youtube_ids, mixtape_url):
         "print_to_file": {
             "post_process": [("%(autonumber)s - %(title)s", tracklist_path)]
         },
-        "cookiefile": "./static/cookies.txt",
+        "cookies": "./static/cookies.txt",
     }
 
     print("going to download")
